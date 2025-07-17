@@ -1,0 +1,32 @@
+---
+layout: default
+---
+
+<div class="home">
+    <section class="hero">
+        <h1 class="hero-title">Ciao, sono Marco Rossi</h1>
+        <p class="hero-subtitle">Senior Software Engineer specializzato in sviluppo full-stack</p>
+        <div class="hero-actions">
+            <a href="{{ '/about/' | relative_url }}" class="btn btn-primary">Chi sono</a>
+            <a href="{{ '/progetti/' | relative_url }}" class="btn btn-secondary">I miei progetti</a>
+        </div>
+    </section>
+    
+    <section class="recent-posts">
+        <h2>Ultimi articoli</h2>
+        {% if site.posts.size > 0 %}
+            <ul class="post-list">
+                {% for post in site.posts limit:3 %}
+                    <li class="post-item">
+                        <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time>
+                        <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+            <p><a href="{{ '/blog/' | relative_url }}">Vedi tutti gli articoli →</a></p>
+        {% else %}
+            <p>Nessun articolo ancora pubblicato.</p>
+        {% endif %}
+    </section>
+</div>

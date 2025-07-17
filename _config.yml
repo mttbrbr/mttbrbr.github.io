@@ -18,29 +18,39 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Your awesome title
-email: your-email@example.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Questo è il mio primo seto web online, creato con Jekyll,, benvenuto!
+title: Marco Rossi - Portfolio
+email: marco.rossi@example.com
+description: >-
+  Portfolio personale di Marco Rossi, Senior Software Engineer specializzato 
+  in sviluppo full-stack. Progetti, articoli tecnici e competenze.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+twitter_username: marcorossi_dev
+github_username: marcorossi
 
 # Build settings
 theme: minima
 header_pages:
-  - about.md
-  - projects.md
+  - about.markdown
+  - progetti.md
   - blog.html
-  - contact.md
+  - contatti.md
 
-# Plugin
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-paginate
+
+# Pagination
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+# SEO
+author: Marco Rossi
+lang: it_IT
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
