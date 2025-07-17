@@ -22,9 +22,17 @@ layout: default
                 <ul class="post-list">
                     {% for post in site.posts limit:3 %}
                         <li class="post-item">
-                            <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-                            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time>
-                            <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+                            <div class="post-meta-line">
+                                <span class="file-permissions">-rw-r--r--</span>
+                                <span class="file-size">{{ post.content | number_of_words }}w</span>
+                                <span class="file-date">{{ post.date | date: "%b %d" }}</span>
+                                <span class="file-name">
+                                    <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+                                </span>
+                            </div>
+                            {% if post.excerpt %}
+                                <div class="post-preview">{{ post.excerpt | strip_html | truncate: 120 }}</div>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
@@ -43,26 +51,92 @@ layout: default
             {% endif %}
         </div>
     </section>
+
+    <section class="projects-section terminal-section">
+        <div class="terminal-header">Featured projects - /home/marco/projects/</div>
+        <div class="terminal-content">
+            <div class="terminal-output">
+                <p>$ ls -la projects/</p>
+                <div class="project-list">
+                    <div class="project-item">
+                        <span class="file-permissions">drwxr-xr-x</span>
+                        <span class="project-name"><a href="#" class="project-link">e-commerce-platform/</a></span>
+                        <span class="project-tech">[React, Node.js, PostgreSQL]</span>
+                        <div class="project-desc">Full-stack e-commerce solution with modern architecture</div>
+                    </div>
+                    <div class="project-item">
+                        <span class="file-permissions">drwxr-xr-x</span>
+                        <span class="project-name"><a href="#" class="project-link">api-gateway/</a></span>
+                        <span class="project-tech">[Python, FastAPI, Redis]</span>
+                        <div class="project-desc">Microservices API gateway with rate limiting and auth</div>
+                    </div>
+                    <div class="project-item">
+                        <span class="file-permissions">drwxr-xr-x</span>
+                        <span class="project-name"><a href="#" class="project-link">docker-monitoring/</a></span>
+                        <span class="project-tech">[Docker, Prometheus, Grafana]</span>
+                        <div class="project-desc">Container monitoring and alerting system</div>
+                    </div>
+                </div>
+                <div class="terminal-command">
+                    <span class="prompt">$ </span>
+                    <a href="{{ '/progetti/' | relative_url }}">find . -name "*.project" -exec cat {} \;</a>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <section class="skills-section terminal-section">
-        <div class="terminal-header">Skills overview - /usr/bin/skills</div>
+        <div class="terminal-header">System info - /proc/skills</div>
         <div class="terminal-content">
-            <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>Frontend</h4>
-                    <p>React, Vue.js, TypeScript</p>
+            <div class="terminal-output">
+                <p>$ cat /proc/skills</p>
+                <div class="skills-output">
+                    <div class="skill-category">
+                        <span class="category-name">Languages:</span>
+                        <span class="skills-list">JavaScript, TypeScript, Python, Go, Rust</span>
+                    </div>
+                    <div class="skill-category">
+                        <span class="category-name">Frontend:</span>
+                        <span class="skills-list">React, Vue.js, Svelte, WebAssembly</span>
+                    </div>
+                    <div class="skill-category">
+                        <span class="category-name">Backend:</span>
+                        <span class="skills-list">Node.js, FastAPI, Express, PostgreSQL</span>
+                    </div>
+                    <div class="skill-category">
+                        <span class="category-name">DevOps:</span>
+                        <span class="skills-list">Docker, Kubernetes, AWS, Terraform</span>
+                    </div>
                 </div>
-                <div class="skill-item">
-                    <h4>Backend</h4>
-                    <p>Node.js, Python, FastAPI</p>
-                </div>
-                <div class="skill-item">
-                    <h4>DevOps</h4>
-                    <p>Docker, Kubernetes, AWS</p>
-                </div>
-                <div class="skill-item">
-                    <h4>Database</h4>
-                    <p>PostgreSQL, MongoDB, Redis</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="terminal-section">
+        <div class="terminal-header">Quick commands - /usr/local/bin/</div>
+        <div class="terminal-content">
+            <div class="terminal-output">
+                <div class="command-list">
+                    <div class="command-item">
+                        <span class="prompt">$ </span>
+                        <a href="{{ '/about/' | relative_url }}">whoami</a>
+                        <span class="command-desc"># Show user information</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="prompt">$ </span>
+                        <a href="{{ '/progetti/' | relative_url }}">ls -la projects/</a>
+                        <span class="command-desc"># List all projects</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="prompt">$ </span>
+                        <a href="{{ '/blog/' | relative_url }}">tail -f blog.log</a>
+                        <span class="command-desc"># Follow blog updates</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="prompt">$ </span>
+                        <a href="{{ '/contatti/' | relative_url }}">ping marco@portfolio</a>
+                        <span class="command-desc"># Get in touch</span>
+                    </div>
                 </div>
             </div>
         </div>

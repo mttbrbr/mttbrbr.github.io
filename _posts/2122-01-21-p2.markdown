@@ -1,0 +1,40 @@
+---
+layout: post
+title: "Setup del perfetto ambiente di sviluppo"
+date: 2025-01-12 14:30:00 +0100
+categories: tutorial devops
+excerpt: "Come configurare un ambiente di sviluppo moderno con Docker, VS Code e tools essenziali."
+---
+
+# Setup del perfetto ambiente di sviluppo
+
+Un ambiente di sviluppo ben configurato può fare la differenza nella produttività quotidiana.
+
+## Tools essenziali
+
+### Editor
+- **VS Code** con estensioni specifiche
+- **Vim** per editing veloce su server
+- **JetBrains IDEs** per progetti complessi
+
+### Terminal
+```bash
+# Oh My Zsh con plugins utili
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+### Containerizzazione
+Docker è ormai indispensabile:
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+## Conclusioni
+
+Un setup ben pensato ripaga nel tempo.

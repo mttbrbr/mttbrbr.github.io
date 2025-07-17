@@ -18,23 +18,22 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "$ My-Space Terminal"
+title: "My-Space "
 email: marco.rossi@example.com
 description: >-
-  Portfolio digitale di Marco Rossi - Senior Software Engineer. 
-  Terminal-based portfolio con progetti, competenze e articoli tecnici.
+  Benvenuto nel mio sito
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: marcorossi_dev
-github_username: marcorossi
+mastodon_username: barbieri
+github_username: mttbrbr
 
 # Build settings
-theme: minima
+remote_theme: piharpi/jekyll-klise
+theme: tale
 header_pages:
-  - about.markdown
-  - progetti.md
+  - about.html
+  - progetti.html
   - blog.html
-  - contatti.md
 
 # Plugins
 plugins:
@@ -47,8 +46,23 @@ plugins:
 paginate: 5
 paginate_path: "/blog/page:num/"
 
+# Collections
+collections:
+  projects:
+    output: true
+    permalink: /progetti/:title/
+
+# Defaults per i progetti
+defaults:
+  - scope:
+      path: "_projects"
+      type: "projects"
+    values:
+      layout: "project"
+
+
 # SEO
-author: Marco Rossi
+author: Matteo Barbieri
 lang: it_IT
 
 # Exclude from processing.
