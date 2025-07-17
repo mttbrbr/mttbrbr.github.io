@@ -28,7 +28,7 @@ mastodon_username: barbieri
 github_username: mttbrbr
 
 # Build settings
-remote_theme: piharpi/jekyll-klise
+remote_theme: chesterhow/tale
 theme: tale
 header_pages:
   - about.html
