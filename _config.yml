@@ -29,7 +29,7 @@ github_username: mttbrbr
 
 # Build settings
 remote_theme: chesterhow/tale
-theme: tale
+#theme: tale
 header_pages:
   - about.html
   - progetti.html
