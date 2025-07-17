@@ -5,10 +5,10 @@
     </label>
     
     <div class="trigger">
-        <a class="page-link" href="{{ '/' | relative_url }}">Home</a>
-        <a class="page-link" href="{{ '/about/' | relative_url }}">Chi sono</a>
-        <a class="page-link" href="{{ '/progetti/' | relative_url }}">Progetti</a>
-        <a class="page-link" href="{{ '/blog/' | relative_url }}">Blog</a>
-        <a class="page-link" href="{{ '/contatti/' | relative_url }}">Contatti</a>
+        <a class="page-link" href="{{ '/' | relative_url }}" data-cmd="cd ~/">Home</a>
+        <a class="page-link" href="{{ '/about/' | relative_url }}" data-cmd="./about">Chi sono</a>
+        <a class="page-link" href="{{ '/progetti/' | relative_url }}" data-cmd="ls progetti/">Progetti</a>
+        <a class="page-link" href="{{ '/blog/' | relative_url }}" data-cmd="cat blog/">Blog</a>
+        <a class="page-link" href="{{ '/contatti/' | relative_url }}" data-cmd="mail -s">Contatti</a>
     </div>
 </nav>

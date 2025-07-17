@@ -218,15 +218,22 @@ a {
     border: 1px solid transparent;
     border-radius: var(--border-radius);
     transition: var(--transition);
-    
-    &:hover {
-      color: var(--primary-color);
-      border-color: var(--primary-color);
-      box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
-    }
+    position: relative;
     
     &::before {
-      content: none;
+      content: attr(data-cmd);
+      position: absolute;
+      bottom: -1.5rem;
+      left: 0;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      opacity: 0;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    
+    &:hover::before {
+      opacity: 1;
     }
   }
   
@@ -261,19 +268,25 @@ a {
   }
   
   .hero-title {
-    font-size: 2.5rem;
-    margin: 3rem 0 1rem 1.5rem;
+    font-size: 2.8rem;
+    margin: 1rem 0;
     color: var(--primary-color);
     font-weight: 700;
+    
+    &::after {
+      content: "_";
+      animation: blink 1.5s infinite;
+      color: var(--secondary-color);
+    }
   }
   
   .hero-subtitle {
-    font-size: 1.1rem;
-    color: var(--secondary-color);
-    margin: 0 0 2rem 1.5rem;
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 2rem;
     
     &::before {
-      content: "# ";
+      content: "// ";
       color: var(--text-muted);
     }
   }
@@ -292,6 +305,7 @@ a {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   margin: 2rem 0;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
   
   .terminal-header {
     background: var(--bg-secondary);
@@ -299,11 +313,19 @@ a {
     border-bottom: 1px solid var(--border-color);
     font-size: 0.9rem;
     color: var(--text-muted);
+    font-family: var(--font-family);
     
     &::before {
       content: "● ● ● ";
-      color: var(--accent-color);
-      margin-right: 1rem;
+      color: #ff5f56;
+      margin-right: 0.5rem;
+    }
+    
+    &::after {
+      content: " terminal";
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-left: 1rem;
     }
   }
   
@@ -394,10 +416,27 @@ a {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     transition: var(--transition);
+    position: relative;
+    
+    &::before {
+      content: ">";
+      position: absolute;
+      left: 0.5rem;
+      top: 1.5rem;
+      color: var(--secondary-color);
+      font-weight: bold;
+      opacity: 0;
+      transition: var(--transition);
+    }
+    
+    &:hover::before {
+      opacity: 1;
+    }
     
     &:hover {
       border-color: var(--primary-color);
       box-shadow: var(--shadow);
+      transform: translateX(0.5rem);
     }
     
     h3 {
@@ -474,6 +513,61 @@ a {
     &::before {
       content: "© ";
     }
+  }
+}
+
+// Enhanced Terminal Elements
+.terminal-session {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  margin: 2rem 0;
+  position: relative;
+  
+  &::before {
+    content: "● ● ●";
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+  }
+}
+
+.terminal-prompt {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-family);
+  
+  &::after {
+    content: " █";
+    animation: blink 1s infinite;
+  }
+}
+
+.terminal-command {
+  margin-top: 1.5rem;
+  font-family: var(--font-family);
+  
+  .prompt {
+    color: var(--secondary-color);
+    font-weight: bold;
+  }
+}
+
+.terminal-output {
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  
+  p {
+    margin-bottom: 0.3rem;
+  }
+  
+  .error-text {
+    color: var(--accent-color);
   }
 }
 
@@ -567,4 +661,49 @@ a {
   pointer-events: none;
   z-index: -1;
   opacity: 0.03;
+}
+
+// Matrix Effect Background
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+// Enhanced Scrollbar (webkit browsers)
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 6px;
+  
+  &:hover {
+    background: var(--primary-color);
+  }
+}
+
+// Enhanced Selection
+::selection {
+  background: rgba(0, 255, 65, 0.3);
+  color: var(--text-color);
+}
+
+::-moz-selection {
+  background: rgba(0, 255, 65, 0.3);
+  color: var(--text-color);
 }

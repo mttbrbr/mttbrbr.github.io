@@ -18,11 +18,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Marco Rossi - Portfolio
+title: "$ My-Space Terminal"
 email: marco.rossi@example.com
 description: >-
-  Portfolio personale di Marco Rossi, Senior Software Engineer specializzato 
-  in sviluppo full-stack. Progetti, articoli tecnici e competenze.
+  Portfolio digitale di Marco Rossi - Senior Software Engineer. 
+  Terminal-based portfolio con progetti, competenze e articoli tecnici.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: marcorossi_dev

@@ -4,29 +4,67 @@ layout: default
 
 <div class="home">
     <section class="hero">
-        <h1 class="hero-title">Ciao, sono Marco Rossi</h1>
-        <p class="hero-subtitle">Senior Software Engineer specializzato in sviluppo full-stack</p>
-        <div class="hero-actions">
-            <a href="{{ '/about/' | relative_url }}" class="btn btn-primary">Chi sono</a>
-            <a href="{{ '/progetti/' | relative_url }}" class="btn btn-secondary">I miei progetti</a>
+        <div class="terminal-session">
+            <div class="terminal-prompt">marco@portfolio:~$</div>
+            <h1 class="hero-title">Marco Rossi</h1>
+            <p class="hero-subtitle">Senior Software Engineer | Full-Stack Developer</p>
+            <div class="hero-actions">
+                <a href="{{ '/about/' | relative_url }}" class="btn btn-primary">./about.sh</a>
+                <a href="{{ '/progetti/' | relative_url }}" class="btn btn-secondary">ls -la progetti/</a>
+            </div>
         </div>
     </section>
     
-    <section class="recent-posts">
-        <h2>Ultimi articoli</h2>
-        {% if site.posts.size > 0 %}
-            <ul class="post-list">
-                {% for post in site.posts limit:3 %}
-                    <li class="post-item">
-                        <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time>
-                        <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-            <p><a href="{{ '/blog/' | relative_url }}">Vedi tutti gli articoli →</a></p>
-        {% else %}
-            <p>Nessun articolo ancora pubblicato.</p>
-        {% endif %}
+    <section class="recent-posts terminal-section">
+        <div class="terminal-header">Recent posts - /var/log/blog/</div>
+        <div class="terminal-content">
+            {% if site.posts.size > 0 %}
+                <ul class="post-list">
+                    {% for post in site.posts limit:3 %}
+                        <li class="post-item">
+                            <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+                            <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time>
+                            <p>{{ post.excerpt | strip_html | truncate: 150 }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="terminal-command">
+                    <span class="prompt">$ </span>
+                    <a href="{{ '/blog/' | relative_url }}">cat blog/* | more</a>
+                </div>
+            {% else %}
+                <div class="terminal-output">
+                    <p>$ ls -la posts/</p>
+                    <p>total 0</p>
+                    <p>drwxr-xr-x 2 marco marco 4096 Jan 17 09:42 .</p>
+                    <p>drwxr-xr-x 3 marco marco 4096 Jan 17 09:42 ..</p>
+                    <p class="error-text">No posts found. Coming soon...</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+    
+    <section class="skills-section terminal-section">
+        <div class="terminal-header">Skills overview - /usr/bin/skills</div>
+        <div class="terminal-content">
+            <div class="skill-grid">
+                <div class="skill-item">
+                    <h4>Frontend</h4>
+                    <p>React, Vue.js, TypeScript</p>
+                </div>
+                <div class="skill-item">
+                    <h4>Backend</h4>
+                    <p>Node.js, Python, FastAPI</p>
+                </div>
+                <div class="skill-item">
+                    <h4>DevOps</h4>
+                    <p>Docker, Kubernetes, AWS</p>
+                </div>
+                <div class="skill-item">
+                    <h4>Database</h4>
+                    <p>PostgreSQL, MongoDB, Redis</p>
+                </div>
+            </div>
+        </div>
     </section>
 </div>

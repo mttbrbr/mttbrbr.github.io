@@ -1,39 +1,45 @@
 <footer class="site-footer">
     <div class="wrapper">
-        <div class="footer-col-wrapper">
-            <div class="footer-col footer-col-1">
-                <h3>Contatti</h3>
-                <ul class="contact-list">
-                    <li>{{ site.email }}</li>
-                    <li>
-                        <a href="https://github.com/{{ site.github_username }}">
-                            GitHub: {{ site.github_username }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://twitter.com/{{ site.twitter_username }}">
-                            Twitter: {{ site.twitter_username }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="footer-col footer-col-2">
-                <h3>Navigazione</h3>
-                <ul class="page-list">
-                    <li><a href="{{ '/about/' | relative_url }}">Chi sono</a></li>
-                    <li><a href="{{ '/progetti/' | relative_url }}">Progetti</a></li>
-                    <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-col footer-col-3">
-                <p>{{ site.description | escape }}</p>
+        <div class="terminal-section">
+            <div class="terminal-header">System Information - /proc/portfolio</div>
+            <div class="terminal-content">
+                <div class="footer-col-wrapper">
+                    <div class="footer-col footer-col-1">
+                        <h3>Contact.log</h3>
+                        <ul class="contact-list">
+                            <li>{{ site.email }}</li>
+                            <li>
+                                <a href="https://github.com/{{ site.github_username }}">
+                                    GitHub: {{ site.github_username }}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/{{ site.twitter_username }}">
+                                    Twitter: {{ site.twitter_username }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col footer-col-2">
+                        <h3>Navigation.tree</h3>
+                        <ul class="page-list">
+                            <li><a href="{{ '/about/' | relative_url }}">Chi sono</a></li>
+                            <li><a href="{{ '/progetti/' | relative_url }}">Progetti</a></li>
+                            <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col footer-col-3">
+                        <h3>Description.txt</h3>
+                        <p>{{ site.description | escape }}</p>
+                    </div>
+                </div>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. Tutti i diritti riservati.</p>
+            <p>{{ 'now' | date: "%Y" }} {{ site.title }} - All rights reserved | Built with Jekyll</p>
         </div>
     </div>
 </footer>
