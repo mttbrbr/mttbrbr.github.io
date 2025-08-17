@@ -1,4 +1,3 @@
-
 // Reset completo
 * {
   margin: 0;
@@ -18,20 +17,20 @@ body {
   font-weight: 400;
 }
 
-// Container con più spazio
+// Container con più spazio e padding ottimizzato
 .wrapper {
-  max-width: 600px !important;
+  max-width: 800px !important;
   margin: 0 auto;
-  padding: 80px 40px !important;
+  padding: 100px 100px !important;
 }
 
-// Header super minimal
+// Header super minimal con più spazio
 .site-header {
   border: none !important;
   min-height: auto !important;
   padding: 0 !important;
-  margin-bottom: 120px;
-  text-align: left;
+  margin-bottom: 150px;
+  text-align: center;
   background: transparent !important;
   
   .wrapper {
@@ -62,7 +61,7 @@ body {
   float: none !important;
   border: none !important;
   background-color: transparent !important;
-  text-align: left;
+  text-align: center;
   margin-top: 30px;
   
   .nav-trigger {
@@ -109,6 +108,74 @@ body {
 .page-content {
   padding: 0 !important;
   flex: none !important;
+}
+
+// Larghezza massima uniforme per tutte le sezioni terminal con padding ottimizzato
+.terminal-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.projects-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+// Interspazi ottimizzati per tutti i titoli
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 50px !important;
+  margin-bottom: 25px !important;
+  line-height: 1.3 !important;
+  
+  &:first-child {
+    margin-top: 0 !important;
+  }
+}
+
+// Paragrafi con spazio ottimizzato
+p {
+  margin-bottom: 25px !important;
+  line-height: 1.7 !important;
+  
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+// Liste con spazio ottimizzato
+ul, ol {
+  margin-bottom: 30px !important;
+  padding-left: 25px !important;
+  
+  li {
+    margin-bottom: 10px !important;
+    line-height: 1.7 !important;
+    
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+// Blockquotes con spazio ottimizzato
+blockquote {
+  margin: 40px 0 !important;
+  padding: 25px 30px !important;
+  background: #f9f9f9 !important;
+  border-left: 4px solid #e0e0e0 !important;
+  border-radius: 4px;
+  
+  p {
+    margin-bottom: 15px !important;
+    color: #666 !important;
+    font-style: italic;
+    
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
 }
 
 // Post list homepage
@@ -443,7 +510,7 @@ body {
 // Responsive
 @media screen and (max-width: 800px) {
   .wrapper {
-    padding: 60px 30px !important;
+    padding: 60px 60px !important;
   }
   
   .site-header {
@@ -462,7 +529,7 @@ body {
 
 @media screen and (max-width: 600px) {
   .wrapper {
-    padding: 40px 20px !important;
+    padding: 40px 40px !important;
   }
   
   .site-header .site-nav .page-link {
@@ -471,399 +538,175 @@ body {
   }
 }
 
-// Rimuovi tutti gli elementi che disturbano
-.highlight {
-  background: #f8f8f8 !important;
+// Media queries ottimizzate per responsive design
+@media screen and (max-width: 1024px) {
+  .wrapper {
+    padding: 80px 60px !important;
+  }
 }
 
-// Navigation attiva
-.site-nav .page-link.current {
-  color: #222 !important;
-}
-.home {
-  .hero {
-    margin-bottom: 80px;
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 60px 40px !important;
+  }
+  
+  .site-header {
+    margin-bottom: 100px;
+  }
+  
+  .page-header {
+    margin-top: 40px !important;
+    margin-bottom: 60px !important;
+    padding: 20px 0 !important;
     
-    .terminal-session {
-      background: #f8f8f8;
-      border: 1px solid #e1e1e1;
-      border-radius: 4px;
-      padding: 20px;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-      
-      .terminal-prompt {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 15px;
-        
-        &::before {
-          content: "$ ";
-          color: #999;
-        }
-      }
-      
-      .hero-title {
-        font-size: 24px !important;
-        font-weight: 600 !important;
-        color: #333 !important;
-        margin: 0 0 8px 0 !important;
-        line-height: 1.2;
-      }
-      
-      .hero-subtitle {
-        color: #666 !important;
-        font-size: 16px;
-        margin: 0 0 20px 0;
-        font-weight: 400;
-      }
-      
-      .hero-actions {
-        .btn {
-          display: inline-block;
-          padding: 8px 16px;
-          margin: 0 8px 0 0;
-          text-decoration: none !important;
-          border-radius: 3px;
-          font-size: 14px;
-          font-weight: 500;
-          transition: all 0.2s ease;
-          
-          &.btn-primary {
-            background: #333;
-            color: #fff !important;
-            
-            &:hover {
-              background: #222;
-            }
-          }
-          
-          &.btn-secondary {
-            background: transparent;
-            color: #666 !important;
-            border: 1px solid #ccc;
-            
-            &:hover {
-              background: #f5f5f5;
-              color: #333 !important;
-            }
-          }
-        }
-      }
+    .page-title {
+      font-size: 24px !important;
+    }
+    
+    .page-subtitle {
+      font-size: 15px !important;
     }
   }
   
   .terminal-section {
-    margin-bottom: 60px;
-    
-    .terminal-header {
-      background: #333;
-      color: #fff;
-      padding: 8px 15px;
-      font-size: 14px;
-      font-weight: 500;
-      border-radius: 4px 4px 0 0;
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-    }
+    padding: 15px 0 !important;
+    margin-bottom: 40px !important;
     
     .terminal-content {
-      background: #f8f8f8;
-      border: 1px solid #e1e1e1;
-      border-top: none;
-      border-radius: 0 0 4px 4px;
-      padding: 20px;
+      padding: 20px !important;
     }
   }
   
-  .recent-posts {
-    .post-list {
-      list-style: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      
-      .post-item {
-        margin-bottom: 25px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #e8e8e8;
-        
-        &:last-child {
-          border-bottom: none;
-          margin-bottom: 15px;
-        }
-        
-        h3 {
-          margin: 0 0 5px 0 !important;
-          font-size: 16px !important;
-          font-weight: 500 !important;
-          
-          a {
-            color: #333 !important;
-            text-decoration: none !important;
-            
-            &:hover {
-              color: #666 !important;
-            }
-          }
-        }
-        
-        time {
-          color: #888;
-          font-size: 13px;
-          display: block;
-          margin-bottom: 8px;
-        }
-        
-        p {
-          color: #666 !important;
-          font-size: 14px !important;
-          line-height: 1.5;
-          margin: 0 !important;
-        }
-      }
-    }
-    
-    .terminal-command {
-      margin-top: 20px;
-      padding-top: 15px;
-      border-top: 1px solid #e8e8e8;
-      
-      .prompt {
-        color: #999;
-        font-weight: 600;
-      }
-      
-      a {
-        color: #666 !important;
-        text-decoration: none !important;
-        font-weight: 500;
-        
-        &:hover {
-          color: #333 !important;
-        }
-      }
-    }
-    
-    .terminal-output {
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-      
-      p {
-        margin: 0 0 4px 0 !important;
-        color: #666 !important;
-        font-size: 14px !important;
-        
-        &.error-text {
-          color: #999 !important;
-          font-style: italic;
-        }
-      }
-    }
+  .projects-list {
+    padding: 15px 0 !important;
   }
   
-  .skills-section {
-    .skill-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      
-      .skill-item {
-        h4 {
-          margin: 0 0 8px 0 !important;
-          font-size: 15px !important;
-          font-weight: 600 !important;
-          color: #333 !important;
-        }
-        
-        p {
-          margin: 0 !important;
-          color: #666 !important;
-          font-size: 14px !important;
-        }
-      }
-    }
-  }
-
-    .recent-posts {
-    .post-list {
-      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-      
-      .post-item {
-        margin-bottom: 12px;
-        
-        .post-meta-line {
-          font-size: 13px;
-          line-height: 1.4;
-          
-          .file-permissions {
-            color: #666;
-            margin-right: 8px;
-          }
-          
-          .file-size {
-            color: #888;
-            margin-right: 8px;
-            min-width: 40px;
-            display: inline-block;
-          }
-          
-          .file-date {
-            color: #888;
-            margin-right: 12px;
-          }
-          
-          .file-name a {
-            color: #333 !important;
-            font-weight: 500;
-            text-decoration: none !important;
-            
-            &:hover {
-              color: #666 !important;
-            }
-          }
-        }
-        
-        .post-preview {
-          color: #666;
-          font-size: 12px;
-          margin-top: 4px;
-          margin-left: 120px;
-          font-style: italic;
-        }
-      }
-    }
-  }
-  
-  .projects-section {
-    .project-list {
-      margin-top: 8px;
-      
-      .project-item {
-        margin-bottom: 10px;
-        font-size: 13px;
-        line-height: 1.4;
-        
-        .file-permissions {
-          color: #666;
-          margin-right: 8px;
-        }
-        
-        .project-name {
-          margin-right: 12px;
-          
-          .project-link {
-            color: #333 !important;
-            font-weight: 500;
-            text-decoration: none !important;
-            
-            &:hover {
-              color: #666 !important;
-            }
-          }
-        }
-        
-        .project-tech {
-          color: #888;
-          font-size: 12px;
-        }
-        
-        .project-desc {
-          color: #666;
-          font-size: 12px;
-          margin-top: 2px;
-          margin-left: 120px;
-          font-style: italic;
-        }
-      }
-    }
-  }
-  
-  .skills-output {
-    margin-top: 8px;
-    
-    .skill-category {
-      margin-bottom: 6px;
-      font-size: 13px;
-      
-      .category-name {
-        color: #666;
-        font-weight: 500;
-        min-width: 80px;
-        display: inline-block;
-      }
-      
-      .skills-list {
-        color: #333;
-      }
-    }
-  }
-  
-  .command-list {
-    .command-item {
-      margin-bottom: 8px;
-      font-size: 13px;
-      
-      .prompt {
-        color: #999;
-        font-weight: 600;
-      }
-      
-      a {
-        color: #333 !important;
-        text-decoration: none !important;
-        font-weight: 500;
-        margin-right: 12px;
-        
-        &:hover {
-          color: #666 !important;
-        }
-      }
-      
-      .command-desc {
-        color: #888;
-        font-style: italic;
-      }
-    }
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 35px !important;
+    margin-bottom: 20px !important;
   }
 }
 
-// Responsive per home
-@media screen and (max-width: 600px) {
-  .home {
-    .hero .terminal-session {
-      padding: 15px;
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 40px 20px !important;
+  }
+  
+  .site-header {
+    margin-bottom: 80px;
+  }
+  
+  .page-header {
+    margin-top: 30px !important;
+    margin-bottom: 50px !important;
+    padding: 15px 0 !important;
+    
+    .page-title {
+      font-size: 22px !important;
+    }
+    
+    .page-subtitle {
+      font-size: 14px !important;
+    }
+  }
+  
+  .terminal-section {
+    padding: 10px 0 !important;
+    margin-bottom: 30px !important;
+    
+    .terminal-header {
+      padding: 10px 15px !important;
+      font-size: 13px !important;
+    }
+    
+    .terminal-content {
+      padding: 15px !important;
+    }
+  }
+  
+  .projects-list {
+    padding: 10px 0 !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 25px !important;
+    margin-bottom: 15px !important;
+  }
+  
+  p {
+    margin-bottom: 20px !important;
+  }
+  
+  ul, ol {
+    margin-bottom: 25px !important;
+    padding-left: 20px !important;
+  }
+  
+  blockquote {
+    margin: 30px 0 !important;
+    padding: 20px 25px !important;
+  }
+}
+
+// Ottimizzazioni per project detail su mobile
+@media screen and (max-width: 768px) {
+  .project-detail {
+    .project-metadata {
+      padding: 15px 0;
       
-      .hero-title {
-        font-size: 20px !important;
-      }
-      
-      .hero-actions .btn {
-        display: block;
-        margin: 5px 0;
-        text-align: center;
+      p {
+        margin-bottom: 12px !important;
       }
     }
     
-    .skills-section .skill-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
+    .project-tech-section {
+      margin: 25px 0;
+      
+      h3 {
+        margin-bottom: 15px !important;
+      }
+    }
+    
+    .project-links {
+      margin: 25px 0;
+      
+      .links-grid {
+        gap: 10px;
+      }
+      
+      .project-link-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+    
+    .project-navigation {
+      margin-top: 30px;
+      padding-top: 25px;
     }
   }
 }
 
 .blog {
   .page-header {
-    margin-bottom: 60px;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 30px 0;
     
     .page-title {
-      font-size: 20px !important;
+      font-size: 28px !important;
       font-weight: 600 !important;
       color: #333 !important;
-      margin: 0 0 8px 0 !important;
+      margin: 0 0 15px 0 !important;
     }
     
     .page-subtitle {
       color: #666 !important;
-      font-size: 15px;
+      font-size: 16px;
       margin: 0;
       font-style: italic;
+      line-height: 1.5;
     }
   }
   
@@ -986,6 +829,29 @@ body {
 }
 
 .projects {
+  .page-header {
+    margin-top: 60px;
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 30px 0;
+    
+    .page-title {
+      font-size: 28px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+      margin: 0 0 15px 0 !important;
+      line-height: 1.2;
+    }
+    
+    .page-subtitle {
+      color: #666 !important;
+      font-size: 16px;
+      margin: 0;
+      font-style: italic;
+      line-height: 1.5;
+    }
+  }
+  
   .projects-list {
     .project-block {
       background: #fff;
@@ -1005,20 +871,26 @@ body {
       }
       
       .project-header {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f0f0f0;
         
         .project-title {
-          font-size: 22px !important;
+          font-size: 26px !important;
           font-weight: 700 !important;
-          margin: 0 0 8px 0 !important;
-          line-height: 1.3;
+          margin: 0 0 12px 0 !important;
+          line-height: 1.2;
           
           a {
             color: #333 !important;
             text-decoration: none !important;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 5px 0;
             
             &:hover {
               color: #555 !important;
+              transform: translateX(5px);
             }
           }
         }
@@ -1156,31 +1028,36 @@ body {
 
 .about {
   .page-header {
-    margin-bottom: 60px;
+    margin-top: 60px;
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 30px 0;
     
     .page-title {
-      font-size: 24px !important;
+      font-size: 28px !important;
       font-weight: 600 !important;
       color: #333 !important;
-      margin: 0 0 8px 0 !important;
+      margin: 0 0 15px 0 !important;
       line-height: 1.2;
     }
     
     .page-subtitle {
       color: #666 !important;
-      font-size: 15px;
+      font-size: 16px;
       margin: 0;
       font-style: italic;
+      line-height: 1.5;
     }
   }
   
   .terminal-section {
-    margin-bottom: 50px;
+    margin-bottom: 60px;
+    padding: 20px 0;
     
     .terminal-header {
       background: #333;
       color: #fff;
-      padding: 8px 15px;
+      padding: 12px 20px;
       font-size: 14px;
       font-weight: 500;
       border-radius: 4px 4px 0 0;
@@ -1192,16 +1069,17 @@ body {
       border: 1px solid #e1e1e1;
       border-top: none;
       border-radius: 0 0 4px 4px;
-      padding: 20px;
+      padding: 30px;
     }
     
     .terminal-output {
       font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
       
       > p {
-        margin: 0 0 15px 0 !important;
+        margin: 0 0 20px 0 !important;
         color: #666 !important;
-        font-size: 14px !important;
+        font-size: 15px !important;
+        line-height: 1.7 !important;
       }
     }
   }
@@ -1395,6 +1273,234 @@ body {
     
     .opensource-section .opensource-grid {
       grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Sezioni specifiche del progetto con padding e margini ottimizzati
+.project-detail {
+  .project-metadata {
+    margin: 30px 0;
+    padding: 25px 0;
+    border-bottom: 1px solid #e8e8e8;
+    
+    p {
+      margin-bottom: 15px !important;
+      color: #555 !important;
+      font-size: 16px !important;
+      
+      .meta-label {
+        font-weight: 600;
+        color: #333 !important;
+        margin-right: 8px;
+      }
+      
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        
+        &.status-completed {
+          background: #e8f5e8;
+          color: #388e3c;
+        }
+        
+        &.status-ongoing {
+          background: #fff3e0;
+          color: #f57c00;
+        }
+        
+        &.status-planned {
+          background: #e3f2fd;
+          color: #1976d2;
+        }
+      }
+    }
+  }
+  
+  .project-tech-section {
+    margin: 35px 0;
+    padding: 25px 0;
+    
+    h3 {
+      font-size: 20px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+      margin: 0 0 20px 0 !important;
+    }
+    
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      
+      .tech-tag {
+        background: #f0f0f0;
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid #ddd;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background: #e0e0e0;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+  
+  .project-content {
+    margin: 40px 0;
+    padding: 30px 0;
+    
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 40px !important;
+      margin-bottom: 20px !important;
+      
+      &:first-child {
+        margin-top: 0 !important;
+      }
+    }
+    
+    p {
+      margin-bottom: 25px !important;
+      line-height: 1.8 !important;
+      font-size: 16px !important;
+      color: #444 !important;
+    }
+  }
+  
+  .project-links {
+    margin: 40px 0;
+    padding: 30px 0;
+    border-top: 1px solid #e8e8e8;
+    
+    h3 {
+      font-size: 20px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+      margin: 0 0 25px 0 !important;
+    }
+    
+    .links-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      
+      .project-link-btn {
+        display: inline-flex;
+        align-items: center;
+        background: #333;
+        color: #fff !important;
+        padding: 12px 20px;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-weight: 500;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background: #555;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .link-icon {
+          margin-right: 8px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  
+  .project-navigation {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 2px solid #e8e8e8;
+    text-align: center;
+    
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      background: #f8f8f8;
+      color: #333 !important;
+      padding: 15px 25px;
+      border-radius: 6px;
+      text-decoration: none !important;
+      font-weight: 500;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      border: 1px solid #ddd;
+      
+      &:hover {
+        background: #e8e8e8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+    }
+  }
+}
+
+// Stili per pagine singolo progetto con header coerente
+.project-detail {
+  .page-header {
+    margin-top: 60px;
+    margin-bottom: 80px;
+    text-align: center;
+    padding: 30px 0;
+    
+    .page-title {
+      font-size: 32px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+      margin: 0 0 20px 0 !important;
+      line-height: 1.2;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .page-subtitle {
+      font-size: 18px !important;
+      color: #666 !important;
+      margin: 0 !important;
+      line-height: 1.5;
+      font-style: italic;
+      max-width: 600px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    
+    .post-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      font-size: 14px;
+      color: #666;
+      margin-top: 25px;
+      
+      span {
+        display: inline-flex;
+        align-items: center;
+        background: #f8f8f8;
+        padding: 8px 14px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+      
+      .category-tag {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-left: 4px;
+      }
     }
   }
 }

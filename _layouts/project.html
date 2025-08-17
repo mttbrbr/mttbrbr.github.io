@@ -1,0 +1,68 @@
+---
+layout: default
+---
+
+<div class="project-detail">
+    <header class="page-header">
+        <h1 class="page-title">{{ page.title | escape }}</h1>
+        {% if page.excerpt %}
+            <p class="page-subtitle">{{ page.excerpt }}</p>
+        {% endif %}
+    </header>
+
+    <section class="terminal-section">
+        <div class="terminal-header">
+            {{ page.title }} - Dettagli Progetto
+        </div>
+        <div class="terminal-content">
+            <div class="terminal-output">
+                <div class="project-info">
+                    <div class="project-metadata">
+                        {% if page.date %}
+                            <p><span class="meta-label">📅 Data:</span> {{ page.date | date: "%B %Y" }}</p>
+                        {% endif %}
+                        {% if page.type %}
+                            <p><span class="meta-label">🔧 Tipo:</span> {{ page.type | replace: "-", " " | capitalize }}</p>
+                        {% endif %}
+                        {% if page.status %}
+                            <p><span class="meta-label">🚀 Status:</span> <span class="status-badge status-{{ page.status }}">{{ page.status | capitalize }}</span></p>
+                        {% endif %}
+                    </div>
+                    
+                    {% if page.tech %}
+                        <div class="project-tech-section">
+                            <h3>🛠️ Tecnologie utilizzate</h3>
+                            <div class="tech-grid">
+                                {% for tech in page.tech %}
+                                    <span class="tech-tag">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="project-content">
+                    {{ content }}
+                </div>
+                
+                {% if page.links %}
+                    <div class="project-links">
+                        <h3>🔗 Links utili</h3>
+                        <div class="links-grid">
+                            {% for link in page.links %}
+                                <a href="{{ link[1] }}" class="project-link-btn" target="_blank">
+                                    <span class="link-icon">{% if link[0] == 'github' %}🐙{% elsif link[0] == 'demo' %}🌐{% elsif link[0] == 'report' %}📄{% else %}🔗{% endif %}</span>
+                                    {{ link[0] | capitalize }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="project-navigation">
+                    <a href="/progetti/" class="btn-back">← Torna ai Progetti</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -6,11 +6,14 @@ permalink: /blog/
 
 <div class="blog">
     <header class="page-header">
-        <h1 class="page-title"># Blog</h1>
+        <h1 class="page-title">{{ page.title | escape }}</h1>
         <p class="page-subtitle">Pensieri, tutorial e riflessioni sulla programmazione</p>
     </header>
 
-    <div class="posts-list">
+    <section class="terminal-section">
+        <div class="terminal-content">
+            <div class="terminal-output">
+                <div class="posts-list">
         {% for post in site.posts %}
             <article class="post-preview">
                 <div class="post-meta-line">
@@ -37,13 +40,16 @@ permalink: /blog/
                 {% endif %}
             </article>
         {% endfor %}
-    </div>
-    
-    {% if site.posts.size == 0 %}
-        <div class="no-posts">
-            <p>$ ls -la posts/</p>
-            <p>total 0</p>
-            <p class="empty-message">Nessun post trovato. Primi contenuti in arrivo...</p>
+                </div>
+                
+                {% if site.posts.size == 0 %}
+                    <div class="no-posts">
+                        <p>$ ls -la posts/</p>
+                        <p>total 0</p>
+                        <p class="empty-message">Nessun post trovato. Primi contenuti in arrivo...</p>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
+    </section>
 </div>
