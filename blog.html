@@ -13,7 +13,17 @@ permalink: /blog/
     <section class="terminal-section">
         <div class="terminal-content">
             <div class="terminal-output">
-                <div class="posts-list">
+                <!-- Sezione Filtri -->
+                <div class="filter-section">
+                    <div class="filter-label">Filtra per categoria</div>
+                    <div class="filter-controls">
+                        <div class="filter-tags" id="category-filters">
+                            <!-- I filtri verranno generati dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="posts-list" id="posts-container">
         {% for post in site.posts %}
             <article class="post-preview">
                 <div class="post-meta-line">
@@ -53,3 +63,220 @@ permalink: /blog/
         </div>
     </section>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dati dei post (generati da Jekyll)
+    const posts = [
+        {% for post in site.posts %}
+        {
+            title: {{ post.title | jsonify }},
+            excerpt: {{ post.excerpt | strip_html | jsonify }},
+            content: {{ post.content | strip_html | truncate: 500 | jsonify }},
+            categories: {{ post.categories | jsonify }},
+            tags: {{ post.tags | jsonify }},
+            date: {{ post.date | date: "%b %d %Y" | jsonify }},
+            url: {{ post.url | relative_url | jsonify }},
+            words: {{ post.content | number_of_words }},
+            element: null // sarà popolato dopo
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    ];
+    
+    // Elementi DOM
+    const categoryFilters = document.getElementById('category-filters');
+    const searchInfo = document.getElementById('posts-search-info');
+    const postsContainer = document.getElementById('posts-container');
+    
+    let activeFilters = new Set();
+    let allPosts = [];
+    
+    // Inizializza i post
+    function initPosts() {
+        const postElements = postsContainer.querySelectorAll('.post-preview');
+        posts.forEach((post, index) => {
+            if (postElements[index]) {
+                post.element = postElements[index];
+                allPosts.push(post);
+            }
+        });
+        
+        generateCategoryFilters();
+        updateSearchInfo();
+    }
+    
+    // Genera i filtri per categorie
+    function generateCategoryFilters() {
+        const categoryCount = {};
+        
+        posts.forEach(post => {
+            if (post.categories && post.categories.length > 0) {
+                post.categories.forEach(category => {
+                    categoryCount[category] = (categoryCount[category] || 0) + 1;
+                });
+            } else {
+                // Categoria di default
+                categoryCount['Generale'] = (categoryCount['Generale'] || 0) + 1;
+            }
+        });
+        
+        const sortedCategories = Object.keys(categoryCount).sort();
+        
+        sortedCategories.forEach(category => {
+            const filterTag = document.createElement('span');
+            filterTag.className = 'filter-tag';
+            filterTag.dataset.category = category;
+            filterTag.textContent = category;
+            
+            filterTag.addEventListener('click', function() {
+                toggleFilter(category, this);
+            });
+            
+            categoryFilters.appendChild(filterTag);
+        });
+    }
+    
+    // Toggle filtro
+    function toggleFilter(category, element) {
+        if (activeFilters.has(category)) {
+            activeFilters.delete(category);
+            element.classList.remove('active');
+        } else {
+            activeFilters.add(category);
+            element.classList.add('active');
+        }
+        
+        filterPosts();
+        updateSearchInfo();
+    }
+    
+    // Filtra post
+    function filterPosts() {
+        let visibleCount = 0;
+        
+        posts.forEach(post => {
+            if (!post.element) return;
+            
+            let matchesFilter = true;
+            
+            // Controllo filtri categorie
+            if (activeFilters.size > 0) {
+                if (!post.categories || post.categories.length === 0) {
+                    matchesFilter = activeFilters.has('Generale');
+                } else {
+                    matchesFilter = post.categories.some(category => activeFilters.has(category));
+                }
+            }
+            
+            // Mostra/nascondi post
+            if (matchesFilter) {
+                post.element.classList.remove('search-hidden');
+                visibleCount++;
+            } else {
+                post.element.classList.add('search-hidden');
+            }
+        });
+        
+        return visibleCount;
+    }
+    
+    // Evidenzia termine di ricerca
+    function highlightSearchTerm(element, term) {
+        removeHighlight(element);
+        
+        const walker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        const textNodes = [];
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.parentElement.classList && 
+                !node.parentElement.classList.contains('search-highlight')) {
+                textNodes.push(node);
+            }
+        }
+        
+        textNodes.forEach(textNode => {
+            const text = textNode.textContent;
+            const regex = new RegExp(`(${term})`, 'gi');
+            if (regex.test(text)) {
+                const highlightedHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+                const wrapper = document.createElement('span');
+                wrapper.innerHTML = highlightedHTML;
+                textNode.parentNode.replaceChild(wrapper, textNode);
+            }
+        });
+    }
+    
+    // Rimuovi evidenziazione
+    function removeHighlight(element) {
+        const highlights = element.querySelectorAll('.search-highlight');
+        highlights.forEach(highlight => {
+            const parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize();
+        });
+    }
+    
+    // Aggiorna info di ricerca
+    function updateSearchInfo() {
+        const visibleCount = filterPosts();
+        const totalCount = posts.length;
+        const hasActiveSearch = searchInput.value.trim() || activeFilters.size > 0;
+        
+        if (hasActiveSearch) {
+            searchInfo.style.display = 'block';
+            searchInfo.textContent = `${visibleCount} di ${totalCount} articoli`;
+            
+            if (visibleCount === 0) {
+                searchInfo.classList.add('no-results');
+                searchInfo.textContent = 'nessun articolo trovato';
+            } else {
+                searchInfo.classList.remove('no-results');
+            }
+        } else {
+            searchInfo.style.display = 'none';
+        }
+    }
+    
+    // Pulisci ricerca
+    function clearSearch() {
+        searchInput.value = '';
+        activeFilters.clear();
+        
+        // Rimuovi classe active dai filtri
+        document.querySelectorAll('.filter-tag.active').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // Rimuovi evidenziazioni e mostra tutti i post
+        posts.forEach(post => {
+            if (post.element) {
+                post.element.classList.remove('search-hidden');
+                removeHighlight(post.element);
+            }
+        });
+        
+        updateSearchInfo();
+    }
+    
+    // Event listeners
+    searchInput.addEventListener('input', () => {
+        filterPosts();
+        updateSearchInfo();
+    });
+    
+    clearBtn.addEventListener('click', clearSearch);
+    
+    // Inizializza quando il DOM è pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPosts);
+    } else {
+        initPosts();
+    }
+});
+</script>

@@ -12,8 +12,18 @@ permalink: /progetti/
 
     <section class="terminal-section">
         <div class="terminal-content">
-            <div class="terminal-output">                
-                <div class="projects-list">
+            <div class="terminal-output">
+                <!-- Sezione Filtri -->
+                <div class="filter-section">
+                    <div class="filter-label">Filtra per tecnologia</div>
+                    <div class="filter-controls">
+                        <div class="filter-tags" id="tech-filters">
+                            <!-- I filtri verranno generati dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="projects-list" id="projects-container">
                     {% if site.projects and site.projects.size > 0 %}
                         {% assign all_projects = site.projects | sort: "date" | reverse %}
                         {% for project in all_projects %}
@@ -64,3 +74,207 @@ permalink: /progetti/
         </div>
     </section>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Dati dei progetti (generati da Jekyll)
+    const projects = [
+        {% for project in site.projects %}
+        {
+            title: {{ project.title | jsonify }},
+            excerpt: {{ project.excerpt | strip_html | jsonify }},
+            tech: {{ project.tech | jsonify }},
+            date: {{ project.date | date: "%B %Y" | jsonify }},
+            status: {{ project.status | jsonify }},
+            type: {{ project.type | jsonify }},
+            url: {{ project.url | relative_url | jsonify }},
+            links: {{ project.links | jsonify }},
+            element: null // sarà popolato dopo
+        }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    ];
+    
+    // Elementi DOM
+    const techFilters = document.getElementById('tech-filters');
+    const searchInfo = document.getElementById('search-info');
+    const projectsContainer = document.getElementById('projects-container');
+    
+    let activeFilters = new Set();
+    let allProjects = [];
+    
+    // Inizializza i progetti
+    function initProjects() {
+        const projectElements = projectsContainer.querySelectorAll('.project-block');
+        projects.forEach((project, index) => {
+            if (projectElements[index]) {
+                project.element = projectElements[index];
+                allProjects.push(project);
+            }
+        });
+        
+        generateTechFilters();
+        updateSearchInfo();
+    }
+    
+    // Genera i filtri per tecnologie
+    function generateTechFilters() {
+        const techCount = {};
+        
+        projects.forEach(project => {
+            if (project.tech) {
+                project.tech.forEach(tech => {
+                    techCount[tech] = (techCount[tech] || 0) + 1;
+                });
+            }
+        });
+        
+        const sortedTechs = Object.keys(techCount).sort();
+        
+        sortedTechs.forEach(tech => {
+            const filterTag = document.createElement('span');
+            filterTag.className = 'filter-tag';
+            filterTag.dataset.tech = tech;
+            filterTag.textContent = tech;
+            
+            filterTag.addEventListener('click', function() {
+                toggleFilter(tech, this);
+            });
+            
+            techFilters.appendChild(filterTag);
+        });
+    }
+    
+    // Toggle filtro
+    function toggleFilter(tech, element) {
+        if (activeFilters.has(tech)) {
+            activeFilters.delete(tech);
+            element.classList.remove('active');
+        } else {
+            activeFilters.add(tech);
+            element.classList.add('active');
+        }
+        
+        filterProjects();
+        updateSearchInfo();
+    }
+    
+    // Filtra progetti
+    function filterProjects() {
+        let visibleCount = 0;
+        
+        projects.forEach(project => {
+            if (!project.element) return;
+            
+            let matchesFilter = true;
+            
+            // Controllo filtri tecnologie
+            if (activeFilters.size > 0) {
+                if (!project.tech) {
+                    matchesFilter = false;
+                } else {
+                    matchesFilter = project.tech.some(tech => activeFilters.has(tech));
+                }
+            }
+            
+            // Mostra/nascondi progetto
+            if (matchesFilter) {
+                project.element.classList.remove('search-hidden');
+                visibleCount++;
+            } else {
+                project.element.classList.add('search-hidden');
+            }
+        });
+        
+        return visibleCount;
+    }
+    
+    // Evidenzia termine di ricerca
+    function highlightSearchTerm(element, term) {
+        removeHighlight(element);
+        
+        const walker = document.createTreeWalker(
+            element,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+        
+        const textNodes = [];
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.parentElement.classList && 
+                !node.parentElement.classList.contains('search-highlight')) {
+                textNodes.push(node);
+            }
+        }
+        
+        textNodes.forEach(textNode => {
+            const text = textNode.textContent;
+            const regex = new RegExp(`(${term})`, 'gi');
+            if (regex.test(text)) {
+                const highlightedHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
+                const wrapper = document.createElement('span');
+                wrapper.innerHTML = highlightedHTML;
+                textNode.parentNode.replaceChild(wrapper, textNode);
+            }
+        });
+    }
+    
+    // Rimuovi evidenziazione
+    function removeHighlight(element) {
+        const highlights = element.querySelectorAll('.search-highlight');
+        highlights.forEach(highlight => {
+            const parent = highlight.parentNode;
+            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+            parent.normalize();
+        });
+    }
+    
+    // Aggiorna info di ricerca
+    function updateSearchInfo() {
+        const visibleCount = filterProjects();
+        const totalCount = projects.length;
+        const hasFilters = activeFilters.size > 0;
+        
+        if (hasFilters) {
+            searchInfo.style.display = 'block';
+            searchInfo.textContent = `${visibleCount} di ${totalCount} progetti`;
+            
+            if (visibleCount === 0) {
+                searchInfo.classList.add('no-results');
+                searchInfo.textContent = 'nessun progetto trovato';
+            } else {
+                searchInfo.classList.remove('no-results');
+            }
+        } else {
+            searchInfo.style.display = 'none';
+        }
+    }
+    
+    // Pulisci filtri
+    function clearSearch() {
+        activeFilters.clear();
+        
+        // Rimuovi classe active dai filtri
+        document.querySelectorAll('.filter-tag.active').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // Mostra tutti i progetti
+        projects.forEach(project => {
+            if (project.element) {
+                project.element.classList.remove('search-hidden');
+            }
+        });
+        
+        updateSearchInfo();
+    }
+    
+    // Inizializza quando il DOM è pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProjects);
+    } else {
+        initProjects();
+    }
+});
+</script>

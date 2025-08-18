@@ -1279,8 +1279,33 @@ blockquote {
 
 // Sezioni specifiche del progetto con padding e margini ottimizzati
 .project-detail {
+  // Intestazione del progetto con larghezza limitata
+  .project-header {
+    max-width: 800px;
+    margin: 0 auto 60px auto;
+    padding: 30px 0;
+    text-align: center;
+    
+    .project-title {
+      font-size: 28px !important;
+      font-weight: 600 !important;
+      color: #333 !important;
+      margin: 0 0 15px 0 !important;
+      line-height: 1.2;
+    }
+    
+    .project-subtitle {
+      color: #666 !important;
+      font-size: 16px;
+      margin: 0 0 25px 0;
+      font-style: italic;
+      line-height: 1.5;
+    }
+  }
+  
   .project-metadata {
-    margin: 30px 0;
+    max-width: 800px;
+    margin: 30px auto;
     padding: 25px 0;
     border-bottom: 1px solid #e8e8e8;
     
@@ -1320,7 +1345,8 @@ blockquote {
   }
   
   .project-tech-section {
-    margin: 35px 0;
+    max-width: 800px;
+    margin: 35px auto;
     padding: 25px 0;
     
     h3 {
@@ -1354,7 +1380,8 @@ blockquote {
   }
   
   .project-content {
-    margin: 40px 0;
+    max-width: 800px;
+    margin: 40px auto;
     padding: 30px 0;
     
     h1, h2, h3, h4, h5, h6 {
@@ -1375,7 +1402,8 @@ blockquote {
   }
   
   .project-links {
-    margin: 40px 0;
+    max-width: 800px;
+    margin: 40px auto;
     padding: 30px 0;
     border-top: 1px solid #e8e8e8;
     
@@ -1418,7 +1446,8 @@ blockquote {
   }
   
   .project-navigation {
-    margin-top: 50px;
+    max-width: 800px;
+    margin: 50px auto 0 auto;
     padding-top: 40px;
     border-top: 2px solid #e8e8e8;
     text-align: center;
@@ -1445,61 +1474,146 @@ blockquote {
   }
 }
 
-// Stili per pagine singolo progetto con header coerente
-.project-detail {
-  .page-header {
-    margin-top: 60px;
-    margin-bottom: 80px;
-    text-align: center;
-    padding: 30px 0;
-    
-    .page-title {
-      font-size: 32px !important;
-      font-weight: 600 !important;
-      color: #333 !important;
-      margin: 0 0 20px 0 !important;
-      line-height: 1.2;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .page-subtitle {
-      font-size: 18px !important;
-      color: #666 !important;
-      margin: 0 !important;
-      line-height: 1.5;
-      font-style: italic;
-      max-width: 600px;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-    
-    .post-meta {
+// Fix specifico per centrare SOLO i titoli delle pagine di dettaglio progetto e post
+.project-detail > .page-header,
+.post-detail > .page-header {
+  max-width: 800px !important;
+  margin: 60px auto 60px auto !important;
+  padding: 30px 0 !important;
+  text-align: center !important;
+}
+
+// Stili per filtri - Solo tag/categorie (design migliorato)
+.filter-section {
+  margin-bottom: 40px;
+  padding: 20px 0;
+  background: transparent;
+  border: none;
+  
+  .filter-controls {
+    .filter-tags {
       display: flex;
       flex-wrap: wrap;
+      gap: 12px;
       justify-content: center;
-      gap: 20px;
-      font-size: 14px;
-      color: #666;
-      margin-top: 25px;
       
-      span {
-        display: inline-flex;
-        align-items: center;
-        background: #f8f8f8;
-        padding: 8px 14px;
-        border-radius: 4px;
-        font-weight: 500;
+      .filter-tag {
+        padding: 10px 18px !important;
+        background: #f8f8f8 !important;
+        color: #444 !important;
+        border: 2px solid #e0e0e0 !important;
+        border-radius: 25px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
+        cursor: pointer !important;
+        line-height: 1.2 !important;
+        display: inline-block !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease !important;
+        min-width: 80px;
+        text-align: center;
+        position: relative;
+        
+        // Reset cross-browser
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        outline: none !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+        
+        &::before {
+          content: "#";
+          color: #999;
+          margin-right: 4px;
+          font-weight: 400;
+        }
+        
+        &.active {
+          background: #333 !important;
+          color: #fff !important;
+          border-color: #333 !important;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+          
+          &::before {
+            color: #ccc;
+          }
+        }
+        
+        &:hover {
+          background: #e8e8e8 !important;
+          border-color: #ccc !important;
+          transform: translateY(-1px);
+          box-shadow: 0 3px 8px rgba(0,0,0,0.1) !important;
+          
+          &.active {
+            background: #555 !important;
+            border-color: #555 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+          }
+        }
+        
+        &:focus {
+          outline: none !important;
+          box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1) !important;
+        }
+        
+        &:active {
+          transform: translateY(0);
+        }
       }
+    }
+  }
+  
+  // Aggiunta di un'etichetta per i filtri
+  .filter-label {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #666 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
+    
+    &::before {
+      content: "✦ ";
+      color: #999;
+      margin-right: 5px;
+    }
+  }
+  
+  // Mobile
+  @media (max-width: 768px) {
+    padding: 15px 0;
+    
+    .filter-controls .filter-tags {
+      gap: 8px;
+      justify-content: flex-start;
       
-      .category-tag {
-        background: #e3f2fd;
-        color: #1976d2;
-        padding: 4px 8px;
-        border-radius: 3px;
-        font-size: 12px;
-        margin-left: 4px;
+      .filter-tag {
+        font-size: 13px !important;
+        padding: 8px 14px !important;
+        min-width: 70px;
+      }
+    }
+    
+    .filter-label {
+      font-size: 12px !important;
+      margin-bottom: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .filter-controls .filter-tags {
+      gap: 6px;
+      
+      .filter-tag {
+        font-size: 12px !important;
+        padding: 6px 12px !important;
+        min-width: 60px;
       }
     }
   }
