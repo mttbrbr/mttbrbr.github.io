@@ -2126,3 +2126,150 @@ body:not(.light-theme) .site-footer a {
 .page-title {
   color: var(--text-primary) !important;
 }
+
+/* Miglioramento leggibilità: titolo Progetti */
+.projects .page-title,
+.progetti .page-title,
+#projects-title,
+.project-listing h1,
+.project-card h3 {
+  color: var(--title-color, var(--text));
+  font-weight: 700;
+  font-size: 2.1rem; /* più evidente su desktop */
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.25); /* leggero rilievo su sfondi chiari */
+}
+
+/* Shadow adattata per tema scuro (se il tema usa data-theme="dark") */
+[data-theme="dark"] .projects .page-title,
+[data-theme="dark"] .progetti .page-title,
+[data-theme="dark"] .project-listing h1,
+[data-theme="dark"] .project-card h3 {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* Mobile: riduci leggermente la dimensione per schermi piccoli */
+@media (max-width: 600px) {
+  .projects .page-title,
+  .progetti .page-title,
+  #projects-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FORZA COLORI CHIARI NEL TEMA SCURO
+   Regole finali che sovrascrivono i colori hardcoded per garantire leggibilità
+   in tutte le pagine quando il sito NON usa la classe .light-theme oppure
+   quando è presente [data-theme="dark"]. Usano le variabili di tema definite
+   in alto (--text-primary, --muted, --muted-2, --link-color, --link-hover).
+   --------------------------------------------------------------------------- */
+
+/* Elementi testuali principali */
+body:not(.light-theme),
+[data-theme="dark"] {
+  background: var(--background) !important;
+  color: var(--text-primary) !important;
+}
+
+body:not(.light-theme) h1,
+body:not(.light-theme) h2,
+body:not(.light-theme) h3,
+body:not(.light-theme) h4,
+body:not(.light-theme) h5,
+body:not(.light-theme) h6,
+body:not(.light-theme) p,
+body:not(.light-theme) li,
+body:not(.light-theme) span,
+body:not(.light-theme) strong,
+body:not(.light-theme) em,
+body:not(.light-theme) small,
+body:not(.light-theme) blockquote,
+body:not(.light-theme) code {
+  color: var(--text-primary) !important;
+}
+
+/* Testo secondario / descrizioni */
+body:not(.light-theme) .page-subtitle,
+body:not(.light-theme) .post-excerpt,
+body:not(.light-theme) .project-description,
+body:not(.light-theme) .profile-details p,
+body:not(.light-theme) .terminal-output > p,
+body:not(.light-theme) .site-footer p,
+body:not(.light-theme) .footer-bottom p,
+body:not(.light-theme) .contact-list li,
+body:not(.light-theme) .project-block .project-meta .project-date,
+body:not(.light-theme) .project-block .project-tech .tech-tag,
+body:not(.light-theme) .skills-grid .skill-category h3 {
+  color: var(--muted) !important;
+}
+
+/* Link e navigazione */
+body:not(.light-theme) a,
+body:not(.light-theme) .site-nav .page-link,
+body:not(.light-theme) .site-nav a,
+body:not(.light-theme) .project-title a,
+body:not(.light-theme) .post-title a {
+  color: var(--link-color) !important;
+  text-decoration: none !important;
+}
+
+body:not(.light-theme) a:hover,
+body:not(.light-theme) .site-nav .page-link:hover,
+body:not(.light-theme) .project-title a:hover,
+body:not(.light-theme) .post-title a:hover {
+  color: var(--link-hover) !important;
+}
+
+/* Titoli/Intestazioni della pagina (es. "Progetti") */
+body:not(.light-theme) .page-header .page-title,
+body:not(.light-theme) .projects .page-title,
+body:not(.light-theme) .page-title {
+  color: var(--text-primary) !important;
+}
+
+/* Bottoni e azioni */
+body:not(.light-theme) .btn-view {
+  background: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-color) !important;
+  border: none !important;
+}
+
+body:not(.light-theme) .btn-link,
+body:not(.light-theme) .project-actions .btn-link {
+  color: var(--btn-secondary-color) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+
+/* Footer */
+body:not(.light-theme) .site-footer,
+body:not(.light-theme) .site-footer a,
+body:not(.light-theme) .site-footer p {
+  color: var(--text-secondary) !important;
+}
+
+/* Card / terminal / metadati */
+body:not(.light-theme) .projects .projects-list .project-block,
+body:not(.light-theme) .terminal-section .terminal-content {
+  background: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 2px 8px var(--card-shadow) !important;
+}
+
+/* Forza contrasto per badge e status */
+body:not(.light-theme) .project-status,
+body:not(.light-theme) .status-badge {
+  color: var(--text-primary) !important;
+}
+
+/* Gestione specifica per elementi rimanenti con colori hardcoded */
+/* Se trovi altri elementi ancora scuri, indicami la classe o invia screenshot */
+
+/* Fine forzatura tema scuro */
