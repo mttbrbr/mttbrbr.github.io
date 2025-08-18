@@ -1,0 +1,152 @@
+---
+layout: default
+---
+
+
+<style>
+    :root {
+        --hex-green-1: #00ff88;
+        --background: #0a0a0a;
+        --text-primary: #ffffff;
+        --accent-blue: #64c8ff;
+    }
+    body.light-theme {
+        --background: #f7f7f7;
+        --text-primary: #222222;
+        --accent-blue: #0077ff;
+        --hex-green-1: #00c96b;
+    /* rimosso graffa in eccesso */
+    }
+    body {
+        background: var(--background);
+        color: var(--text-primary);
+        font-family: 'Courier New', monospace;
+        overflow: hidden;
+        perspective: 1000px;
+        transition: background 0.3s, color 0.3s;
+    }
+    #cfd-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.3;
+    }
+    .container {
+        position: relative;
+        z-index: 10;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        perspective: 2000px;
+    }
+    .hero-title {
+        font-size: clamp(3rem, 8vw, 8rem);
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+        transform-style: preserve-3d;
+        position: relative;
+        letter-spacing: 0.05em;
+        /* nessuna ombra, nessun filtro */
+    }
+    .hero-title .word {
+        display: inline-block;
+        margin: 0 1rem;
+        transform-style: preserve-3d;
+        position: relative;
+        /* nessun overflow, nessun clip */
+    }
+    .hero-title .letter {
+        display: inline-block;
+        transform-style: preserve-3d;
+        position: relative;
+        font-size: 1em;
+        padding: 0 0.1em;
+        transition: none;
+    }
+    .accessible-clone {
+        opacity: 0;
+        position: absolute;
+        color: var(--hex-green-1);
+        left: 50%;
+        top: 50%;
+        outline: none;
+        transform-style: preserve-3d;
+        z-index: 2;
+        pointer-events: none;
+        transform: translate(-120%, -50%); /* sposta la verde a sinistra */
+        text-align: center;
+        width: max-content;
+        height: auto;
+        font-size: inherit;
+    }
+    .control-button {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--hex-green-1);
+        color: var(--background);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 0.5rem;
+        font-family: inherit;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 100;
+        transition: all 0.3s ease;
+    }
+    .control-button:hover {
+        background: var(--accent-blue);
+        transform: scale(1.05);
+    }
+    .hero-subtitle {
+        font-size: 1.5rem;
+        opacity: 0;
+        transform: translateY(30px);
+        color: var(--accent-blue);
+        text-align: center;
+        letter-spacing: 0.1em;
+    }
+    .stats {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        font-size: 0.8rem;
+        color: var(--hex-green-1);
+        z-index: 100;
+        font-family: 'Courier New', monospace;
+    }
+</style>
+
+<!-- ...nessun canvas, nessuna stats... -->
+
+    <div class="container">
+        <h1 class="hero-title" id="main-title">
+            <span class="word"><span class="letter">M</span><span class="letter">y</span></span>
+            <span class="word"><span class="letter">S</span><span class="letter">p</span><span class="letter">a</span><span class="letter">c</span><span class="letter">e</span></span>
+        </h1>
+    </div>
+
+<!-- ...nessun pulsante toggle... -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const letters = document.querySelectorAll('.hero-title .letter');
+    anime({
+        targets: letters,
+        opacity: [0, 1],
+        translateY: [40, 0],
+        duration: 700,
+        delay: anime.stagger(100, {start: 300}),
+        easing: 'easeOutCubic'
+    });
+
+    // ...gestione tema demandata al footer...
+});
+</script>

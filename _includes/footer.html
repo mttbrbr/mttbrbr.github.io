@@ -42,4 +42,27 @@
             <p>{{ 'now' | date: "%Y" }} {{ site.title }} - All rights reserved | Built with Jekyll</p>
         </div>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        // Persist theme in localStorage
+        function setTheme(light) {
+            document.body.classList.toggle('light-theme', light);
+            themeToggle.textContent = light ? '🌞 Tema' : '🌙 Tema';
+            localStorage.setItem('theme', light ? 'light' : 'dark');
+        }
+        // On load, apply saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            setTheme(true);
+        } else if (savedTheme === 'dark') {
+            setTheme(false);
+        }
+        themeToggle.addEventListener('click', function() {
+            setTheme(!document.body.classList.contains('light-theme'));
+        });
+    }
+});
+</script>
 </footer>
