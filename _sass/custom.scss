@@ -1105,13 +1105,13 @@ blockquote {
     .page-title {
       font-size: 28px !important;
       font-weight: 600 !important;
-      color: #333 !important;
+      color: var(--text-primary) !important; /* sostituito */
       margin: 0 0 15px 0 !important;
       line-height: 1.2;
     }
     
     .page-subtitle {
-      color: #666 !important;
+      color: var(--muted) !important; /* sostituito */
       font-size: 16px;
       margin: 0;
       font-style: italic;
@@ -1124,8 +1124,8 @@ blockquote {
     padding: 20px 0;
     
     .terminal-header {
-      background: #333;
-      color: #fff;
+      background: var(--panel) !important; /* sostituito */
+      color: var(--text-primary) !important; /* sostituito */
       padding: 12px 20px;
       font-size: 14px;
       font-weight: 500;
@@ -1134,11 +1134,12 @@ blockquote {
     }
     
     .terminal-content {
-      background: #f8f8f8;
-      border: 1px solid #e1e1e1;
+      background: var(--terminal-bg) !important; /* sostituito */
+      border: 1px solid var(--border) !important; /* sostituito */
       border-top: none;
       border-radius: 0 0 4px 4px;
       padding: 30px;
+      color: var(--text-primary) !important;
     }
     
     .terminal-output {
@@ -1146,7 +1147,7 @@ blockquote {
       
       > p {
         margin: 0 0 20px 0 !important;
-        color: #666 !important;
+        color: var(--muted) !important; /* sostituito */
         font-size: 15px !important;
         line-height: 1.7 !important;
       }
@@ -1166,7 +1167,7 @@ blockquote {
         height: 80px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #ddd;
+        border: 2px solid var(--border) !important; /* sostituito */
         display: block;
       }
     }
@@ -1177,7 +1178,7 @@ blockquote {
       .profile-name {
         font-size: 28px !important;
         font-weight: 600 !important;
-        color: #333 !important;
+        color: var(--text-primary) !important; /* sostituito */
         margin: 0 0 10px 0 !important;
         line-height: 1.2;
       }
@@ -1188,11 +1189,11 @@ blockquote {
         p {
           margin: 0 0 6px 0 !important;
           font-size: 15px !important;
-          color: #666 !important;
+          color: var(--muted) !important; /* sostituito */
           line-height: 1.4;
           
           &.profile-field {
-            color: #555 !important;
+            color: var(--text-secondary) !important; /* sostituito */
             font-weight: 500 !important;
           }
         }
@@ -1202,7 +1203,7 @@ blockquote {
         p {
           margin: 0 0 12px 0 !important;
           font-size: 15px !important;
-          color: #555 !important;
+          color: var(--muted-2) !important; /* sostituito */
           line-height: 1.6;
           
           &:last-child {
@@ -1222,7 +1223,7 @@ blockquote {
       h3 {
         font-size: 15px !important;
         font-weight: 600 !important;
-        color: #333 !important;
+        color: var(--text-primary) !important; /* sostituito */
         margin: 0 0 8px 0 !important;
       }
       
@@ -1950,113 +1951,178 @@ blockquote {
   }
 }
 
-/* Theme variables e regole globali per supportare light/dark su tutte le pagine */
+/* Theme variables coerenti e regole base */
 :root {
-  --hex-green-1: #00ff88;
   --background: #0a0a0a;
-  --text-primary: #ffffff;
+  --surface: #0f0f0f;
+  --panel: #121212;
+  --text-primary: #f5f7f8; /* resa più chiara rispetto al bianco pieno */
+  --text-secondary: #e1e1e1; /* leggermente più chiaro */
+  --muted: #bfbfbf; /* più leggibile per elementi secondari */
+  --muted-2: #9f9f9f; /* per sottotitoli e descrizioni */
   --accent-blue: #64c8ff;
-  --surface: #0f0f0f; /* card / panel background */
-  --muted: #999999;   /* secondary text */
-  --muted-2: #666666; /* headings / less prominent */
-  --border: #222222;  /* thin borders */
-  --meta-bg: rgba(255,255,255,0.03);
+  --accent: var(--accent-blue);
+  --hex-green-1: #00ff88;
+  --border: #222222;
+  --meta-bg: rgba(255,255,255,0.04);
   --btn-primary-bg: #333333;
   --btn-primary-color: #ffffff;
-  --btn-secondary-color: #666666;
+  --btn-secondary-color: #bfbfbf;
+  --link-color: #e8e8e8; /* link più visibili */
+  --link-hover: #ffffff;
+  --terminal-bg: #0b0b0b;
+  --card-shadow: rgba(0,0,0,0.30);
 }
 
 body {
-  /* Colori controllati dalle variabili per consentire il toggle globale */
   background: var(--background) !important;
   color: var(--text-primary) !important;
-  transition: background 0.25s, color 0.25s;
+  transition: background 0.3s, color 0.3s;
 }
 
 body.light-theme {
   --background: #f7f7f7;
-  --text-primary: #222222;
   --surface: #ffffff;
+  --panel: #fafafa;
+  --text-primary: #111111;
+  --text-secondary: #444444;
   --muted: #666666;
-  --muted-2: #444444;
+  --muted-2: #888888;
+  --accent-blue: #0077ff;
+  --accent: var(--accent-blue);
+  --hex-green-1: #00c96b;
   --border: #e8e8e8;
   --meta-bg: #f5f5f5;
   --btn-primary-bg: #333333;
   --btn-primary-color: #ffffff;
   --btn-secondary-color: #666666;
+  --link-color: #333333;
+  --link-hover: var(--accent-blue);
+  --terminal-bg: #ffffff;
+  --card-shadow: rgba(0,0,0,0.06);
 }
 
-/* Apply variables to common components so toggle is global */
-
-/* Headings and main text */
-h1, h2, h3, h4, h5, h6, .page-heading {
-  color: var(--text-primary) !important;
-}
-
-p, li, .post-excerpt, .contact-list li, .footer-bottom p {
-  color: var(--muted) !important;
-}
-
-/* Links and navigation */
-a, a:visited {
-  color: var(--accent-blue) !important;
-}
-
-.site-nav .page-link {
-  color: var(--muted-2) !important;
+/* Forzo alcuni componenti a usare le variabili, così il toggle influisce ovunque */
+.site-nav .page-link, .site-nav a {
+  color: var(--link-color) !important;
 }
 .site-nav .page-link:hover {
-  color: var(--text-primary) !important;
+  color: var(--link-hover) !important;
 }
 
-/* Header */
-.site-header {
-  background: transparent !important;
-  color: var(--text-primary) !important;
-}
-
-.site-header .site-title {
-  color: var(--text-primary) !important;
-}
-
-/* Terminal / card sections */
-.terminal-content {
-  background: var(--surface) !important;
+.terminal-section .terminal-content {
+  background: var(--terminal-bg) !important;
   border-color: var(--border) !important;
   color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px var(--card-shadow);
 }
 
-.terminal-header {
-  background: var(--muted-2) !important;
-  color: var(--surface) !important;
-}
-
-/* Footer */
-.site-footer {
-  background: transparent !important;
-  color: var(--muted) !important;
-}
-
-.footer-bottom p {
-  color: var(--muted) !important;
-}
-
-/* Buttons / accent */
-.control-button, #theme-toggle {
-  background: var(--hex-green-1) !important;
-  color: var(--background) !important;
-}
-
-/* Code blocks and pre */
-pre, code {
+.projects .projects-list .project-block {
   background: var(--surface) !important;
-  color: var(--text-primary) !important;
-  border-color: var(--border) !important;
-}
-
-/* Ensure forms/inputs follow theme if any */
-input, textarea, select {
-  background: var(--surface) !important;
-  color: var(--text-primary) !important;
   border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 6px var(--card-shadow);
+  color: var(--text-primary) !important;
+}
+
+.projects .projects-list .project-block .project-description {
+  color: var(--muted-2) !important;
+}
+
+.site-footer .footer-bottom p {
+  color: var(--muted) !important;
+}
+
+/* Assicuro che i link principali usino il colore di tema */
+a, .page-link {
+  color: var(--link-color) !important;
+}
+a:hover, .page-link:hover {
+  color: var(--link-hover) !important;
+}
+
+/* Migliora la leggibilità nel tema scuro: forzo testi e componenti a usare le variabili di colore */
+body:not(.light-theme) {
+  color: var(--text-primary) !important;
+}
+
+body:not(.light-theme) h1,
+body:not(.light-theme) h2,
+body:not(.light-theme) h3,
+body:not(.light-theme) h4,
+body:not(.light-theme) h5,
+body:not(.light-theme) h6 {
+  color: var(--text-primary) !important;
+}
+
+body:not(.light-theme) p,
+body:not(.light-theme) li,
+body:not(.light-theme) .post-excerpt,
+body:not(.light-theme) .project-description,
+body:not(.light-theme) .profile-details p,
+body:not(.light-theme) .terminal-section .terminal-content,
+body:not(.light-theme) .site-footer,
+body:not(.light-theme) .footer-bottom p,
+body:not(.light-theme) .contact-list li {
+  color: var(--text-secondary) !important;
+}
+
+/* Link e nav */
+body:not(.light-theme) .site-nav .page-link,
+body:not(.light-theme) a,
+body:not(.light-theme) .page-link,
+body:not(.light-theme) .project-title a {
+  color: var(--link-color) !important;
+}
+body:not(.light-theme) a:hover,
+body:not(.light-theme) .page-link:hover,
+body:not(.light-theme) .project-title a:hover {
+  color: var(--link-hover) !important;
+}
+
+/* Projects specific */
+body:not(.light-theme) .projects .projects-list .project-block {
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+  background: var(--surface) !important;
+}
+body:not(.light-theme) .projects .projects-list .project-block .project-description {
+  color: var(--muted-2) !important;
+}
+body:not(.light-theme) .projects .projects-list .project-block .project-meta .project-date {
+  color: var(--muted) !important;
+}
+body:not(.light-theme) .projects .projects-list .project-block .project-actions .btn-link {
+  color: var(--btn-secondary-color) !important;
+  border-color: var(--border) !important;
+}
+body:not(.light-theme) .projects .projects-list .project-block .project-actions .btn-view {
+  color: var(--btn-primary-color) !important;
+  background: var(--btn-primary-bg) !important;
+}
+
+/* Header / footer */
+body:not(.light-theme) .site-header .site-nav .page-link {
+  color: var(--link-color) !important;
+}
+body:not(.light-theme) .site-footer,
+body:not(.light-theme) .site-footer p,
+body:not(.light-theme) .site-footer a {
+  color: var(--text-secondary) !important;
+}
+
+/* Titoli coerenti per Projects e Blog (usano --text-primary per essere chiari in entrambi i temi) */
+.projects .projects-list .project-block .project-header .project-title,
+.projects .projects-list .project-block .project-header .project-title a {
+  color: var(--text-primary) !important;
+}
+
+.blog .page-header .page-title,
+.blog .posts-list .post-preview .post-title,
+.blog .page-header .page-subtitle {
+  color: var(--text-primary) !important;
+}
+
+/* fallback: tutti i page-title principali */
+.page-title {
+  color: var(--text-primary) !important;
 }
