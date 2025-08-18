@@ -1026,6 +1026,75 @@ blockquote {
   }
 }
 
+/* Projects: usare le variabili di tema per supportare light/dark */
+.projects {
+  .projects-list {
+    .project-block {
+      background: var(--surface) !important; /* card background */
+      border: 1px solid var(--border) !important;
+      color: var(--text-primary) !important;
+      border-radius: 6px;
+      padding: 20px !important;
+      margin-bottom: 24px !important;
+      transition: background 0.25s, color 0.25s, transform 0.2s;
+    }
+
+    .project-block:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+
+    .project-block .project-header {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border) !important;
+    }
+
+    .project-block .project-header .project-title {
+      color: var(--text-primary) !important;
+    }
+
+    .project-block .project-header .project-title a {
+      color: var(--text-primary) !important;
+      text-decoration: none !important;
+    }
+
+    .project-block .project-description {
+      color: var(--muted-2) !important;
+    }
+
+    .project-block .project-meta .project-date {
+      background: var(--meta-bg) !important;
+      color: var(--muted) !important;
+    }
+
+    .project-block .project-meta .project-status {
+      color: var(--text-primary) !important;
+    }
+
+    .project-block .project-tech .tech-tag {
+      background: var(--meta-bg) !important;
+      color: var(--muted-2) !important;
+      border: 1px solid var(--border) !important;
+    }
+
+    .project-block .project-actions {
+      .btn-view {
+        background: var(--btn-primary-bg) !important;
+        color: var(--btn-primary-color) !important;
+        border: none !important;
+      }
+
+      .btn-link {
+        background: transparent !important;
+        color: var(--btn-secondary-color) !important;
+        border: 1px solid var(--border) !important;
+      }
+    }
+  }
+}
+
+// About
 .about {
   .page-header {
     margin-top: 60px;
@@ -1879,4 +1948,115 @@ blockquote {
       }
     }
   }
+}
+
+/* Theme variables e regole globali per supportare light/dark su tutte le pagine */
+:root {
+  --hex-green-1: #00ff88;
+  --background: #0a0a0a;
+  --text-primary: #ffffff;
+  --accent-blue: #64c8ff;
+  --surface: #0f0f0f; /* card / panel background */
+  --muted: #999999;   /* secondary text */
+  --muted-2: #666666; /* headings / less prominent */
+  --border: #222222;  /* thin borders */
+  --meta-bg: rgba(255,255,255,0.03);
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #666666;
+}
+
+body {
+  /* Colori controllati dalle variabili per consentire il toggle globale */
+  background: var(--background) !important;
+  color: var(--text-primary) !important;
+  transition: background 0.25s, color 0.25s;
+}
+
+body.light-theme {
+  --background: #f7f7f7;
+  --text-primary: #222222;
+  --surface: #ffffff;
+  --muted: #666666;
+  --muted-2: #444444;
+  --border: #e8e8e8;
+  --meta-bg: #f5f5f5;
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #666666;
+}
+
+/* Apply variables to common components so toggle is global */
+
+/* Headings and main text */
+h1, h2, h3, h4, h5, h6, .page-heading {
+  color: var(--text-primary) !important;
+}
+
+p, li, .post-excerpt, .contact-list li, .footer-bottom p {
+  color: var(--muted) !important;
+}
+
+/* Links and navigation */
+a, a:visited {
+  color: var(--accent-blue) !important;
+}
+
+.site-nav .page-link {
+  color: var(--muted-2) !important;
+}
+.site-nav .page-link:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Header */
+.site-header {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+}
+
+.site-header .site-title {
+  color: var(--text-primary) !important;
+}
+
+/* Terminal / card sections */
+.terminal-content {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+.terminal-header {
+  background: var(--muted-2) !important;
+  color: var(--surface) !important;
+}
+
+/* Footer */
+.site-footer {
+  background: transparent !important;
+  color: var(--muted) !important;
+}
+
+.footer-bottom p {
+  color: var(--muted) !important;
+}
+
+/* Buttons / accent */
+.control-button, #theme-toggle {
+  background: var(--hex-green-1) !important;
+  color: var(--background) !important;
+}
+
+/* Code blocks and pre */
+pre, code {
+  background: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+/* Ensure forms/inputs follow theme if any */
+input, textarea, select {
+  background: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
 }
