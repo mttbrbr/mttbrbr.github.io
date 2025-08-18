@@ -1355,7 +1355,7 @@ blockquote {
     margin: 0 auto 60px auto;
     padding: 30px 0;
     text-align: center;
-    
+
     .project-title {
       font-size: 28px !important;
       font-weight: 600 !important;
@@ -1363,7 +1363,7 @@ blockquote {
       margin: 0 0 15px 0 !important;
       line-height: 1.2;
     }
-    
+
     .project-subtitle {
       color: #666 !important;
       font-size: 16px;
@@ -1544,7 +1544,7 @@ blockquote {
   }
 }
 
-// Fix specifico per centrare SOLO i titoli delle pagine di dettaglio progetto e post
+// Fix specific per centrare SOLO i titoli delle pagine di dettaglio progetto e post
 .project-detail > .page-header,
 .post-detail > .page-header {
   max-width: 800px !important;
@@ -1557,21 +1557,22 @@ blockquote {
 .filter-section {
   margin-bottom: 40px;
   padding: 20px 0;
-  background: transparent;
+  background: transparent; /* nessun rettangolo bianco */
   border: none;
-  
+
   .filter-controls {
     .filter-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       justify-content: center;
-      
+
+      /* Uso variabili tema: rendi i tag trasparenti, con bordo e background leggero al hover */
       .filter-tag {
         padding: 10px 18px !important;
-        background: #f8f8f8 !important;
-        color: #444 !important;
-        border: 2px solid #e0e0e0 !important;
+        background: transparent !important; /* rimosso il rettangolo bianco */
+        color: var(--link-color) !important;
+        border: 1px solid var(--border) !important;
         border-radius: 25px !important;
         font-size: 14px !important;
         font-weight: 500 !important;
@@ -1580,106 +1581,92 @@ blockquote {
         line-height: 1.2 !important;
         display: inline-block !important;
         text-decoration: none !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.18s ease !important;
         min-width: 80px;
         text-align: center;
         position: relative;
-        
-        // Reset cross-browser
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        appearance: none !important;
-        outline: none !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
-        
+        box-shadow: none !important;
+
         &::before {
           content: "#";
-          color: #999;
-          margin-right: 4px;
+          color: var(--muted) !important;
+          margin-right: 6px;
           font-weight: 400;
         }
-        
-        &.active {
-          background: #333 !important;
-          color: #fff !important;
-          border-color: #333 !important;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-          
-          &::before {
-            color: #ccc;
-          }
-        }
-        
+
         &:hover {
-          background: #e8e8e8 !important;
-          border-color: #ccc !important;
-          transform: translateY(-1px);
-          box-shadow: 0 3px 8px rgba(0,0,0,0.1) !important;
-          
-          &.active {
-            background: #555 !important;
-            border-color: #555 !important;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+          background: var(--meta-bg) !important; /* leggero shading */
+          border-color: var(--border) !important;
+          transform: translateY(-2px);
+        }
+
+        &.active {
+          background: var(--accent) !important; /* colore accent per active */
+          color: var(--btn-primary-color) !important;
+          border-color: var(--accent) !important;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(0,0,0,0.12) !important;
+
+          &::before {
+            color: rgba(255,255,255,0.9) !important;
           }
         }
-        
+
         &:focus {
           outline: none !important;
-          box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1) !important;
+          box-shadow: 0 0 0 4px rgba(100,200,255,0.12) !important;
         }
-        
+
         &:active {
           transform: translateY(0);
         }
       }
     }
   }
-  
+
   // Aggiunta di un'etichetta per i filtri
   .filter-label {
     text-align: center;
     margin-bottom: 15px;
-    color: #666 !important;
+    color: var(--muted) !important;
     font-size: 13px !important;
     font-weight: 600 !important;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
-    
+
     &::before {
       content: "✦ ";
-      color: #999;
+      color: var(--muted) !important;
       margin-right: 5px;
     }
   }
-  
+
   // Mobile
   @media (max-width: 768px) {
     padding: 15px 0;
-    
+
     .filter-controls .filter-tags {
       gap: 8px;
       justify-content: flex-start;
-      
+
       .filter-tag {
         font-size: 13px !important;
         padding: 8px 14px !important;
         min-width: 70px;
       }
     }
-    
+
     .filter-label {
       font-size: 12px !important;
       margin-bottom: 12px;
     }
   }
-  
+
   @media (max-width: 480px) {
     .filter-controls .filter-tags {
       gap: 6px;
-      
+
       .filter-tag {
         font-size: 12px !important;
         padding: 6px 12px !important;
@@ -1953,52 +1940,52 @@ blockquote {
 
 /* Theme variables coerenti e regole base */
 :root {
-  --background: #0a0a0a;
-  --surface: #0f0f0f;
-  --panel: #121212;
-  --text-primary: #f5f7f8; /* resa più chiara rispetto al bianco pieno */
-  --text-secondary: #e1e1e1; /* leggermente più chiaro */
-  --muted: #bfbfbf; /* più leggibile per elementi secondari */
-  --muted-2: #9f9f9f; /* per sottotitoli e descrizioni */
-  --accent-blue: #64c8ff;
+  /* Palette: grigio scuro + panna (testo panna su sfondo scuro) */
+  --cream: #f7efe6;         /* panna */
+  --dark-grey: #111217;     /* grigio scuro */
+  --background: var(--dark-grey);
+  --surface: #1e1e21;      /* card surface (leggermente più chiaro del bg) */
+  --panel: #161618;        /* pannelli interni */
+  --text-primary: var(--cream); /* in dark theme il testo è panna */
+  --text-secondary: #efe9df;    /* secondario panna più scuro */
+  --muted: #d6cfc5;            /* per elementi secondari */
+  --muted-2: #bfb6aa;          /* sottotitoli/descrizioni */
+  --accent-blue: #64c8ff;      /* mantengo accent azzurro */
   --accent: var(--accent-blue);
   --hex-green-1: #00ff88;
-  --border: #222222;
+  --border: #29292b;           /* bordo scuro */
   --meta-bg: rgba(255,255,255,0.04);
   --btn-primary-bg: #333333;
-  --btn-primary-color: #ffffff;
-  --btn-secondary-color: #bfbfbf;
-  --link-color: #e8e8e8; /* link più visibili */
-  --link-hover: #ffffff;
-  --terminal-bg: #0b0b0b;
-  --card-shadow: rgba(0,0,0,0.30);
+  color: var(--muted) !important;
 }
 
-body {
-  background: var(--background) !important;
-  color: var(--text-primary) !important;
-  transition: background 0.3s, color 0.3s;
+/* Link e navigazione */
+body:not(.light-theme) a,
+body:not(.light-theme) .site-nav .page-link,
+body:not(.light-theme) .site-nav a,
+body:not(.light-theme) .project-title a,
+body:not(.light-theme) .post-title a {
+  color: var(--link-color) !important;
+  text-decoration: none !important;
 }
 
-body.light-theme {
-  --background: #f7f7f7;
-  --surface: #ffffff;
-  --panel: #fafafa;
-  --text-primary: #111111;
-  --text-secondary: #444444;
-  --muted: #666666;
-  --muted-2: #888888;
-  --accent-blue: #0077ff;
-  --accent: var(--accent-blue);
-  --hex-green-1: #00c96b;
-  --border: #e8e8e8;
-  --meta-bg: #f5f5f5;
+body:not(.light-theme) a:hover,
+body:not(.light-theme) .site-nav .page-link:hover,
+body:not(.light-theme) .project-title a:hover,
+body:not(.light-theme) .post-title a:hover {
+  color: var(--link-hover) !important;
+}
+
+/* Titoli/Intestazioni della pagina (es. "Progetti") */
+body:not(.light-theme) .page-header .page-title,
+  --border: #e6ded4;        /* bordo chiaro su crema */
+  --meta-bg: rgba(0,0,0,0.03);
   --btn-primary-bg: #333333;
   --btn-primary-color: #ffffff;
-  --btn-secondary-color: #666666;
-  --link-color: #333333;
+  --btn-secondary-color: #6f6b63;
+  --link-color: #1e1f21;
   --link-hover: var(--accent-blue);
-  --terminal-bg: #ffffff;
+  --terminal-bg: #fffaf5;
   --card-shadow: rgba(0,0,0,0.06);
 }
 
@@ -2163,113 +2150,65 @@ body:not(.light-theme) .site-footer a {
 }
 
 /* ---------------------------------------------------------------------------
-   FORZA COLORI CHIARI NEL TEMA SCURO
-   Regole finali che sovrascrivono i colori hardcoded per garantire leggibilità
-   in tutte le pagine quando il sito NON usa la classe .light-theme oppure
-   quando è presente [data-theme="dark"]. Usano le variabili di tema definite
-   in alto (--text-primary, --muted, --muted-2, --link-color, --link-hover).
+   FORZA BACKGROUND UGUALE ALLO SFONDO IN TUTTE LE PAGINE
+   Regole generali che rimuovono rettangoli bianchi, bordi e ombre dalle
+   card/panel/container più comuni e impostano lo sfondo su --background
+   (panna in light-theme, grigio scuro in dark-theme). Override globale.
    --------------------------------------------------------------------------- */
 
-/* Elementi testuali principali */
-body:not(.light-theme),
-[data-theme="dark"] {
-  background: var(--background) !important;
-  color: var(--text-primary) !important;
-}
-
-body:not(.light-theme) h1,
-body:not(.light-theme) h2,
-body:not(.light-theme) h3,
-body:not(.light-theme) h4,
-body:not(.light-theme) h5,
-body:not(.light-theme) h6,
-body:not(.light-theme) p,
-body:not(.light-theme) li,
-body:not(.light-theme) span,
-body:not(.light-theme) strong,
-body:not(.light-theme) em,
-body:not(.light-theme) small,
-body:not(.light-theme) blockquote,
-body:not(.light-theme) code {
-  color: var(--text-primary) !important;
-}
-
-/* Testo secondario / descrizioni */
-body:not(.light-theme) .page-subtitle,
-body:not(.light-theme) .post-excerpt,
-body:not(.light-theme) .project-description,
-body:not(.light-theme) .profile-details p,
-body:not(.light-theme) .terminal-output > p,
-body:not(.light-theme) .site-footer p,
-body:not(.light-theme) .footer-bottom p,
-body:not(.light-theme) .contact-list li,
-body:not(.light-theme) .project-block .project-meta .project-date,
-body:not(.light-theme) .project-block .project-tech .tech-tag,
-body:not(.light-theme) .skills-grid .skill-category h3 {
-  color: var(--muted) !important;
-}
-
-/* Link e navigazione */
-body:not(.light-theme) a,
-body:not(.light-theme) .site-nav .page-link,
-body:not(.light-theme) .site-nav a,
-body:not(.light-theme) .project-title a,
-body:not(.light-theme) .post-title a {
-  color: var(--link-color) !important;
-  text-decoration: none !important;
-}
-
-body:not(.light-theme) a:hover,
-body:not(.light-theme) .site-nav .page-link:hover,
-body:not(.light-theme) .project-title a:hover,
-body:not(.light-theme) .post-title a:hover {
-  color: var(--link-hover) !important;
-}
-
-/* Titoli/Intestazioni della pagina (es. "Progetti") */
-body:not(.light-theme) .page-header .page-title,
-body:not(.light-theme) .projects .page-title,
-body:not(.light-theme) .page-title {
-  color: var(--text-primary) !important;
-}
-
-/* Bottoni e azioni */
-body:not(.light-theme) .btn-view {
-  background: var(--btn-primary-bg) !important;
-  color: var(--btn-primary-color) !important;
-  border: none !important;
-}
-
-body:not(.light-theme) .btn-link,
-body:not(.light-theme) .project-actions .btn-link {
-  color: var(--btn-secondary-color) !important;
-  border-color: var(--border) !important;
+/* Selettori comuni usati nel tema per card/panel/list ecc. */
+.card,
+.panel,
+.panel-card,
+.card-wrapper,
+.card-body,
+.card-header,
+.panel-body,
+.panel-header,
+.post-preview,
+.no-posts,
+.project-block,
+.projects-list,
+.projects-list > *,
+.featured-projects-section,
+.features-card,
+.filters-card,
+.filters-wrapper,
+.terminal-content,
+.terminal-section .terminal-content,
+.home .hero-section,
+.home .content-section > .panel,
+.blog .no-posts,
+.site-footer .footer-grid,
+.site-footer .footer-col,
+.projects .projects-list .project-block,
+.about .terminal-content {
   background: transparent !important;
+  background-color: var(--background) !important;
+  border: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
-/* Footer */
-body:not(.light-theme) .site-footer,
-body:not(.light-theme) .site-footer a,
-body:not(.light-theme) .site-footer p {
-  color: var(--text-secondary) !important;
+/* Se alcuni elementi richiedono ancora una separazione visiva, usare una
+   sottile linea usando --border scura/chiara ma non un rettangolo pieno */
+.card[role="separator"],
+.panel[role="separator"],
+.separator,
+.separator-line {
+  background: transparent !important;
+  border-top: 1px solid var(--border) !important;
+  box-shadow: none !important;
 }
 
-/* Card / terminal / metadati */
-body:not(.light-theme) .projects .projects-list .project-block,
-body:not(.light-theme) .terminal-section .terminal-content {
-  background: var(--surface) !important;
+/* Titoli e header dentro questi container devono comunque essere leggibili */
+.card .card-header h3,
+.panel .panel-header h3,
+.project-block .project-header .project-title,
+.post-preview .post-title,
+.no-posts p {
   color: var(--text-primary) !important;
-  border-color: var(--border) !important;
-  box-shadow: 0 2px 8px var(--card-shadow) !important;
 }
 
-/* Forza contrasto per badge e status */
-body:not(.light-theme) .project-status,
-body:not(.light-theme) .status-badge {
-  color: var(--text-primary) !important;
-}
-
-/* Gestione specifica per elementi rimanenti con colori hardcoded */
-/* Se trovi altri elementi ancora scuri, indicami la classe o invia screenshot */
-
-/* Fine forzatura tema scuro */
+/* Se in futuro vuoi eccezioni (es. vocare alcune card come accentuate),
+   si può applicare una classe .card--accent che sovrascrive queste regole. */
