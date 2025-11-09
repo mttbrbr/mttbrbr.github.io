@@ -2028,10 +2028,26 @@ body:not(.light-theme) .page-header .page-title {
 
 /* Forzo alcuni componenti a usare le variabili, così il toggle influisce ovunque */
 .site-nav .page-link, .site-nav a {
-  color: var(--link-color) !important;
+  color: var(--text-primary) !important;
 }
 .site-nav .page-link:hover {
-  color: var(--link-hover) !important;
+  color: var(--accent-blue) !important;
+}
+
+/* Extra specificità per il tema scuro */
+body:not(.light-theme) .site-header {
+  background-color: var(--background) !important;
+  border-bottom: none !important;
+}
+
+body:not(.light-theme) .site-nav .page-link,
+body:not(.light-theme) .site-nav a {
+  color: var(--cream) !important;
+}
+
+body:not(.light-theme) .site-nav .page-link:hover,
+body:not(.light-theme) .site-nav a:hover {
+  color: var(--accent-blue) !important;
 }
 
 .terminal-section .terminal-content {
@@ -2125,9 +2141,20 @@ body:not(.light-theme) .projects .projects-list .project-block .project-actions 
 }
 
 /* Header / footer */
-body:not(.light-theme) .site-header .site-nav .page-link {
-  color: var(--link-color) !important;
+body:not(.light-theme) .site-header {
+  background-color: var(--background) !important;
 }
+
+body:not(.light-theme) .site-header .site-nav .page-link,
+body:not(.light-theme) .site-header .site-nav a {
+  color: var(--cream) !important;
+}
+
+body:not(.light-theme) .site-header .site-nav .page-link:hover,
+body:not(.light-theme) .site-header .site-nav a:hover {
+  color: var(--accent-blue) !important;
+}
+
 body:not(.light-theme) .site-footer,
 body:not(.light-theme) .site-footer p,
 body:not(.light-theme) .site-footer a {
