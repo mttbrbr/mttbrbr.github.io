@@ -19,9 +19,9 @@
 # in the templates via {{ site.myvariable }}.
 
 title: "My-Space "
-email: marco.rossi@example.com
+email: matteo.barbieri@example.com
 description: >-
-  Benvenuto nel mio sito
+  Welcome to my website
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 mastodon_username: barbieri
@@ -63,7 +63,7 @@ defaults:
 
 # SEO
 author: Matteo Barbieri
-lang: it_IT
+lang: en_US
 
 # Exclude from processing.
 # The following items will not be processed, by default.

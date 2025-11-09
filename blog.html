@@ -7,7 +7,7 @@ permalink: /blog/
 <div class="blog">
     <header class="page-header">
         <h1 class="page-title">{{ page.title | escape }}</h1>
-        <p class="page-subtitle">Pensieri, tutorial e riflessioni sulla programmazione</p>
+        <p class="page-subtitle">Thoughts, tutorials and reflections on programming</p>
     </header>
 
     <section class="terminal-section">
@@ -15,7 +15,7 @@ permalink: /blog/
             <div class="terminal-output">
                 <!-- Sezione Filtri -->
                 <div class="filter-section">
-                    <div class="filter-label">Filtra per categoria</div>
+                    <div class="filter-label">Filter by category</div>
                     <div class="filter-controls">
                         <div class="filter-tags" id="category-filters">
                             <!-- I filtri verranno generati dinamicamente -->
@@ -56,7 +56,7 @@ permalink: /blog/
                     <div class="no-posts">
                         <p>$ ls -la posts/</p>
                         <p>total 0</p>
-                        <p class="empty-message">Nessun post trovato. Primi contenuti in arrivo...</p>
+                        <p class="empty-message">No posts found. First content coming soon...</p>
                     </div>
                 {% endif %}
             </div>
@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementi DOM
     const categoryFilters = document.getElementById('category-filters');
-    const searchInfo = document.getElementById('posts-search-info');
     const postsContainer = document.getElementById('posts-container');
     
     let activeFilters = new Set();
@@ -102,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         generateCategoryFilters();
-        updateSearchInfo();
     }
     
     // Genera i filtri per categorie
@@ -144,10 +142,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             activeFilters.add(category);
             element.classList.add('active');
-        }
+        });
         
         filterPosts();
-        updateSearchInfo();
     }
     
     // Filtra post
@@ -179,98 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return visibleCount;
     }
-    
-    // Evidenzia termine di ricerca
-    function highlightSearchTerm(element, term) {
-        removeHighlight(element);
-        
-        const walker = document.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        
-        const textNodes = [];
-        let node;
-        while (node = walker.nextNode()) {
-            if (node.parentElement.classList && 
-                !node.parentElement.classList.contains('search-highlight')) {
-                textNodes.push(node);
-            }
-        }
-        
-        textNodes.forEach(textNode => {
-            const text = textNode.textContent;
-            const regex = new RegExp(`(${term})`, 'gi');
-            if (regex.test(text)) {
-                const highlightedHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
-                const wrapper = document.createElement('span');
-                wrapper.innerHTML = highlightedHTML;
-                textNode.parentNode.replaceChild(wrapper, textNode);
-            }
-        });
-    }
-    
-    // Rimuovi evidenziazione
-    function removeHighlight(element) {
-        const highlights = element.querySelectorAll('.search-highlight');
-        highlights.forEach(highlight => {
-            const parent = highlight.parentNode;
-            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
-            parent.normalize();
-        });
-    }
-    
-    // Aggiorna info di ricerca
-    function updateSearchInfo() {
-        const visibleCount = filterPosts();
-        const totalCount = posts.length;
-        const hasActiveSearch = searchInput.value.trim() || activeFilters.size > 0;
-        
-        if (hasActiveSearch) {
-            searchInfo.style.display = 'block';
-            searchInfo.textContent = `${visibleCount} di ${totalCount} articoli`;
-            
-            if (visibleCount === 0) {
-                searchInfo.classList.add('no-results');
-                searchInfo.textContent = 'nessun articolo trovato';
-            } else {
-                searchInfo.classList.remove('no-results');
-            }
-        } else {
-            searchInfo.style.display = 'none';
-        }
-    }
-    
-    // Pulisci ricerca
-    function clearSearch() {
-        searchInput.value = '';
-        activeFilters.clear();
-        
-        // Rimuovi classe active dai filtri
-        document.querySelectorAll('.filter-tag.active').forEach(el => {
-            el.classList.remove('active');
-        });
-        
-        // Rimuovi evidenziazioni e mostra tutti i post
-        posts.forEach(post => {
-            if (post.element) {
-                post.element.classList.remove('search-hidden');
-                removeHighlight(post.element);
-            }
-        });
-        
-        updateSearchInfo();
-    }
-    
-    // Event listeners
-    searchInput.addEventListener('input', () => {
-        filterPosts();
-        updateSearchInfo();
-    });
-    
-    clearBtn.addEventListener('click', clearSearch);
     
     // Inizializza quando il DOM è pronto
     if (document.readyState === 'loading') {

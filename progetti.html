@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Progetti
+title: Projects
 permalink: /progetti/
 ---
 
 <div class="projects">
     <header class="page-header">
         <h1 class="page-title">{{ page.title | escape }}</h1>
-        <p class="page-subtitle">Una selezione dei progetti più significativi su cui ho lavorato</p>
+        <p class="page-subtitle">A selection of the most significant projects I've worked on</p>
     </header>
 
     <section class="terminal-section">
@@ -15,7 +15,7 @@ permalink: /progetti/
             <div class="terminal-output">
                 <!-- Sezione Filtri -->
                 <div class="filter-section">
-                    <div class="filter-label">Filtra per tecnologia</div>
+                    <div class="filter-label">Filter by technology</div>
                     <div class="filter-controls">
                         <div class="filter-tags" id="tech-filters">
                             <!-- I filtri verranno generati dinamicamente -->
@@ -56,7 +56,7 @@ permalink: /progetti/
                                 {% endif %}
                                 
                                 <div class="project-actions">
-                                    <a href="{{ project.url | relative_url }}" class="btn-view">Dettagli</a>
+                                    <a href="{{ project.url | relative_url }}" class="btn-view">Details</a>
                                     {% if project.links %}
                                         {% for link in project.links %}
                                             <a href="{{ link[1] }}" class="btn-link">{{ link[0] | capitalize }}</a>
@@ -66,8 +66,8 @@ permalink: /progetti/
                             </article>
                         {% endfor %}
                     {% else %}
-                        <p class="error-text">Nessun progetto trovato.</p>
-                        <p class="help-text">Aggiungi progetti nella cartella _projects/</p>
+                        <p class="error-text">No projects found.</p>
+                        <p class="help-text">Add projects in the _projects/ folder</p>
                     {% endif %}
                 </div>
             </div>
@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementi DOM
     const techFilters = document.getElementById('tech-filters');
-    const searchInfo = document.getElementById('search-info');
     const projectsContainer = document.getElementById('projects-container');
     
     let activeFilters = new Set();
@@ -186,88 +185,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         return visibleCount;
-    }
-    
-    // Evidenzia termine di ricerca
-    function highlightSearchTerm(element, term) {
-        removeHighlight(element);
-        
-        const walker = document.createTreeWalker(
-            element,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-        
-        const textNodes = [];
-        let node;
-        while (node = walker.nextNode()) {
-            if (node.parentElement.classList && 
-                !node.parentElement.classList.contains('search-highlight')) {
-                textNodes.push(node);
-            }
-        }
-        
-        textNodes.forEach(textNode => {
-            const text = textNode.textContent;
-            const regex = new RegExp(`(${term})`, 'gi');
-            if (regex.test(text)) {
-                const highlightedHTML = text.replace(regex, '<span class="search-highlight">$1</span>');
-                const wrapper = document.createElement('span');
-                wrapper.innerHTML = highlightedHTML;
-                textNode.parentNode.replaceChild(wrapper, textNode);
-            }
-        });
-    }
-    
-    // Rimuovi evidenziazione
-    function removeHighlight(element) {
-        const highlights = element.querySelectorAll('.search-highlight');
-        highlights.forEach(highlight => {
-            const parent = highlight.parentNode;
-            parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
-            parent.normalize();
-        });
-    }
-    
-    // Aggiorna info di ricerca
-    function updateSearchInfo() {
-        const visibleCount = filterProjects();
-        const totalCount = projects.length;
-        const hasFilters = activeFilters.size > 0;
-        
-        if (hasFilters) {
-            searchInfo.style.display = 'block';
-            searchInfo.textContent = `${visibleCount} di ${totalCount} progetti`;
-            
-            if (visibleCount === 0) {
-                searchInfo.classList.add('no-results');
-                searchInfo.textContent = 'nessun progetto trovato';
-            } else {
-                searchInfo.classList.remove('no-results');
-            }
-        } else {
-            searchInfo.style.display = 'none';
-        }
-    }
-    
-    // Pulisci filtri
-    function clearSearch() {
-        activeFilters.clear();
-        
-        // Rimuovi classe active dai filtri
-        document.querySelectorAll('.filter-tag.active').forEach(el => {
-            el.classList.remove('active');
-        });
-        
-        // Mostra tutti i progetti
-        projects.forEach(project => {
-            if (project.element) {
-                project.element.classList.remove('search-hidden');
-            }
-        });
-        
-        updateSearchInfo();
     }
     
     // Inizializza quando il DOM è pronto

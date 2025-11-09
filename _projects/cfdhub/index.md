@@ -6,46 +6,46 @@ category: "featured"
 type: "computational-fluid-dynamics"
 tech: ["OpenFOAM", "Python", "Matlab", "Julia"]
 status: "development"
-excerpt: "Piattaforma per simulazioni CFD e analisi dei flussi. Implementazione di algoritmi numerici per l'aerodinamica."
+excerpt: "Platform for CFD simulations and flow analysis. Implementation of numerical algorithms for aerodynamics."
 links:
   github: "https://github.com/mttbrbr/cfdhub"
   demo: "#"
 ---
 
-# CFD Hub - Simulazioni Fluidodinamiche
+# CFD Hub - Computational Fluid Dynamics Simulations
 
-CFD Hub è una piattaforma avanzata per simulazioni fluidodinamiche computazionali (CFD) che integra diversi solver e strumenti di post-processing per l'analisi di flussi complessi in ambito aerodinamico.
+CFD Hub is an advanced platform for computational fluid dynamics (CFD) simulations that integrates various solvers and post-processing tools for analyzing complex flows in aerodynamics.
 
-## Caratteristiche Principali
+## Main Features
 
-### Solver Integrati
-- **OpenFOAM**: Solver principale per simulazioni di flussi incomprimibili e comprimibili
-- **Custom Solvers**: Algoritmi proprietari per casi specifici (flussi ipersonici, transizione)
-- **Meshing Automatico**: Generazione automatica di mesh strutturate e non strutturate
+### Integrated Solvers
+- **OpenFOAM**: Main solver for incompressible and compressible flow simulations
+- **Custom Solvers**: Proprietary algorithms for specific cases (hypersonic flows, transition)
+- **Automatic Meshing**: Automatic generation of structured and unstructured meshes
 
-### Post-Processing Avanzato
-- **Visualizzazione 3D**: Rendering di campi di velocità, pressione e temperatura
-- **Analisi Aerodinamica**: Calcolo automatico di coefficienti di portanza, resistenza e momento
-- **Ottimizzazione**: Algoritmi genetici per l'ottimizzazione di forme aerodinamiche
+### Advanced Post-Processing
+- **3D Visualization**: Rendering of velocity, pressure and temperature fields
+- **Aerodynamic Analysis**: Automatic calculation of lift, drag and moment coefficients
+- **Optimization**: Genetic algorithms for aerodynamic shape optimization
 
-## Tecnologie Utilizzate
+## Technologies Used
 
-- **OpenFOAM**: Solver principale per le simulazioni CFD
-- **Python**: Scripting, post-processing e interfaccia utente web
-- **Matlab**: Prototipazione algoritmi e analisi numerica avanzata  
-- **Julia**: Calcoli numerici ad alte prestazioni per solver custom
+- **OpenFOAM**: Main solver for CFD simulations
+- **Python**: Scripting, post-processing and web user interface
+- **Matlab**: Algorithm prototyping and advanced numerical analysis
+- **Julia**: High-performance numerical calculations for custom solvers
 
-## Risultati e Performance
+## Results and Performance
 
-Il progetto ha permesso di ottenere:
-- Simulazioni accurate di flussi complessi attorno a profili alari NACA e geometrie 3D
-- Riduzione del 30% nei tempi di calcolo rispetto ai metodi tradizionali
-- Interfaccia web intuitiva per il setup e monitoraggio delle simulazioni
-- Database centralizzato per la gestione di risultati e configurazioni
+The project achieved:
+- Accurate simulations of complex flows around NACA airfoils and 3D geometries
+- 30% reduction in computation time compared to traditional methods
+- Intuitive web interface for simulation setup and monitoring
+- Centralized database for managing results and configurations
 
-## Applicazioni
+## Applications
 
-- Analisi aerodinamica di velivoli e droni
-- Ottimizzazione di profili alari per diverse condizioni di volo
-- Simulazioni di flussi attorno a geometrie complesse (fusoliere, gondole motori)
-- Validazione di modelli teorici attraverso confronti CFD/sperimentali
+- Aerodynamic analysis of aircraft and drones
+- Optimization of airfoils for different flight conditions
+- Simulations of flows around complex geometries (fuselages, engine nacelles)
+- Validation of theoretical models through CFD/experimental comparisons
