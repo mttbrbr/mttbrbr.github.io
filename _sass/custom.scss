@@ -10,10 +10,10 @@ html {
   min-height: 100vh;
 }
 
-// Font monospace come nello screenshot
+// Font monospace come nello screenshot con dimensioni responsive
 body {
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
-  font-size: 15px;
+  font-size: clamp(14px, 2.5vw, 15px);
   line-height: 1.6;
   color: var(--text-primary) !important;
   background-color: var(--background) !important;
@@ -26,29 +26,51 @@ body {
   padding: 0 !important;
 }
 
-// Container con più spazio e padding ottimizzato
+// Container con più spazio e padding ottimizzato e responsive
 .wrapper {
   max-width: 800px !important;
   margin: 0 auto;
-  padding: 40px 24px !important; // ridotto per togliere spazio verticale e laterale eccessivo
+  padding: 40px 24px !important;
+  
+  @media (max-width: 768px) {
+    padding: 30px 20px !important;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 20px 16px !important;
+  }
 }
 
-// Header super minimal con più spazio
+// Header super minimal, responsive e centrato
 .site-header {
   border: none !important;
   min-height: auto !important;
-  padding: 0 !important;
-  margin-bottom: 40px; // ridotto
+  padding: 20px 0 !important;
+  margin-bottom: 40px;
   margin-top: 0 !important;
   text-align: center;
   background-color: var(--background) !important;
   position: relative;
   width: 100%;
   
+  @media (max-width: 768px) {
+    padding: 15px 0 !important;
+    margin-bottom: 30px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 10px 0 !important;
+    margin-bottom: 20px;
+  }
+  
   .wrapper {
-    padding: 0 !important;
+    padding: 0 20px !important;
     max-width: none !important;
     background-color: transparent !important;
+    
+    @media (max-width: 480px) {
+      padding: 0 16px !important;
+    }
   }
   
   .site-title {
@@ -69,10 +91,29 @@ body {
   }
 }
 
-// Pulsante tema con stili corretti
+// Pulsante tema responsive
 #theme-toggle {
   background-color: var(--accent-blue) !important;
   color: var(--background) !important;
+  position: fixed !important;
+  top: 1.2rem !important;
+  right: 2rem !important;
+  z-index: 9999 !important;
+  font-size: 14px !important;
+  
+  @media (max-width: 768px) {
+    top: 1rem !important;
+    right: 1rem !important;
+    padding: 0.6rem 1rem !important;
+    font-size: 13px !important;
+  }
+  
+  @media (max-width: 480px) {
+    top: 0.8rem !important;
+    right: 0.8rem !important;
+    padding: 0.5rem 0.8rem !important;
+    font-size: 12px !important;
+  }
 }
   
 .site-nav {
@@ -82,6 +123,14 @@ body {
   background-color: transparent !important;
   text-align: center;
   margin-top: 30px;
+  
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    margin-top: 15px;
+  }
   
   .nav-trigger {
     display: none !important;
@@ -94,21 +143,41 @@ body {
   .trigger {
     background-color: transparent !important;
     border: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    
+    @media (max-width: 768px) {
+      gap: 30px;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 20px;
+      flex-direction: column;
+    }
   }
   
   .page-link, a {
     color: var(--text-primary) !important;
     line-height: 1.6 !important;
-    margin: 0 60px 0 0 !important;
+    margin: 0 !important;
     font-size: 15px !important;
     font-weight: 600 !important;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
     text-decoration: none !important;
     border: none !important;
     background: none !important;
+    transition: color 0.2s ease !important;
     
-    &:last-child {
-      margin-right: 0 !important;
+    @media (max-width: 768px) {
+      font-size: 14px !important;
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 16px !important;
+      padding: 8px 0 !important;
     }
     
     &:hover {
@@ -129,28 +198,95 @@ body {
   flex: none !important;
 }
 
-// Larghezza massima uniforme per tutte le sezioni terminal con padding ottimizzato
+// Larghezza massima uniforme per tutte le sezioni terminal con padding ottimizzato e responsive
 .terminal-section {
   max-width: 800px;
   margin: 0 auto;
-  padding: 24px 0; // meno spazio sopra/sotto nelle sezioni terminal
+  padding: 24px 0;
+  
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 16px 0;
+  }
+  
+  .terminal-content {
+    padding: 30px !important;
+    border-radius: 6px;
+    overflow-x: auto;
+    
+    @media (max-width: 768px) {
+      padding: 24px !important;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 16px !important;
+      border-radius: 4px;
+    }
+  }
 }
 
 .projects-list {
   max-width: 800px;
   margin: 0 auto;
-  padding: 24px 0; // meno spazio
+  padding: 24px 0;
+  
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 16px 0;
+  }
 }
 
-// Interspazi ottimizzati per tutti i titoli
+// Interspazi ottimizzati per tutti i titoli con responsive
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 30px !important; // ridotto
-  margin-bottom: 18px !important; // ridotto
+  margin-top: 30px !important;
+  margin-bottom: 18px !important;
   line-height: 1.3 !important;
+  color: var(--text-primary) !important;
+  
+  @media (max-width: 768px) {
+    margin-top: 24px !important;
+    margin-bottom: 14px !important;
+  }
+  
+  @media (max-width: 480px) {
+    margin-top: 20px !important;
+    margin-bottom: 12px !important;
+  }
   
   &:first-child {
     margin-top: 0 !important;
   }
+}
+
+h1 {
+  font-size: clamp(24px, 5vw, 32px) !important;
+  font-weight: 700 !important;
+}
+
+h2 {
+  font-size: clamp(20px, 4vw, 26px) !important;
+  font-weight: 600 !important;
+}
+
+h3 {
+  font-size: clamp(18px, 3.5vw, 22px) !important;
+  font-weight: 600 !important;
+}
+
+h4 {
+  font-size: clamp(16px, 3vw, 18px) !important;
+  font-weight: 600 !important;
+}
+
+h5, h6 {
+  font-size: clamp(14px, 2.5vw, 16px) !important;
+  font-weight: 600 !important;
 }
 
 // Paragrafi con spazio ottimizzato
@@ -718,8 +854,18 @@ blockquote {
     padding: 30px 0;
     background-color: transparent !important;
     
+    @media (max-width: 768px) {
+      margin-bottom: 60px;
+      padding: 24px 0;
+    }
+    
+    @media (max-width: 480px) {
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+    
     .page-title {
-      font-size: 28px !important;
+      font-size: clamp(24px, 5vw, 28px) !important;
       font-weight: 600 !important;
       color: var(--text-primary) !important;
       margin: 0 0 15px 0 !important;
@@ -727,7 +873,7 @@ blockquote {
     
     .page-subtitle {
       color: var(--muted) !important;
-      font-size: 16px;
+      font-size: clamp(14px, 3vw, 16px) !important;
       margin: 0;
       font-style: italic;
       line-height: 1.5;
@@ -862,8 +1008,18 @@ blockquote {
     padding: 30px 0;
     background-color: transparent !important;
     
+    @media (max-width: 768px) {
+      margin-bottom: 60px;
+      padding: 24px 0;
+    }
+    
+    @media (max-width: 480px) {
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+    
     .page-title {
-      font-size: 28px !important;
+      font-size: clamp(24px, 5vw, 28px) !important;
       font-weight: 600 !important;
       color: var(--text-primary) !important;
       margin: 0 0 15px 0 !important;
@@ -872,7 +1028,7 @@ blockquote {
     
     .page-subtitle {
       color: var(--muted) !important;
-      font-size: 16px;
+      font-size: clamp(14px, 3vw, 16px) !important;
       margin: 0;
       font-style: italic;
       line-height: 1.5;
@@ -888,8 +1044,19 @@ blockquote {
       margin-bottom: 30px;
       transition: all 0.3s ease;
       
+      @media (max-width: 768px) {
+        padding: 20px;
+        margin-bottom: 24px;
+      }
+      
+      @media (max-width: 480px) {
+        padding: 16px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+      
       &:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px var(--card-shadow);
         transform: translateY(-2px);
       }
       
@@ -900,16 +1067,21 @@ blockquote {
       .project-header {
         margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #f0f0f0;
+        border-bottom: 1px solid var(--border);
+        
+        @media (max-width: 480px) {
+          margin-bottom: 16px;
+          padding-bottom: 12px;
+        }
         
         .project-title {
-          font-size: 26px !important;
+          font-size: clamp(20px, 4vw, 26px) !important;
           font-weight: 700 !important;
           margin: 0 0 12px 0 !important;
           line-height: 1.2;
           
           a {
-            color: #333 !important;
+            color: var(--text-primary) !important;
             text-decoration: none !important;
             transition: all 0.3s ease;
             display: block;
@@ -1132,17 +1304,27 @@ blockquote {
     padding: 30px 0;
     background-color: transparent !important;
     
+    @media (max-width: 768px) {
+      margin-bottom: 60px;
+      padding: 24px 0;
+    }
+    
+    @media (max-width: 480px) {
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+    
     .page-title {
-      font-size: 28px !important;
+      font-size: clamp(24px, 5vw, 28px) !important;
       font-weight: 600 !important;
-      color: var(--text-primary) !important; /* sostituito */
+      color: var(--text-primary) !important;
       margin: 0 0 15px 0 !important;
       line-height: 1.2;
     }
     
     .page-subtitle {
-      color: var(--muted) !important; /* sostituito */
-      font-size: 16px;
+      color: var(--muted) !important;
+      font-size: clamp(14px, 3vw, 16px) !important;
       margin: 0;
       font-style: italic;
       line-height: 1.5;
