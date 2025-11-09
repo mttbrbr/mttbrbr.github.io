@@ -79,7 +79,7 @@ body {
   }
   
   .page-link, a {
-    color: #444 !important;
+    color: var(--text-primary) !important;
     line-height: 1.6 !important;
     margin: 0 60px 0 0 !important;
     font-size: 15px !important;
@@ -94,13 +94,13 @@ body {
     }
     
     &:hover {
-      color: #222 !important;
+      color: var(--accent-blue) !important;
       text-decoration: none !important;
       background: none !important;
     }
     
     &:visited {
-      color: #444 !important;
+      color: var(--text-primary) !important;
     }
   }
 }
@@ -1983,10 +1983,11 @@ body:not(.light-theme) {
   --btn-primary-bg: #333333;
   --btn-primary-color: #ffffff;
   --btn-secondary-color: #d6cfc5;
-  --link-color: var(--accent-blue);
-  --link-hover: var(--hex-green-1);
+  --link-color: var(--cream);
+  --link-hover: var(--accent-blue);
   --terminal-bg: #1a1a1d;
   --card-shadow: rgba(0,0,0,0.3);
+  --title-color: var(--cream);
 }
 
 /* Applica lo sfondo e i colori globalmente */
