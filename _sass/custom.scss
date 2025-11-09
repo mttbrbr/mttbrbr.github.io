@@ -1956,7 +1956,34 @@ blockquote {
   --border: #29292b;           /* bordo scuro */
   --meta-bg: rgba(255,255,255,0.04);
   --btn-primary-bg: #333333;
-  color: var(--muted) !important;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #d6cfc5;
+  --link-color: var(--accent-blue);
+  --link-hover: var(--hex-green-1);
+  --terminal-bg: #1a1a1d;
+  --card-shadow: rgba(0,0,0,0.3);
+}
+
+/* Light theme overrides */
+body.light-theme {
+  --cream: #111217;
+  --dark-grey: #f7efe6;
+  --background: #f7efe6;
+  --surface: #ffffff;
+  --panel: #fafafa;
+  --text-primary: #111217;
+  --text-secondary: #333333;
+  --muted: #666666;
+  --muted-2: #888888;
+  --border: #e6ded4;
+  --meta-bg: rgba(0,0,0,0.03);
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #6f6b63;
+  --link-color: #1e1f21;
+  --link-hover: var(--accent-blue);
+  --terminal-bg: #fffaf5;
+  --card-shadow: rgba(0,0,0,0.06);
 }
 
 /* Link e navigazione */
@@ -1976,17 +2003,9 @@ body:not(.light-theme) .post-title a:hover {
   color: var(--link-hover) !important;
 }
 
-/* Titoli/Intestazioni della pagina (es. "Progetti") */
-body:not(.light-theme) .page-header .page-title,
-  --border: #e6ded4;        /* bordo chiaro su crema */
-  --meta-bg: rgba(0,0,0,0.03);
-  --btn-primary-bg: #333333;
-  --btn-primary-color: #ffffff;
-  --btn-secondary-color: #6f6b63;
-  --link-color: #1e1f21;
-  --link-hover: var(--accent-blue);
-  --terminal-bg: #fffaf5;
-  --card-shadow: rgba(0,0,0,0.06);
+/* Titoli/Intestazioni della pagina */
+body:not(.light-theme) .page-header .page-title {
+  color: var(--text-primary) !important;
 }
 
 /* Forzo alcuni componenti a usare le variabili, così il toggle influisce ovunque */
