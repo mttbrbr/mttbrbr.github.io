@@ -52,11 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
             themeToggle.textContent = light ? '🌞 Theme' : '🌙 Theme';
             localStorage.setItem('theme', light ? 'light' : 'dark');
         }
-        // On load, apply saved theme
+        // On load, apply saved theme (default is DARK)
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             setTheme(true);
-        } else if (savedTheme === 'dark') {
+        } else {
+            // Default: dark theme (no class on body = dark)
             setTheme(false);
         }
         themeToggle.addEventListener('click', function() {

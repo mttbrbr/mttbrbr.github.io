@@ -1943,32 +1943,7 @@ blockquote {
 
 /* Theme variables coerenti e regole base */
 :root {
-  /* Palette: grigio scuro + panna (testo panna su sfondo scuro) */
-  --cream: #f7efe6;         /* panna */
-  --dark-grey: #111217;     /* grigio scuro */
-  --background: var(--dark-grey);
-  --surface: #1e1e21;      /* card surface (leggermente più chiaro del bg) */
-  --panel: #161618;        /* pannelli interni */
-  --text-primary: var(--cream); /* in dark theme il testo è panna */
-  --text-secondary: #efe9df;    /* secondario panna più scuro */
-  --muted: #d6cfc5;            /* per elementi secondari */
-  --muted-2: #bfb6aa;          /* sottotitoli/descrizioni */
-  --accent-blue: #64c8ff;      /* mantengo accent azzurro */
-  --accent: var(--accent-blue);
-  --hex-green-1: #00ff88;
-  --border: #29292b;           /* bordo scuro */
-  --meta-bg: rgba(255,255,255,0.04);
-  --btn-primary-bg: #333333;
-  --btn-primary-color: #ffffff;
-  --btn-secondary-color: #d6cfc5;
-  --link-color: var(--accent-blue);
-  --link-hover: var(--hex-green-1);
-  --terminal-bg: #1a1a1d;
-  --card-shadow: rgba(0,0,0,0.3);
-}
-
-/* Light theme overrides */
-body.light-theme {
+  /* Default: Light theme (tema chiaro) */
   --cream: #111217;
   --dark-grey: #f7efe6;
   --background: #f7efe6;
@@ -1978,6 +1953,9 @@ body.light-theme {
   --text-secondary: #333333;
   --muted: #666666;
   --muted-2: #888888;
+  --accent-blue: #64c8ff;
+  --accent: var(--accent-blue);
+  --hex-green-1: #00ff88;
   --border: #e6ded4;
   --meta-bg: rgba(0,0,0,0.03);
   --btn-primary-bg: #333333;
@@ -1987,6 +1965,28 @@ body.light-theme {
   --link-hover: var(--accent-blue);
   --terminal-bg: #fffaf5;
   --card-shadow: rgba(0,0,0,0.06);
+}
+
+/* Dark theme: attivo quando NON c'è la classe light-theme */
+body:not(.light-theme) {
+  --cream: #f7efe6;
+  --dark-grey: #111217;
+  --background: #111217;
+  --surface: #1e1e21;
+  --panel: #161618;
+  --text-primary: #f7efe6;
+  --text-secondary: #efe9df;
+  --muted: #d6cfc5;
+  --muted-2: #bfb6aa;
+  --border: #29292b;
+  --meta-bg: rgba(255,255,255,0.04);
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #d6cfc5;
+  --link-color: var(--accent-blue);
+  --link-hover: var(--hex-green-1);
+  --terminal-bg: #1a1a1d;
+  --card-shadow: rgba(0,0,0,0.3);
 }
 
 /* Applica lo sfondo e i colori globalmente */
