@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Progetti
-permalink: /progetti/
+title: Projects
+permalink: /projects/
 ---
 
 <div class="projects">
     <header class="page-header">
         <h1 class="page-title">{{ page.title | escape }}</h1>
-        <p class="page-subtitle">Una selezione dei progetti più significativi su cui ho lavorato</p>
+        <p class="page-subtitle">A selection of the most significant projects I've worked on</p>
     </header>
 
     <section class="terminal-section">
@@ -15,6 +15,7 @@ permalink: /progetti/
             <div class="terminal-output">
                 <!-- Sezione Filtri -->
                 <div class="filter-section">
+                    <div class="filter-label">Filter by technology</div>
                     <div class="filter-controls">
                         <div class="filter-tags" id="tech-filters">
                             <!-- I filtri verranno generati dinamicamente -->
@@ -27,28 +28,23 @@ permalink: /progetti/
                         {% assign all_projects = site.projects | sort: "date" | reverse %}
                         {% for project in all_projects %}
                             <article class="project-block">
-                                <header class="project-header">
+                                <div class="project-header">
                                     <h2 class="project-title">
-                                        <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
+                                        <a href="{{ project.url | relative_url }}">{{ project.title | escape }}</a>
                                     </h2>
-                                    
                                     <div class="project-meta">
-                                        {% if project.date %}
-                                            <span class="project-date">{{ project.date | date: "%B %Y" }}</span>
-                                        {% endif %}
-                                        
+                                        <span class="project-date">{{ project.date | date: "%B %Y" }}</span>
                                         {% if project.status %}
-                                            <span class="project-status status-{{ project.status }}">{{ project.status | capitalize }}</span>
+                                            <span class="project-status status-{{ project.status }}">{{ project.status }}</span>
                                         {% endif %}
-                                        
                                         {% if project.type %}
-                                            <span class="project-type">{{ project.type | capitalize }}</span>
+                                            <span class="project-type">{{ project.type }}</span>
                                         {% endif %}
                                     </div>
-                                </header>
+                                </div>
                                 
                                 <div class="project-description">
-                                    {{ project.excerpt | strip_html | truncatewords: 30 }}
+                                    {{ project.excerpt | strip_html }}
                                 </div>
                                 
                                 {% if project.tech %}
@@ -60,7 +56,7 @@ permalink: /progetti/
                                 {% endif %}
                                 
                                 <div class="project-actions">
-                                    <a href="{{ project.url | relative_url }}" class="btn-view">Dettagli</a>
+                                    <a href="{{ project.url | relative_url }}" class="btn-view">Details</a>
                                     {% if project.links %}
                                         {% for link in project.links %}
                                             <a href="{{ link[1] }}" class="btn-link">{{ link[0] | capitalize }}</a>
@@ -70,8 +66,8 @@ permalink: /progetti/
                             </article>
                         {% endfor %}
                     {% else %}
-                        <p class="error-text">Nessun progetto trovato.</p>
-                        <p class="help-text">Aggiungi progetti nella cartella _projects/</p>
+                        <p class="error-text">No projects found.</p>
+                        <p class="help-text">Add projects in the _projects/ folder</p>
                     {% endif %}
                 </div>
             </div>
@@ -86,8 +82,14 @@ document.addEventListener('DOMContentLoaded', function() {
         {% for project in site.projects %}
         {
             title: {{ project.title | jsonify }},
+            excerpt: {{ project.excerpt | strip_html | jsonify }},
             tech: {{ project.tech | jsonify }},
-            element: null
+            date: {{ project.date | date: "%B %Y" | jsonify }},
+            status: {{ project.status | jsonify }},
+            type: {{ project.type | jsonify }},
+            url: {{ project.url | relative_url | jsonify }},
+            links: {{ project.links | jsonify }},
+            element: null // sarà popolato dopo
         }{% unless forloop.last %},{% endunless %}
         {% endfor %}
     ];
@@ -97,6 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectsContainer = document.getElementById('projects-container');
     
     let activeFilters = new Set();
+    let allProjects = [];
     
     // Inizializza i progetti
     function initProjects() {
@@ -104,84 +107,91 @@ document.addEventListener('DOMContentLoaded', function() {
         projects.forEach((project, index) => {
             if (projectElements[index]) {
                 project.element = projectElements[index];
+                allProjects.push(project);
             }
         });
         
         generateTechFilters();
+        updateSearchInfo();
     }
     
     // Genera i filtri per tecnologie
     function generateTechFilters() {
         const techCount = {};
         
-        // Conta le occorrenze di ogni tecnologia
         projects.forEach(project => {
-            if (project.tech && Array.isArray(project.tech)) {
+            if (project.tech) {
                 project.tech.forEach(tech => {
                     techCount[tech] = (techCount[tech] || 0) + 1;
                 });
             }
         });
         
-        // Ordina le tecnologie per frequenza
-        const sortedTech = Object.entries(techCount)
-            .sort((a, b) => b[1] - a[1])
-            .map(entry => entry[0]);
+        const sortedTechs = Object.keys(techCount).sort();
         
-        // Crea i tag dei filtri
-        sortedTech.forEach(tech => {
-            const tag = document.createElement('button');
-            tag.className = 'filter-tag';
-            tag.textContent = tech;
-            tag.addEventListener('click', () => toggleFilter(tech, tag));
-            techFilters.appendChild(tag);
+        sortedTechs.forEach(tech => {
+            const filterTag = document.createElement('span');
+            filterTag.className = 'filter-tag';
+            filterTag.dataset.tech = tech;
+            filterTag.textContent = tech;
+            
+            filterTag.addEventListener('click', function() {
+                toggleFilter(tech, this);
+            });
+            
+            techFilters.appendChild(filterTag);
         });
     }
     
     // Toggle filtro
-    function toggleFilter(tech, tagElement) {
+    function toggleFilter(tech, element) {
         if (activeFilters.has(tech)) {
             activeFilters.delete(tech);
-            tagElement.classList.remove('active');
+            element.classList.remove('active');
         } else {
             activeFilters.add(tech);
-            tagElement.classList.add('active');
+            element.classList.add('active');
         }
         
         filterProjects();
+        updateSearchInfo();
     }
     
-    // Filtra i progetti
+    // Filtra progetti
     function filterProjects() {
         let visibleCount = 0;
         
         projects.forEach(project => {
-            let shouldShow = true;
+            if (!project.element) return;
             
-            // Se ci sono filtri attivi, controlla se il progetto li soddisfa
+            let matchesFilter = true;
+            
+            // Controllo filtri tecnologie
             if (activeFilters.size > 0) {
-                const projectTech = project.tech || [];
-                const hasMatchingTech = Array.from(activeFilters).some(filter => 
-                    projectTech.includes(filter)
-                );
-                
-                shouldShow = hasMatchingTech;
+                if (!project.tech) {
+                    matchesFilter = false;
+                } else {
+                    matchesFilter = project.tech.some(tech => activeFilters.has(tech));
+                }
             }
             
-            if (project.element) {
-                if (shouldShow) {
-                    project.element.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    project.element.style.display = 'none';
-                }
+            // Mostra/nascondi progetto
+            if (matchesFilter) {
+                project.element.classList.remove('search-hidden');
+                visibleCount++;
+            } else {
+                project.element.classList.add('search-hidden');
             }
         });
         
         return visibleCount;
     }
     
-    // Inizializza
-    initProjects();
+    // Inizializza quando il DOM è pronto
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProjects);
+    } else {
+        initProjects();
+    }
 });
 </script>

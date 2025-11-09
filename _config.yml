@@ -32,7 +32,7 @@ remote_theme: chesterhow/tale
 #theme: tale
 header_pages:
   - about.html
-  - progetti.html
+  - projects.html
   - blog.html
 
 # Plugins
@@ -50,9 +50,9 @@ paginate_path: "/blog/page:num/"
 collections:
   projects:
     output: true
-    permalink: /progetti/:name/
+    permalink: /projects/:name/
 
-# Defaults per i progetti
+# Defaults for projects
 defaults:
   - scope:
       path: "_projects"
