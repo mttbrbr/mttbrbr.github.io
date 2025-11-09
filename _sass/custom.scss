@@ -5,17 +5,25 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: var(--background) !important;
+  min-height: 100vh;
+}
+
 // Font monospace come nello screenshot
 body {
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
   font-size: 15px;
   line-height: 1.6;
-  color: var(--text-primary);
-  background: var(--background);
+  color: var(--text-primary) !important;
+  background-color: var(--background) !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 400;
   transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 // Container con più spazio e padding ottimizzato
@@ -31,12 +39,16 @@ body {
   min-height: auto !important;
   padding: 0 !important;
   margin-bottom: 40px; // ridotto
+  margin-top: 0 !important;
   text-align: center;
-  background: var(--background) !important;
+  background-color: var(--background) !important;
+  position: relative;
+  width: 100%;
   
   .wrapper {
     padding: 0 !important;
     max-width: none !important;
+    background-color: transparent !important;
   }
   
   .site-title {
@@ -55,6 +67,12 @@ body {
       color: var(--text-secondary) !important;
     }
   }
+}
+
+// Pulsante tema con stili corretti
+#theme-toggle {
+  background-color: var(--accent-blue) !important;
+  color: var(--background) !important;
 }
   
 .site-nav {
@@ -1996,12 +2014,26 @@ body, html {
   color: var(--text-primary) !important;
 }
 
-.page-content {
+main, .page-content {
   background-color: var(--background) !important;
 }
 
 .wrapper {
   background-color: transparent !important;
+}
+
+/* Rimuovi qualsiasi sfondo bianco da elementi che potrebbero averlo */
+body:not(.light-theme) *:not(.terminal-content):not(code):not(pre):not(.highlight):not(.project-block):not(.post-preview) {
+  background-color: inherit;
+}
+
+body:not(.light-theme) body,
+body:not(.light-theme) html,
+body:not(.light-theme) main,
+body:not(.light-theme) .page-content,
+body:not(.light-theme) .site-header,
+body:not(.light-theme) .site-header .wrapper {
+  background-color: var(--background) !important;
 }
 
 /* Link e navigazione */
