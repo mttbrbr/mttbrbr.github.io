@@ -2510,3 +2510,225 @@ body:not(.light-theme) .site-footer a {
 
 /* Se in futuro vuoi eccezioni (es. vocare alcune card come accentuate),
    si può applicare una classe .card--accent che sovrascrive queste regole. */
+
+/* ===========================================================================
+   DARK THEME: OVERRIDE MASSIVO DI TUTTI I COLORI HARDCODED
+   Questa sezione forza tutti gli elementi a usare le variabili del tema scuro
+   quando body:not(.light-theme) è attivo
+   =========================================================================== */
+
+body:not(.light-theme) {
+  
+  /* Testi primari e secondari */
+  .post-link,
+  .post-title,
+  .post-title a,
+  .post-header .post-title,
+  .post-content h1,
+  .post-content h2,
+  .post-content h3,
+  .post-content h4,
+  .project-title,
+  .project-title a,
+  .project-header .project-title,
+  .project-header .project-title a,
+  .section-header,
+  .skill-name,
+  .project-link span,
+  .filter-tag,
+  .post-meta-line .file-name,
+  .categories-label,
+  .category-tag {
+    color: var(--text-primary) !important;
+  }
+  
+  /* Testi secondari e muted */
+  .post-excerpt,
+  .post-meta,
+  .post-header .post-meta,
+  .post-meta-line .file-permissions,
+  .post-meta-line .file-size,
+  .post-meta-line .file-date,
+  .project-meta,
+  .project-description,
+  .project-tags .tag,
+  blockquote p,
+  .section-header::before,
+  .post-categories,
+  .no-posts p {
+    color: var(--muted) !important;
+  }
+  
+  /* Links e hover states */
+  .post-link:visited,
+  .project-title a:visited {
+    color: var(--text-primary) !important;
+  }
+  
+  .post-link:hover,
+  .project-title a:hover {
+    color: var(--accent-blue) !important;
+  }
+  
+  /* Backgrounds */
+  blockquote,
+  .highlight,
+  .highlighter-rouge,
+  pre,
+  code,
+  .terminal-output pre,
+  .no-posts,
+  .skill-item {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+  }
+  
+  /* Border colors */
+  .project-header,
+  .post-preview,
+  .skill-item,
+  .terminal-output,
+  .filter-tag {
+    border-color: var(--border) !important;
+  }
+  
+  /* Buttons e interactive elements */
+  .project-link-btn,
+  .filter-tag,
+  .category-tag {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+    
+    &:hover {
+      background-color: var(--panel) !important;
+      color: var(--accent-blue) !important;
+    }
+  }
+  
+  /* Icon colors - mantengono i loro colori per riconoscibilità */
+  .link-icon.github {
+    color: var(--text-primary) !important;
+  }
+  
+  .link-icon.external,
+  .link-icon.demo {
+    color: var(--accent-blue) !important;
+  }
+  
+  /* Progress bars e status indicators - mantengono colori semantici */
+  .status-active {
+    color: #4caf50 !important; /* verde ok anche in dark */
+  }
+  
+  .status-wip {
+    color: #ff9800 !important; /* arancione ok anche in dark */
+  }
+  
+  .status-planned {
+    color: #2196f3 !important; /* blu ok anche in dark */
+  }
+  
+  /* Skills/Tags */
+  .skill-level-bar,
+  .progress-bar {
+    background-color: var(--surface) !important;
+    
+    .progress-fill {
+      background-color: var(--accent-blue) !important;
+    }
+  }
+  
+  /* Footer */
+  .site-footer {
+    background-color: var(--background) !important;
+    border-color: var(--border) !important;
+    
+    p, a, .footer-heading {
+      color: var(--text-secondary) !important;
+    }
+  }
+  
+  /* Assicurati che il testo su sfondi chiari/scuri sia sempre leggibile */
+  .terminal-content,
+  .about .terminal-content {
+    background-color: var(--terminal-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border) !important;
+  }
+  
+  /* Profile section */
+  .profile-info h2,
+  .profile-info h3,
+  .profile-info p,
+  .profile-info li {
+    color: var(--text-primary) !important;
+  }
+  
+  /* Text emphasis */
+  strong, b {
+    color: var(--text-primary) !important;
+  }
+  
+  em, i {
+    color: var(--text-secondary) !important;
+  }
+  
+  /* Code blocks */
+  code {
+    color: var(--text-primary) !important;
+    background-color: var(--surface) !important;
+  }
+  
+  pre code {
+    color: var(--text-primary) !important;
+  }
+  
+  /* Tables */
+  table {
+    border-color: var(--border) !important;
+    
+    th, td {
+      border-color: var(--border) !important;
+      color: var(--text-primary) !important;
+    }
+    
+    th {
+      background-color: var(--surface) !important;
+    }
+    
+    tr:nth-child(even) {
+      background-color: var(--panel) !important;
+    }
+  }
+  
+  /* Input fields se mai ci fossero form */
+  input, textarea, select {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+    
+    &:focus {
+      border-color: var(--accent-blue) !important;
+    }
+  }
+  
+  /* Scrollbars per webkit browsers */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+    
+    &:hover {
+      background: var(--muted);
+    }
+  }
+}
