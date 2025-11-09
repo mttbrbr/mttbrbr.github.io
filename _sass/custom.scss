@@ -709,21 +709,24 @@ blockquote {
 }
 
 .blog {
+  background-color: transparent !important;
+  
   .page-header {
     margin-top: 60px;
     margin-bottom: 80px;
     text-align: center;
     padding: 30px 0;
+    background-color: transparent !important;
     
     .page-title {
       font-size: 28px !important;
       font-weight: 600 !important;
-      color: #333 !important;
+      color: var(--text-primary) !important;
       margin: 0 0 15px 0 !important;
     }
     
     .page-subtitle {
-      color: #666 !important;
+      color: var(--muted) !important;
       font-size: 16px;
       margin: 0;
       font-style: italic;
@@ -850,22 +853,25 @@ blockquote {
 }
 
 .projects {
+  background-color: transparent !important;
+  
   .page-header {
     margin-top: 60px;
     margin-bottom: 80px;
     text-align: center;
     padding: 30px 0;
+    background-color: transparent !important;
     
     .page-title {
       font-size: 28px !important;
       font-weight: 600 !important;
-      color: #333 !important;
+      color: var(--text-primary) !important;
       margin: 0 0 15px 0 !important;
       line-height: 1.2;
     }
     
     .page-subtitle {
-      color: #666 !important;
+      color: var(--muted) !important;
       font-size: 16px;
       margin: 0;
       font-style: italic;
@@ -1117,11 +1123,14 @@ blockquote {
 
 // About
 .about {
+  background-color: transparent !important;
+  
   .page-header {
     margin-top: 60px;
     margin-bottom: 80px;
     text-align: center;
     padding: 30px 0;
+    background-color: transparent !important;
     
     .page-title {
       font-size: 28px !important;
@@ -2022,6 +2031,15 @@ main, .page-content {
   background-color: transparent !important;
 }
 
+/* Forza background trasparente su tutti i container di pagina */
+.page, .about, .blog, .projects {
+  background-color: transparent !important;
+}
+
+.page-header {
+  background-color: transparent !important;
+}
+
 /* Rimuovi qualsiasi sfondo bianco da elementi che potrebbero averlo */
 body:not(.light-theme) *:not(.terminal-content):not(code):not(pre):not(.highlight):not(.project-block):not(.post-preview) {
   background-color: inherit;
@@ -2032,7 +2050,9 @@ body:not(.light-theme) html,
 body:not(.light-theme) main,
 body:not(.light-theme) .page-content,
 body:not(.light-theme) .site-header,
-body:not(.light-theme) .site-header .wrapper {
+body:not(.light-theme) .site-header .wrapper,
+body:not(.light-theme) .page,
+body:not(.light-theme) .page-header {
   background-color: var(--background) !important;
 }
 
