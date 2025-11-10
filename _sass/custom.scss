@@ -734,9 +734,106 @@ li:last-child {
   padding: 15px;
 }
 
+.skill-category {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.skill-category h3 {
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: var(--text-primary);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  display: inline-block;
+  background: var(--meta-bg);
+  color: var(--muted-2);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  background: var(--accent-blue);
+  color: var(--background);
+  border-color: var(--accent-blue);
+  transform: translateY(-2px);
+}
+
 .skill-name {
   font-weight: 600;
   margin-bottom: 8px;
+}
+
+/* Contact Section */
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  background: var(--accent-blue);
+  color: var(--background);
+  border-color: var(--accent-blue);
+  transform: translateX(5px);
+}
+
+.contact-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.contact-label {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.contact-value {
+  color: var(--muted);
+  flex: 1;
+}
+
+.contact-link:hover .contact-value {
+  color: var(--background);
+}
+
+@media (max-width: 480px) {
+  .contact-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .contact-label {
+    min-width: auto;
+  }
 }
 
 /* =============================================================================
@@ -748,6 +845,45 @@ li:last-child {
   padding: 30px 0;
   margin-top: 60px;
   text-align: center;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.footer-links a {
+  color: var(--text-primary);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-blue);
+}
+
+.footer-links .separator {
+  color: var(--muted);
+}
+
+@media (max-width: 480px) {
+  .footer-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .footer-links .separator {
+    display: none;
+  }
 }
 
 .site-footer p,

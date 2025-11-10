@@ -1,45 +1,17 @@
 <footer class="site-footer">
     <div class="wrapper">
-        <div class="terminal-section">
-            <div class="terminal-header"></div>
-            <div class="terminal-content">
-                <div class="footer-col-wrapper">
-                    <div class="footer-col footer-col-1">
-                        <h3>Contacts</h3>
-                        <ul class="contact-list">
-                            <li>{{ site.email }}</li>
-                            <li>
-                                <a href="https://github.com/{{ site.github_username }}">
-                                    GitHub: {{ site.github_username }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://twitter.com/{{ site.twitter_username }}">
-                                    Mastodon: {{ site.mastodon_username }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!---
-                    <div class="footer-col footer-col-2">
-                        <h3>Navigation.tree</h3>
-                        <ul class="page-list">
-                            <li><a href="{{ '/about/' | relative_url }}">Chi sono</a></li>
-                            <li><a href="{{ '/progetti/' | relative_url }}">Progetti</a></li>
-                            <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
-                        </ul>
-                    </div>
-                
-                    <div class="footer-col footer-col-3">
-                        <h3>Description.txt</h3>
-                        <p>{{ site.description | escape }}</p>
-                    </div>-->
-                </div>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <span class="separator">•</span>
+                <a href="https://linkedin.com/in/matteo-barbieri" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <span class="separator">•</span>
+                <a href="mailto:{{ site.email }}">Email</a>
             </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>{{ 'now' | date: "%Y" }} {{ site.title }} - All rights reserved | Built with Jekyll</p>
+            
+            <div class="footer-bottom">
+                <p>{{ 'now' | date: "%Y" }} {{ site.title }} - Built with Jekyll</p>
+            </div>
         </div>
     </div>
 <script>
