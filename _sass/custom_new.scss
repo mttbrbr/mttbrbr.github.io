@@ -1,0 +1,892 @@
+/* ===========================================================================
+   MATTEO BARBIERI - PERSONAL WEBSITE STYLES
+   Organized, clean, and theme-aware CSS
+   =========================================================================== */
+
+/* ===========================================================================
+   1. RESET & BASE STYLES
+   =========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--background) !important;
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace !important;
+  font-size: clamp(14px, 2.5vw, 15px);
+  line-height: 1.6;
+  color: var(--text-primary) !important;
+  background-color: var(--background) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ===========================================================================
+   2. CSS VARIABLES - THEME SYSTEM
+   =========================================================================== */
+
+:root {
+  /* Light theme (default) */
+  --cream: #111217;
+  --dark-grey: #f7efe6;
+  --background: #f7efe6;
+  --surface: #ffffff;
+  --panel: #fafafa;
+  --text-primary: #111217;
+  --text-secondary: #333333;
+  --muted: #666666;
+  --muted-2: #888888;
+  --accent-blue: #64c8ff;
+  --accent: var(--accent-blue);
+  --hex-green-1: #00ff88;
+  --border: #e6ded4;
+  --meta-bg: rgba(0,0,0,0.03);
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #6f6b63;
+  --link-color: #1e1f21;
+  --link-hover: var(--accent-blue);
+  --terminal-bg: #fffaf5;
+  --card-shadow: rgba(0,0,0,0.06);
+  --badge-bg: #f5f5f5;
+  --badge-color: #666666;
+}
+
+body:not(.light-theme) {
+  /* Dark theme */
+  --cream: #f7efe6;
+  --dark-grey: #111217;
+  --background: #111217;
+  --surface: #1e1e21;
+  --panel: #161618;
+  --text-primary: #f7efe6;
+  --text-secondary: #efe9df;
+  --muted: #d6cfc5;
+  --muted-2: #bfb6aa;
+  --border: #29292b;
+  --meta-bg: rgba(255,255,255,0.04);
+  --btn-primary-bg: #333333;
+  --btn-primary-color: #ffffff;
+  --btn-secondary-color: #d6cfc5;
+  --link-color: var(--cream);
+  --link-hover: var(--accent-blue);
+  --terminal-bg: #1a1a1d;
+  --card-shadow: rgba(0,0,0,0.3);
+  --title-color: var(--cream);
+  --badge-bg: var(--surface);
+  --badge-color: var(--muted);
+}
+
+/* Global application */
+body, html {
+  background-color: var(--background) !important;
+  color: var(--text-primary) !important;
+}
+
+main, .page-content {
+  background-color: var(--background) !important;
+  padding: 0 !important;
+  flex: none !important;
+}
+
+.wrapper {
+  background-color: transparent !important;
+}
+
+/* ===========================================================================
+   3. LAYOUT - WRAPPER & CONTAINERS
+   =========================================================================== */
+
+.wrapper {
+  max-width: 800px !important;
+  margin: 0 auto;
+  padding: 40px 24px !important;
+  
+  @media (max-width: 768px) {
+    padding: 30px 20px !important;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 20px 16px !important;
+  }
+}
+
+.page, .about, .blog, .projects {
+  background-color: transparent !important;
+}
+
+.page-header {
+  background-color: transparent !important;
+}
+
+/* ===========================================================================
+   4. HEADER & NAVIGATION
+   =========================================================================== */
+
+.site-header {
+  border: none !important;
+  min-height: auto !important;
+  padding: 20px 0 !important;
+  margin-bottom: 40px;
+  margin-top: 0 !important;
+  text-align: center;
+  background-color: var(--background) !important;
+  position: relative;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    padding: 15px 0 !important;
+    margin-bottom: 30px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 10px 0 !important;
+    margin-bottom: 20px;
+  }
+  
+  .wrapper {
+    padding: 0 20px !important;
+    max-width: none !important;
+    background-color: transparent !important;
+    
+    @media (max-width: 480px) {
+      padding: 0 16px !important;
+    }
+  }
+  
+  .site-title {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    margin-right: 0 !important;
+    letter-spacing: 0;
+    
+    &:visited {
+      color: var(--text-primary) !important;
+    }
+    
+    &:hover {
+      color: var(--text-secondary) !important;
+    }
+  }
+}
+
+/* Navigation */
+.site-nav {
+  position: static !important;
+  float: none !important;
+  border: none !important;
+  background-color: transparent !important;
+  text-align: center;
+  margin-top: 30px;
+  
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    margin-top: 15px;
+  }
+  
+  .nav-trigger, .menu-icon {
+    display: none !important;
+  }
+  
+  .trigger {
+    background-color: transparent !important;
+    border: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    
+    @media (max-width: 768px) {
+      gap: 30px;
+    }
+    
+    @media (max-width: 480px) {
+      gap: 20px;
+      flex-direction: column;
+    }
+  }
+  
+  .page-link, a {
+    color: var(--text-primary) !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    text-decoration: none !important;
+    border: none !important;
+    background: none !important;
+    transition: color 0.2s ease !important;
+    
+    @media (max-width: 768px) {
+      font-size: 14px !important;
+    }
+    
+    @media (max-width: 480px) {
+      font-size: 16px !important;
+      padding: 8px 0 !important;
+    }
+    
+    &:hover {
+      color: var(--accent-blue) !important;
+      text-decoration: none !important;
+      background: none !important;
+    }
+    
+    &:visited {
+      color: var(--text-primary) !important;
+    }
+  }
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+  background-color: var(--accent-blue) !important;
+  color: var(--background) !important;
+  position: fixed !important;
+  top: 1.2rem !important;
+  right: 2rem !important;
+  z-index: 9999 !important;
+  font-size: 14px !important;
+  
+  @media (max-width: 768px) {
+    top: 1rem !important;
+    right: 1rem !important;
+    padding: 0.6rem 1rem !important;
+    font-size: 13px !important;
+  }
+  
+  @media (max-width: 480px) {
+    top: 0.8rem !important;
+    right: 0.8rem !important;
+    padding: 0.5rem 0.8rem !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ===========================================================================
+   5. TYPOGRAPHY
+   =========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 30px !important;
+  margin-bottom: 18px !important;
+  line-height: 1.3 !important;
+  color: var(--text-primary) !important;
+  
+  @media (max-width: 768px) {
+    margin-top: 24px !important;
+    margin-bottom: 14px !important;
+  }
+  
+  @media (max-width: 480px) {
+    margin-top: 20px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  &:first-child {
+    margin-top: 0 !important;
+  }
+}
+
+h1 {
+  font-size: clamp(24px, 5vw, 32px) !important;
+  font-weight: 700 !important;
+}
+
+h2 {
+  font-size: clamp(20px, 4vw, 26px) !important;
+  font-weight: 600 !important;
+}
+
+h3 {
+  font-size: clamp(18px, 3.5vw, 22px) !important;
+  font-weight: 600 !important;
+}
+
+h4 {
+  font-size: clamp(16px, 3vw, 18px) !important;
+  font-weight: 600 !important;
+}
+
+h5, h6 {
+  font-size: clamp(14px, 2.5vw, 16px) !important;
+  font-weight: 600 !important;
+}
+
+p {
+  margin-bottom: 18px !important;
+  line-height: 1.7 !important;
+  
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--link-hover);
+  }
+  
+  &:visited {
+    color: var(--link-color);
+  }
+}
+
+strong, b {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+em, i {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Lists */
+ul, ol {
+  margin-bottom: 20px !important;
+  padding-left: 25px !important;
+  
+  li {
+    margin-bottom: 8px !important;
+    line-height: 1.7 !important;
+    
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 30px 0 !important;
+  padding: 25px 30px !important;
+  background: var(--surface) !important;
+  border-left: 4px solid var(--border) !important;
+  border-radius: 4px;
+  
+  p {
+    margin-bottom: 15px !important;
+    color: var(--muted) !important;
+    font-style: italic;
+    
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+/* Code */
+code {
+  font-family: inherit;
+  font-size: 0.9em;
+  padding: 2px 6px;
+  background-color: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border-radius: 3px;
+}
+
+pre {
+  background-color: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 20px 0;
+  
+  code {
+    background: none;
+    padding: 0;
+    color: var(--text-primary) !important;
+  }
+}
+
+/* ===========================================================================
+   6. PAGE HEADERS
+   =========================================================================== */
+
+.page-header {
+  margin-top: 0 !important;
+  margin-bottom: 80px;
+  text-align: center;
+  padding: 30px 0;
+  background-color: transparent !important;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 60px;
+    padding: 24px 0;
+  }
+  
+  @media (max-width: 480px) {
+    margin-bottom: 40px;
+    padding: 20px 0;
+  }
+  
+  .page-title {
+    font-size: clamp(24px, 5vw, 28px) !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin: 0 0 15px 0 !important;
+    line-height: 1.2;
+  }
+  
+  .page-subtitle {
+    color: var(--muted) !important;
+    font-size: clamp(14px, 3vw, 16px) !important;
+    margin: 0;
+    font-style: italic;
+    line-height: 1.5;
+  }
+}
+
+/* ===========================================================================
+   7. TERMINAL SECTIONS
+   =========================================================================== */
+
+.terminal-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 0;
+  
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 16px 0;
+  }
+  
+  .terminal-content {
+    padding: 30px !important;
+    border-radius: 6px;
+    overflow-x: auto;
+    background-color: var(--terminal-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+    
+    @media (max-width: 768px) {
+      padding: 24px !important;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 16px !important;
+      border-radius: 4px;
+    }
+  }
+}
+
+/* ===========================================================================
+   8. PROJECTS
+   =========================================================================== */
+
+.projects {
+  background-color: transparent !important;
+}
+
+.projects-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 0;
+  
+  @media (max-width: 768px) {
+    padding: 20px 0;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 16px 0;
+  }
+}
+
+.project-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 25px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+  
+  &:hover {
+    box-shadow: 0 4px 12px var(--card-shadow);
+    transform: translateY(-2px);
+  }
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.project-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+  
+  @media (max-width: 480px) {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+  
+  .project-title {
+    font-size: clamp(20px, 4vw, 26px) !important;
+    font-weight: 700 !important;
+    margin: 0 0 12px 0 !important;
+    line-height: 1.2;
+    
+    a {
+      color: var(--text-primary) !important;
+      text-decoration: none !important;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        color: var(--accent-blue) !important;
+      }
+    }
+  }
+}
+
+/* Project metadata (date, tags, status) */
+.project-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.project-date,
+.project-type,
+.project-status,
+.category-tag,
+.filter-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  background-color: var(--badge-bg) !important;
+  color: var(--badge-color) !important;
+  border: 1px solid var(--border) !important;
+  transition: all 0.2s ease;
+}
+
+/* Status badges con colori semantici */
+.project-status,
+.status-badge {
+  &.status-production,
+  &.status-active {
+    background-color: rgba(76, 175, 80, 0.15) !important;
+    color: #4caf50 !important;
+    border-color: rgba(76, 175, 80, 0.3) !important;
+  }
+  
+  &.status-development,
+  &.status-wip {
+    background-color: rgba(255, 152, 0, 0.15) !important;
+    color: #ff9800 !important;
+    border-color: rgba(255, 152, 0, 0.3) !important;
+  }
+  
+  &.status-completed,
+  &.status-planned {
+    background-color: rgba(33, 150, 243, 0.15) !important;
+    color: #2196f3 !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+  }
+}
+
+.project-description {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Project tags */
+.project-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  
+  .tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    background-color: var(--badge-bg) !important;
+    color: var(--badge-color) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 3px;
+  }
+}
+
+/* ===========================================================================
+   9. BLOG
+   =========================================================================== */
+
+.blog {
+  background-color: transparent !important;
+}
+
+.posts-list {
+  .post-preview {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+    
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+  }
+  
+  .post-title {
+    font-size: clamp(18px, 3.5vw, 22px) !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 10px !important;
+    
+    a {
+      color: var(--text-primary) !important;
+      text-decoration: none !important;
+      
+      &:hover {
+        color: var(--accent-blue) !important;
+      }
+    }
+  }
+  
+  .post-meta {
+    font-size: 13px;
+    color: var(--muted) !important;
+    margin-bottom: 12px;
+  }
+  
+  .post-excerpt {
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+}
+
+/* ===========================================================================
+   10. ABOUT PAGE
+   =========================================================================== */
+
+.about {
+  background-color: transparent !important;
+  
+  .profile-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+  
+  .profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--border);
+  }
+  
+  .profile-info {
+    flex: 1;
+    
+    h2, h3, p, li {
+      color: var(--text-primary) !important;
+    }
+  }
+}
+
+/* Skills section */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.skill-item {
+  padding: 12px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  
+  .skill-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  
+  .skill-level {
+    font-size: 12px;
+    color: var(--muted);
+  }
+}
+
+/* ===========================================================================
+   11. FOOTER
+   =========================================================================== */
+
+.site-footer {
+  background-color: var(--background) !important;
+  border-top: 1px solid var(--border) !important;
+  padding: 30px 0;
+  margin-top: 60px;
+  
+  p, a, .footer-heading {
+    color: var(--text-secondary) !important;
+  }
+  
+  a:hover {
+    color: var(--accent-blue) !important;
+  }
+}
+
+/* ===========================================================================
+   12. UTILITIES
+   =========================================================================== */
+
+/* Responsive utilities */
+.hide-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 769px) {
+    display: none !important;
+  }
+}
+
+/* Text utilities */
+.text-center {
+  text-align: center !important;
+}
+
+.text-muted {
+  color: var(--muted) !important;
+}
+
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+/* Spacing utilities */
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 0.5rem !important; }
+.mb-2 { margin-bottom: 1rem !important; }
+.mb-3 { margin-bottom: 1.5rem !important; }
+.mb-4 { margin-bottom: 2rem !important; }
+
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: 0.5rem !important; }
+.mt-2 { margin-top: 1rem !important; }
+.mt-3 { margin-top: 1.5rem !important; }
+.mt-4 { margin-top: 2rem !important; }
+
+/* ===========================================================================
+   13. DARK THEME - COMPREHENSIVE OVERRIDES
+   =========================================================================== */
+
+body:not(.light-theme) {
+  
+  /* Force background on all containers */
+  body,
+  html,
+  main,
+  .page-content,
+  .site-header,
+  .site-header .wrapper,
+  .page,
+  .page-header,
+  .about,
+  .blog,
+  .projects {
+    background-color: var(--background) !important;
+  }
+  
+  /* Scrollbars (webkit) */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+    
+    &:hover {
+      background: var(--muted);
+    }
+  }
+  
+  /* Tables */
+  table {
+    border-color: var(--border) !important;
+    
+    th, td {
+      border-color: var(--border) !important;
+      color: var(--text-primary) !important;
+    }
+    
+    th {
+      background-color: var(--surface) !important;
+    }
+    
+    tr:nth-child(even) {
+      background-color: var(--panel) !important;
+    }
+  }
+  
+  /* Forms (if any) */
+  input, textarea, select {
+    background-color: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+    
+    &:focus {
+      border-color: var(--accent-blue) !important;
+    }
+  }
+}
