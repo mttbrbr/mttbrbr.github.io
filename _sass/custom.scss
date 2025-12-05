@@ -892,6 +892,66 @@ li:last-child {
   font-size: 14px;
 }
 
+.footer-bottom a {
+  color: var(--muted);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.footer-bottom a:hover {
+  color: var(--accent-blue);
+}
+
+/* Privacy Page */
+.privacy-content {
+  line-height: 1.7;
+}
+
+.privacy-content h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.privacy-content h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.privacy-content h3 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.privacy-content ul {
+  margin: 15px 0;
+  padding-left: 30px;
+}
+
+.privacy-content li {
+  margin-bottom: 8px;
+}
+
+.privacy-content a {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
+.privacy-content a:hover {
+  color: var(--text-primary);
+}
+
+.last-updated {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 14px;
+}
+
 /* =============================================================================
    DARK THEME EXTRAS
    ============================================================================= */
