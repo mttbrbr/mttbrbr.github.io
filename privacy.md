@@ -17,7 +17,7 @@ This is a personal blog with minimal data collection. I respect your privacy and
 The data controller for this website is:
 
 **Matteo Barbieri**  
-Email: matteo.barbieri@example.com
+Email: privacy.mttbrbr@gmail.com
 
 ## Hosting and Technical Data
 
@@ -98,7 +98,7 @@ I may update this Privacy Policy from time to time. Any changes will be posted o
 
 If you have any questions or concerns about this Privacy Policy, please contact me at:
 
-**Email:** matteo.barbieri@example.com
+**Email:** privacy.mttbrbr@gmail.com
 
 ## Legal Basis for Processing (GDPR)
 
