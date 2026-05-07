@@ -1,24 +1,30 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="description" content="{{ site.description }}">
     <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
-    {% seo %}
-    {% feed_meta %}
 </head>
 <body>
-    {% include header.html %}
+    <header class="site-header">
+        <nav>
+            <a href="{{ '/' | relative_url }}" class="site-title">Matteo Barbieri</a>
+            <div class="nav-links">
+                <a href="{{ '/projects/' | relative_url }}">Projects</a>
+                <a href="{{ '/blog/' | relative_url }}">Blog</a>
+                <a href="{{ '/about/' | relative_url }}">About</a>
+            </div>
+        </nav>
+    </header>
     
     <main class="page-content">
-        <div class="wrapper">
-            {{ content }}
-        </div>
+        {{ content }}
     </main>
     
-    {% include footer.html %}
+    <footer class="site-footer">
+        <p>&copy; {{ site.time | date: '%Y' }} Matteo Barbieri. <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a></p>
+    </footer>
 </body>
 </html>

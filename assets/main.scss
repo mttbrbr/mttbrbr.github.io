@@ -1,4 +1,277 @@
 ---
+# Solo per dire a Jekyll di processare questo file
 ---
 
-@import "custom";
+/* --- VARIABILI DI BASE (TEMA SCURO & MONOSPACE) --- */
+:root {
+  --bg-color: #0a0a0a;
+  --text-color: #e0e0e0;
+  --text-muted: #888888;
+  --link-color: #cccccc;
+  --link-hover: #000000;
+  --link-hover-bg: #ffffff;
+  --border-color: #222222;
+  --bg-secondary: #161616;
+  
+  /* Font mono come principale per tutto il sito */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* --- RESET & TYPOGRAPHY --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.3;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+h1 { font-size: 2.2rem; margin-top: 2rem; }
+h2 { font-size: 1.5rem; margin-top: 2rem; }
+p { margin-bottom: 1.5rem; color: #cccccc; }
+
+/* Questa regola è FUORI da :root */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  padding: 0 0.15rem; 
+  border-bottom: 1px solid var(--border-color); 
+  transition: all 0.1s ease;
+}
+
+a:hover {
+  color: var(--link-hover);
+  background-color: var(--link-hover-bg);
+  border-bottom-color: var(--link-hover-bg);
+}
+
+/* --- LAYOUT CENTRALE E BORDI --- */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-header, .page-content, .site-footer {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.site-header {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1.5rem;
+  }
+
+  .site-title {
+    font-weight: 700;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    border: none;
+    padding: 0.1rem 0.4rem;
+    margin-left: -0.4rem; /* Allinea visivamente il testo a sinistra nonostante il padding */
+    
+    &:hover {
+      color: var(--link-hover);
+      background-color: var(--link-hover-bg);
+    }
+  }
+
+  .nav-links a {
+    color: var(--text-muted); /* Di base restano grigio scuro per non distrarre */
+    margin-left: 1.5rem;
+    font-size: 0.95rem;
+    padding: 0.1rem 0.4rem;
+    
+    &:hover {
+      /* Richiamano l'effetto blocco cursore globale */
+      color: var(--link-hover);
+      background-color: var(--link-hover-bg);
+      border-bottom-color: var(--link-hover-bg);
+    }
+  }
+}
+
+.page-content {
+
+  flex: 1;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+  
+  h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.2rem;
+    color: var(--text-color);
+  }
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+  
+  li {
+    margin-bottom: 0.8rem;
+    
+    &::before {
+      content: '>';
+      color: var(--link-hover);
+      margin-right: 0.8rem;
+      font-weight: bold;
+    }
+    
+    a {
+      font-size: 1.05rem;
+    }
+  }
+}
+
+.site-footer {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  
+  a { color: var(--text-muted); }
+  a:hover { color: var(--text-color); }
+}
+
+/* --- COMPONENTI SPECIFICI --- */
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+.hero-section {
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+  
+  h1 { font-size: 3rem; }
+  p { font-size: 1.25rem; color: #b0b0b0; }
+}
+
+.project-item {
+  margin-bottom: 3.5rem;
+  
+  header {
+    margin-bottom: 0.5rem;
+    
+    h2 { margin: 0 0 0.25rem 0; font-size: 1.5rem; }
+    
+    .project-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  }
+
+  .project-description p {
+    color: #d0d0d0;
+  }
+
+  .project-tags {
+    margin-top: 1.2rem;
+    
+    .tag {
+      font-size: 0.8rem;
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      margin-right: 0.5rem;
+      color: var(--text-muted);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+/* --- BLOG POSTS --- */
+.post-item {
+  margin-bottom: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px dashed var(--border-color);
+  
+  /* Rimuove la linea tratteggiata dall'ultimo post */
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  header {
+    margin-bottom: 1rem;
+    
+    h2 { 
+      margin: 0 0 0.4rem 0; 
+      font-size: 1.6rem;
+    }
+    
+    .post-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 1rem;
+      
+      .post-words {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  .post-excerpt p {
+    color: #d0d0d0;
+    margin-bottom: 1rem;
+  }
+
+  .post-tags {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    
+    .tags-label {
+      margin-right: 0.5rem;
+    }
+    
+    .tag {
+      color: var(--link-color);
+      margin-right: 0.8rem;
+      
+      /* Aggiunge un finto hash # prima del tag per lo stile terminale */
+      &::before {
+        content: '#';
+        opacity: 0.5;
+      }
+    }
+  }
+}
