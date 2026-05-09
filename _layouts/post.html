@@ -8,11 +8,6 @@ layout: default
         <div class="post-meta">
             <span class="post-date"> {{ page.date | date: "%d %B %Y" }}</span>
             {% if page.categories %}
-                <span class="post-categories">
-                     
-                    {% for category in page.categories %}
-                        <span class="category-tag">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
-                    {% endfor %}
                 </span>
             {% endif %}
             {% if page.author %}
@@ -22,9 +17,6 @@ layout: default
     </header>
 
     <section class="terminal-section">
-        <div class="terminal-header">
-             {{ page.title }} - Contenuto del Post
-        </div>
         <div class="terminal-content">
             <div class="terminal-output">
                 <div class="post-content">
