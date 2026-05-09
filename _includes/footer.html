@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Persist theme in localStorage
         function setTheme(light) {
             document.body.classList.toggle('light-theme', light);
-            themeToggle.textContent = light ? '🌞 Theme' : '🌙 Theme';
+            themeToggle.textContent = light ? ' Theme' : ' Theme';
             localStorage.setItem('theme', light ? 'light' : 'dark');
         }
         // On load, apply saved theme (default is DARK)

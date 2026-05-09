@@ -5,31 +5,50 @@ permalink: /about/
 ---
 
 # {{ page.title }}
-<p class="subtitle">About me and my professional journey.</p>
+<p class="subtitle">Computational Fluid Dynamics | Numerical Modeling | Scientific Computing</p>
 
-## Bio
-I am an MSc student in Aeronautical Engineering at Politecnico di Milano. After completing my bachelor's degree in Aerospace Engineering, I decided to deepen my knowledge in aerodynamics and control systems.
+## Introduction
+I am an **MSc student in Aeronautical Engineering at Politecnico di Milano**, with a strong focus on numerical methods and computational simulation. My academic and professional interest lies in the development and optimization of high-fidelity simulation pipelines, exploring the intersection of fluid dynamics, numerical analysis, and high-performance computing.
 
-My passion for aerodynamics was cultivated within the Formula Student team DynamisPRC. During my first year, I participated in the design of the car, focusing on the development of the rear group. In my second season, I concentrated my efforts on CFD development for the aerodynamics department, leading the CFD subgroup.
+## Experience & Projects
 
-## Skills
+### **DynamisPRC - Formula Student Team**
+*Politecnico di Milano*
 
-### Design
-Inventor, Siemens NX, Solidworks
+*   **CFD Subgroup Leader:** Led the computational workflow for the aerodynamics department. I focused on optimizing simulation reliability, reducing turnaround time through process automation, and managing high-complexity mesh generation.
+*   **Computational Modeling:** Developed and validated numerical setups for vehicle components, focusing on solver stability and the correlation between CFD data and experimental results.
+*   **Workflow Automation:** Leveraged scripting to streamline post-processing and data analysis, ensuring a data-driven approach to performance evaluation.
 
-### Calculus, Simulation & Data Analysis
-Matlab, Python, Julia
+---
 
-### CFD
-OpenFOAM, Ansa
+## Technical Stack
 
-### Others
-Git, Linux, Docker
+### **Scientific Computing & Data**
+*   **Languages:** Python (NumPy, SciPy, Pandas), Julia (basic), Matlab.
+*   **Focus:** Numerical integration, optimization algorithms, data visualization.
+
+### **CFD & Numerical Simulation**
+*   **Solvers:** OpenFOAM (advanced setup and execution), Star-CCM+.
+*   **Preprocessing:** ANSA (automated meshing), Siemens NX.
+*   **Post-processing:** Paraview, customized Python scripts.
+
+### **Development Tools**
+*   **Environment:** Linux (Advanced Bash scripting), Docker for reproducible environments.
+*   **Version Control:** Git / GitHub (CI/CD for simulation workflows).
+
+---
+
+## Education
+*   **MSc in Aeronautical Engineering** | Politecnico di Milano
+    *   Focus: Computational Fluid Dynamics, Numerical Methods for PDE.
+*   **BSc in Aerospace Engineering** | Politecnico di Milano
+
+---
 
 ## Get in Touch
-Feel free to reach out for collaborations, questions, or just to connect.
+I'm always interested in discussing numerical methods, CFD optimization, or high-performance computing.
 
-* [GitHub (@mttbrbr)](https://github.com/mttbrbr)
-* [LinkedIn (Matteo Barbieri)](https://linkedin.com/in/matteo-barbieri)
-* [Email (privacy.mttbrbr@gmail.com)](mailto:privacy.mttbrbr@gmail.com)
+*   [**GitHub** (@mttbrbr)](https://github.com/mttbrbr)
+*   [**LinkedIn** (Matteo Barbieri)](https://linkedin.com/in/matteo-barbieri)
+*   [**Email** (privacy.mttbrbr@gmail.com)](mailto:privacy.mttbrbr@gmail.com)
 {: .contact-list }

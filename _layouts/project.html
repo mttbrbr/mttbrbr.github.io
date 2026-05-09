@@ -19,19 +19,19 @@ layout: default
                 <div class="project-info">
                     <div class="project-metadata">
                         {% if page.date %}
-                            <p><span class="meta-label">📅 Data:</span> {{ page.date | date: "%B %Y" }}</p>
+                            <p><span class="meta-label">Data:</span> {{ page.date | date: "%B %Y" }}</p>
                         {% endif %}
                         {% if page.type %}
-                            <p><span class="meta-label">🔧 Tipo:</span> {{ page.type | replace: "-", " " | capitalize }}</p>
+                            <p><span class="meta-label">Tipo:</span> {{ page.type | replace: "-", " " | capitalize }}</p>
                         {% endif %}
                         {% if page.status %}
-                            <p><span class="meta-label">🚀 Status:</span> <span class="status-badge status-{{ page.status }}">{{ page.status | capitalize }}</span></p>
+                            <p><span class="meta-label">Status:</span> <span class="status-badge status-{{ page.status }}">{{ page.status | capitalize }}</span></p>
                         {% endif %}
                     </div>
                     
                     {% if page.tech %}
                         <div class="project-tech-section">
-                            <h3>🛠️ Tecnologie utilizzate</h3>
+                            <h3> Tecnologie utilizzate</h3>
                             <div class="tech-grid">
                                 {% for tech in page.tech %}
                                     <span class="tech-tag">{{ tech }}</span>
@@ -47,11 +47,11 @@ layout: default
                 
                 {% if page.links %}
                     <div class="project-links">
-                        <h3>🔗 Links utili</h3>
+                        <h3> Links utili</h3>
                         <div class="links-grid">
                             {% for link in page.links %}
                                 <a href="{{ link[1] }}" class="project-link-btn" target="_blank">
-                                    <span class="link-icon">{% if link[0] == 'github' %}🐙{% elsif link[0] == 'demo' %}🌐{% elsif link[0] == 'report' %}📄{% else %}🔗{% endif %}</span>
+                                    <span class="link-icon">{% if link[0] == 'github' %}{% elsif link[0] == 'demo' %}{% elsif link[0] == 'report' %}{% else %}🔗{% endif %}</span>
                                     {{ link[0] | capitalize }}
                                 </a>
                             {% endfor %}

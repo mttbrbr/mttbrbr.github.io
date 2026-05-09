@@ -6,7 +6,7 @@ category: "CFD"
 type: "Computationl Fluid Dynamics"
 tech: ["PyTorch", "Python", "vDeepXDE"]
 status: "work in progress"
-excerpt: "Caption"
+excerpt: "Solutore neurale parametrico per la scia di Von Karman. Utilizza DeepXDE e campionamento adattivo dei residui per mappare il passaggio dal regime stazionario a quello instabile in un unico modello continuo."
 links:
   github: "https://github.com/mttbrbr/deep-surrogate-von-karman.git"
   report: "#"
