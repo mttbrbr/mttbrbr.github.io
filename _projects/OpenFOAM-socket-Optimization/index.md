@@ -68,6 +68,7 @@ export WM_LABEL_SIZE=32
 ### Comparison and Results
 
 | **Compiler Configuration**     | **Time (s)**  | Average Iteration Time| **Speedup** | **Notes**                |
+| :---                           | :---          | :---                  | :---        | :---                     |s
 | Standard (APT)                 | 8825.87       |                       | Baseline    | Compatibilità universale |
 | gcc -znver4                    | 8656.06       |                       |             |                          |
 | gcc -Ofast                     |               |                       |             |                          |
@@ -79,3 +80,5 @@ export WM_LABEL_SIZE=32
 
 ![Residuals baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/residuals_combined.png" | relative_url }})
 ![Iterations baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/iterations_grid.png" | relative_url }})
+
+

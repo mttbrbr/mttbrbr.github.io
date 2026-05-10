@@ -275,3 +275,10 @@ body {
     }
   }
 }
+.project-content img {
+    display: block;
+    max-width: 100%;    /* Impedisce all'immagine di uscire dai bordi */
+    height: auto;       /* Mantiene le proporzioni */
+    margin: 2rem auto;  /* La centra e dà respiro sopra e sotto */
+    border-radius: 4px; /* Un tocco di stile opzionale */
+}
