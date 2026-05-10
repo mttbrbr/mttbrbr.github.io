@@ -46,18 +46,6 @@ These flags influence how the processor solves math.
 
 ### Setup Clang
 
-### Comparison and Results
-
-| **Compiler Configuration**     | **Time (s)**  | Average Iteration Time| **Speedup** | **Notes**                |
-| Standard (APT)                 | 8825.87       |                       | Baseline    | Compatibilità universale |
-| gcc -znver4                    | 8656.06       |                       |             |                          |
-| gcc -Ofast                     |               |                       |             |                          |
-| gcc -znver4 -ffast-math        |               |                       |             |                          |
-| Clang -O3                      |               |                       |             |                          |
-| Clang -                        |               |                       |             |                          |
-| gcc (spdp)                     | 6398.86       |                       |             |                          |
-
-
 <a name="siren"></a>
 ## 2. Single Precision vs Double Precision
 ### Introduction
@@ -77,3 +65,17 @@ export WM_PRECISION_OPTION=SP
 
 export WM_LABEL_SIZE=32
 ```
+### Comparison and Results
+
+| **Compiler Configuration**     | **Time (s)**  | Average Iteration Time| **Speedup** | **Notes**                |
+| Standard (APT)                 | 8825.87       |                       | Baseline    | Compatibilità universale |
+| gcc -znver4                    | 8656.06       |                       |             |                          |
+| gcc -Ofast                     |               |                       |             |                          |
+| gcc -znver4 -ffast-math        |               |                       |             |                          |
+| Clang -O3                      |               |                       |             |                          |
+| Clang -                        |               |                       |             |                          |
+| gcc (spdp)                     | 6398.86       |                       |             |                          |
+
+
+![Residuals baseline](images/residuals_combined.png)
+![Iterations baseline](images/iterations_grid.png)
