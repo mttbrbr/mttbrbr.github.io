@@ -22,50 +22,42 @@ Compiling is a very delicate process because transforming code, which in OpenFOA
 The pursuit of computational performance has led me to study the main types of optimization possible. In particular, it is clear that the compiled distributed package must meet the need for compatibility with as many hardware configurations as possible. While this is the best approach when distributing a package online, it clashes with the requirement that the calculation must be performed securely and in the shortest possible time. A "generalist" compilation prevents the software from being tailored to our hardware. Recent processors have available SIMD (single instruction, multiple data) units that allow the same operation to be performed on multiple data points simultaneously. A specialized compilation can therefore unlock AVX, AVX2, and AX512. These specific technologies allow the processing of 4, 8, or even 16 numbers in a single clock cycle. On the memory side, a hardware-based compilation allows you to avoid making assumptions about the size of the L1, L2, and L3 cache levels and to take advantage of Loop Tiling, reorganizing the code so that the processed data fits perfectly into the cache, reducing the CPU's data wait times. Another important detail concerns the processor structure itself: by compiling for your hardware, you can differentiate the use of cores geared toward computational power and cores geared toward efficiency, reducing the penalty of a highly asymmetric configuration.
 
 ### Test configuraton
-To make the results as transparent as possible, this section illustrates the configuration I used for testing. The processor is a Ryzen 7900X3D with 12 cores spread across two different CCDs, 6 of which have an additional 64MB L3 cache. The RAM is DDR5 at 6000MT/s. The operating system used for testing is Ubuntu 22.04 LTS.
+To make the results as transparent as possible, this section illustrates the configuration I used for testing. The processor is a Ryzen 7900X3D with 12 cores spread across two different CCDs, 6 of which have an additional 64MB L3 cache. The RAM is DDR5 at 6000MT/s. The operating system used for testing is Ubuntu 22.04 LTS e OpenFOAM ESI v2312.
+The case used has 17M cells and is based on the incompressible and stationary motorbike tutorial. It can be found as a media mesh at the following link: https://develop.openfoam.com/committees/hpc/-/tree/develop/incompressible/simpleFoam/HPC_motorbike.
 
-### Flags 
+### Flags
+#### Flag -O
+We now introduce the general optimization flag "-O", which, followed by a number, introduces general optimizations in the compilation.
+- -O0: The compiler does not introduce any optimizations and is normally used in the code debugging phase;
+- -O2: This is the standard optimization flag for normal distributed binaries; it is a compromise between performance and the size of the final binary;
+- -O3: This is the maximum level of safe optimization. Loop unrolling and predictive vectorization are enabled, and it is the standard for OpenFOAM.
+- -Ofast: Removes some IEEE floating-point standard compliance. This type of optimization is not recommended because it can introduce rounding errors and numerical instability.
 
+#### Architectural Flags
+These flags allow the compiler to take full advantage of our hardware:
+- -march=native: Allows the compiler to read hardware information and use what it finds. In my experience, the compiler version should be taken into account; sometimes, with older operating systems, the included compiler does not contain the information for the latest technologies.
+- -mtune=native: This flag allows you to optimize performance on the local CPU without introducing tricks that could make the binary incompatible with other machines.
+- -msse4.2, -mavx, -mavx2, -mavx512f: Enable the corresponding technology's instruction sets.
+
+#### Specific Numerical Flags
+These flags influence how the processor solves math.
+- -ffast-math: Allows the compiler to reorder operations and transform $a/b$ into $a * (1/b)$. This allows for maximum performance but introduces risks due to the required decimal precision.
+- -fopenmp: Enables OpenMP, which allows processes to be managed as subprocesses. This may be useful for managing hybrid architectures.
+
+### Confronto e risultati
 
 <a name="siren"></a>
-## 2. SIREN Architecture vs. Tanh: Breaking the Gradient Barrier
-The choice of the activation function is critical for Physics-Informed machine learning. While many PINN implementations use `tanh`, this solver utilizes **Sinusoidal Representation Networks (SIREN)** (`sin` activation).
+## 2. Single Precision vs Double Precision
+### Introduction
+In scientific computing, the choice between Single Precision and Double Precision defines the tradeoff between simulation speed and the accuracy of numerical results. It all depends on the numerical precision with which we store the numbers. OpenFOAM typically uses 64-bit precision, which guarantees 15-17 significant decimal places, which ensures numerical stability and allows for better handling of very high gradients and highly distorted or very small grids. The tradeoff is the need to move a larger amount of data.
 
-### Why `sin` is superior to `tanh` for PDEs:
-1.  **Gradient Preservation:** The derivatives of a sine function are shifted sines (cosines). This means that the spatial and temporal gradients (and higher-order Hessians required by Navier-Stokes) maintain the same distribution and "energy" as the original signal. `tanh`, conversely, has derivatives that vanish as the input increases, leading to the **vanishing gradient problem** in deep PDE solvers.
-2.  **Spectral Bias & High Frequencies:** Standard networks (ReLU/Tanh) suffer from "spectral bias," learning low-frequency components first and struggling with sharp gradients. The periodic nature of **SIREN** allows the network to represent the fine, high-frequency details of the **Von Kármán vortices** and sharp boundary layers much more accurately.
-3.  **Hessian Stability:** Since Navier-Stokes involves second-order derivatives ($\nabla^2 \mathbf{u}$), having an activation function like `sin` that is non-zero in its second derivative is essential for stable backpropagation of the physical loss.
+### Memory-bound processes and the benefits of single precision
+In computational fluid dynamics, the main limitation is bandwidth. Moving data is a very expensive process; the CPU performs calculations every 0.5 nanoseconds, while RAM takes up to 50-100 nanoseconds to provide the necessary data. Furthermore, CPUs benefit from the methods described above to perform multiple operations simultaneously.
+Using single precision reduces the size of numbers, which go from 64 bits to 32 bits, significantly increasing the amount of data moved between RAM and the CPU. Problems arise when the solver doesn't have enough significant digits to continue iterating and converging.
 
+### The best of both worlds
+OpenFOAM allows the use of a "-spdp" compiler flag, which is a compromise between the two. Data stored in RAM is 32-bit, but the solver solves linear systems using 64-bit precision. This maintains good numerical stability in the solvers while optimizing data transfer between RAM and the CPU.
 
-<a name="rar"></a>
-## 3. Adaptive Training: The RAR Algorithm
-In fluid dynamics, the most critical physics occur in small, high-gradient regions (the wake and the boundary layer). A uniform distribution of collocation points is computationally wasteful.
-
-### Residual-based Adaptive Refinement (RAR)
-The implementation uses a 4-cycle **RAR algorithm**:
-1.  **Residual Evaluation:** Every 25,000 iterations, the model evaluates the Navier-Stokes residuals on 50,000 random spatio-temporal points.
-2.  **Point Injection:** The top 1,000 points with the highest absolute error—representing zones where the physics is not yet satisfied—are added to the training set.
-3.  **Focused Learning:** This effectively creates a "smart mesh" that dynamically densifies in the wake, ensuring high-fidelity results where the flow is most complex.
-
-
-<a name="optimization"></a>
-## 4. Hybrid Optimization & Loss Weighting
-
-### The Two-Stage Pipeline
-The training leverages two different optimization philosophies:
-* **Phase 1 (Adam):** 100,000 iterations to explore the loss landscape and establish the global flow topology. Adam's stochastic nature is perfect for overcoming local minima during the initial RAR cycles.
-* **Phase 2 (L-BFGS):** A second-order optimizer that uses curvature information (Hessian approximation). This is the "precision strike" that drives the physical residuals down to machine epsilon ($10^{-5}$ range), ensuring the solution is strictly physical.
-
-### Loss Hierarchy
-The loss function is heavily weighted to enforce boundary integrity:
-* **Cylinder No-Slip (Weight 100):** Prioritizes zero-velocity at the cylinder wall, the primary source of vorticity.
-* **Continuity (Weight 20):** Enforces incompressibility ($\nabla \cdot \mathbf{u} = 0$) as a hard constraint.
-
-
-<a name="hardware"></a>
-## 5. Hardware Acceleration & Performance
-The solver is optimized for **AMD GPU (ROCm)** architectures, utilizing specialized environment overrides to ensure compatibility and performance for large-scale tensor operations:
-
-```python
-os.environ["DDE_BACKEND"] = "pytorch"
-os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0" # Target: AMD RDNA2/3
+```
+export WM_PRECISION_OPTION=SPDP
+```
