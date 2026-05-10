@@ -78,7 +78,7 @@ export WM_LABEL_SIZE=32
 | gcc (spdp)                     | 6398.86       |                       |             |                          |
 
 
-![Residuals baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/residuals_combined.png" | relative_url }})
-![Iterations baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/iterations_grid.png" | relative_url }})
+![Residuals baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/residuals_combined.png" | relative_url }}){: width="800" }
+![Iterations baseline]({{ "/assets/projects/OpenFOAM-socket-Optimization/iterations_grid.png" | relative_url }}){: width="800" }
 
 
