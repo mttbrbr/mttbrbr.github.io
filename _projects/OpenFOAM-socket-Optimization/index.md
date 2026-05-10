@@ -47,6 +47,7 @@ These flags influence how the processor solves math.
 ### Setup Clang
 
 ### Comparison and Results
+
 | **Compiler Configuration**     | **Time (s)**  | Average Iteration Time| **Speedup** | **Notes**                |
 | Standard (APT)                 | 8825.87       |                       | Baseline    | Compatibilità universale |
 | gcc -znver4                    | 8656.06       |                       |             |                          |
