@@ -23,7 +23,7 @@ The pursuit of computational performance has led me to study the main types of o
 
 ### Test configuraton
 To make the results as transparent as possible, this section illustrates the configuration I used for testing. The processor is a Ryzen 7900X3D with 12 cores spread across two different CCDs, 6 of which have an additional 64MB L3 cache. The RAM is DDR5 at 6000MT/s. The operating system used for testing is Ubuntu 22.04 LTS e OpenFOAM ESI v2312.
-The case used has 17M cells and is based on the incompressible and stationary motorbike tutorial. It can be found as a media mesh at the following link: https://develop.openfoam.com/committees/hpc/-/tree/develop/incompressible/simpleFoam/HPC_motorbike.
+The case used has 17M cells and is based on the incompressible and stationary motorbike tutorial. It can be found as a media mesh at the following link: https://develop.openfoam.com/committees/hpc/-/tree/develop/incompressible/simpleFoam/HPC_motorbike. The simulation ran for 500 iterations and only one writeStep at 250 in the middle of the simulation.
 
 ### Flags
 #### Flag -O
@@ -44,7 +44,18 @@ These flags influence how the processor solves math.
 - -ffast-math: Allows the compiler to reorder operations and transform $a/b$ into $a * (1/b)$. This allows for maximum performance but introduces risks due to the required decimal precision.
 - -fopenmp: Enables OpenMP, which allows processes to be managed as subprocesses. This may be useful for managing hybrid architectures.
 
-### Confronto e risultati
+### Setup Clang
+
+### Comparison and Results
+| **Compiler Configuration**     | **Time (s)**  | Average Iteration Time| **Speedup** | **Notes**                |
+| Standard (APT)                 | 8825.87       |                       | Baseline    | Compatibilità universale |
+| gcc -znver4                    | 8656.06       |                       |             |                          |
+| gcc -Ofast                     |               |                       |             |                          |
+| gcc -znver4 -ffast-math        |               |                       |             |                          |
+| Clang -O3                      |               |                       |             |                          |
+| Clang -                        |               |                       |             |                          |
+| gcc (spdp)                     | 6398.86       |                       |             |                          |
+
 
 <a name="siren"></a>
 ## 2. Single Precision vs Double Precision
@@ -56,8 +67,12 @@ In computational fluid dynamics, the main limitation is bandwidth. Moving data i
 Using single precision reduces the size of numbers, which go from 64 bits to 32 bits, significantly increasing the amount of data moved between RAM and the CPU. Problems arise when the solver doesn't have enough significant digits to continue iterating and converging.
 
 ### The best of both worlds
-OpenFOAM allows the use of a "-spdp" compiler flag, which is a compromise between the two. Data stored in RAM is 32-bit, but the solver solves linear systems using 64-bit precision. This maintains good numerical stability in the solvers while optimizing data transfer between RAM and the CPU.
+OpenFOAM allows the use of a "-spdp" compiler flag, which is a compromise between the two. Data stored in RAM is in 32-bit format, but the solver solves linear systems using 64-bit precision. This allows for good numerical stability in solvers while optimizing data transfer between RAM and the CPU.
+
+### Setup
 
 ```
-export WM_PRECISION_OPTION=SPDP
+export WM_PRECISION_OPTION=SP
+
+export WM_LABEL_SIZE=32
 ```
