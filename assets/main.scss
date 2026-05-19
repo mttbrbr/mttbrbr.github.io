@@ -310,3 +310,36 @@ body {
   transition: width 0.1s ease-out;
 }
 
+
+/* --- COPY BUTTON FOR CODE BLOCKS --- */
+pre {
+  position: relative;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s, color 0.2s;
+}
+pre:hover .copy-btn {
+  opacity: 1;
+}
+.copy-btn:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+.copy-btn.copied {
+  background: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}
+

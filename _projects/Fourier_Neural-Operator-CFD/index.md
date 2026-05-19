@@ -59,3 +59,28 @@ Standard FFT operations would artificially smear flow information directly throu
 A binary mask $\mathcal{M}(x)$ is introduced, where $1$ represents the fluid domain and $0$ represents the solid geometry. This mask is concatenated with the input features (such as velocity components and pressure) and passed through the network. Furthermore, the loss function is mathematically weighted by this mask:
 $$ \mathcal{L} = \frac{1}{N} \sum_{i} \mathcal{M}(x_i) \left\| \hat{u}(x_i) - u_{true}(x_i) \right\|^2 $$
 This ensures that the optimizer completely ignores the unphysical region inside the cylinder during backpropagation, forcing the Neural Operator to strictly learn the shedding mechanics and pressure variations occurring in the wake.
+
+### Example: Masked Loss Implementation (PyTorch)
+
+```python
+import torch
+import torch.nn.functional as F
+
+def masked_l2_loss(pred, target, mask):
+    """
+    Computes the L2 loss only on the fluid domain.
+    mask: 1 for fluid, 0 for solid obstacle.
+    """
+    # Calculate squared error
+    squared_error = (pred - target) ** 2
+    
+    # Apply the mask
+    masked_error = squared_error * mask
+    
+    # Calculate mean only over the valid fluid points
+    # (avoiding division by zero if mask is empty)
+    fluid_points = torch.sum(mask) + 1e-8
+    loss = torch.sum(masked_error) / fluid_points
+    
+    return loss
+```
