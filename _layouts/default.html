@@ -39,5 +39,45 @@
     <footer class="site-footer">
         <p>&copy; {{ site.time | date: '%Y' }} Matteo Barbieri. <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a></p>
     </footer>
+
+    <script>
+        // Reading Progress Bar
+        document.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrolled = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        });
+
+        // Code Block Copy Button
+        document.addEventListener('DOMContentLoaded', function() {
+            const blocks = document.querySelectorAll('pre');
+            blocks.forEach((pre) => {
+                const button = document.createElement('button');
+                button.className = 'copy-btn';
+                button.textContent = 'Copy';
+                
+                button.addEventListener('click', () => {
+                    const code = pre.querySelector('code');
+                    const text = code ? code.innerText : pre.innerText;
+                    
+                    navigator.clipboard.writeText(text).then(() => {
+                        button.textContent = 'Copied!';
+                        button.classList.add('copied');
+                        setTimeout(() => {
+                            button.textContent = 'Copy';
+                            button.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+                
+                pre.appendChild(button);
+            });
+        });
+    </script>
 </body>
 </html>
