@@ -16,28 +16,4 @@
             </div>
         </div>
     </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        // Persist theme in localStorage
-        function setTheme(light) {
-            document.body.classList.toggle('light-theme', light);
-            themeToggle.textContent = light ? ' Theme' : ' Theme';
-            localStorage.setItem('theme', light ? 'light' : 'dark');
-        }
-        // On load, apply saved theme (default is DARK)
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            setTheme(true);
-        } else {
-            // Default: dark theme (no class on body = dark)
-            setTheme(false);
-        }
-        themeToggle.addEventListener('click', function() {
-            setTheme(!document.body.classList.contains('light-theme'));
-        });
-    }
-});
-</script>
 </footer>
