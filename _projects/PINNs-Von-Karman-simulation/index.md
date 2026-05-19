@@ -13,7 +13,6 @@ excerpt: "Parametric neural solver for Von Kármán vortex shedding using SIREN 
 2. [**SIREN vs. Tanh**](#siren) — Overcoming gradient saturation.
 3. [**RAR Algorithm**](#rar) — Automated mesh-less refinement.
 4. [**Optimization**](#optimization) — Hybrid Adam/L-BFGS strategy.
-5. [**Hardware**](#hardware) — AMD ROCm acceleration.
 
 <a name="parametric"></a>
 ## 1. 4D Parametric Domain: The Universal Solver
@@ -59,12 +58,3 @@ The training leverages two different optimization philosophies:
 The loss function is heavily weighted to enforce boundary integrity:
 * **Cylinder No-Slip (Weight 100):** Prioritizes zero-velocity at the cylinder wall, the primary source of vorticity.
 * **Continuity (Weight 20):** Enforces incompressibility ($\nabla \cdot \mathbf{u} = 0$) as a hard constraint.
-
-
-<a name="hardware"></a>
-## 5. Hardware Acceleration & Performance
-The solver is optimized for **AMD GPU (ROCm)** architectures, utilizing specialized environment overrides to ensure compatibility and performance for large-scale tensor operations:
-
-```python
-os.environ["DDE_BACKEND"] = "pytorch"
-os.environ["HSA_OVERRIDE_GFX_VERSION"] = "10.3.0" # Target: AMD RDNA2/3
