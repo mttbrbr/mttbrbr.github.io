@@ -349,29 +349,29 @@ pre:hover .copy-btn {
 
 /* --- RESUME DOWNLOAD BUTTON --- */
 .resume-btn-container {
-  margin: 2rem 0 3rem 0;
+  margin: 1.5rem 0 2.5rem 0;
   display: flex;
   justify-content: flex-start;
 }
 .resume-btn {
   display: inline-block;
-  padding: 0.8rem 1.5rem;
+  padding: 0.3rem 0.8rem;
   background-color: transparent;
-  color: var(--text-color);
-  border: 1px solid var(--text-color);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  border-radius: 2px;
 }
 .resume-btn:hover {
-  background-color: var(--text-color);
-  color: var(--bg-color);
+  color: var(--text-color);
+  border-color: var(--text-muted);
   text-decoration: none;
 }
 .resume-btn::before {
-  content: '↓ ';
+  content: '[pdf] ';
+  opacity: 0.7;
 }
 
