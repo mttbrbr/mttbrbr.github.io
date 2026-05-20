@@ -7,6 +7,10 @@ permalink: /about/
 # {{ page.title }}
 <p class="subtitle">Computational Fluid Dynamics | Numerical Modeling | Scientific Computing</p>
 
+<div class="resume-btn-container">
+    <a href="{{ '/assets/CV.pdf' | relative_url }}" class="resume-btn" download>Download Resume (PDF)</a>
+</div>
+
 ## Introduction
 I am an **MSc student in Aeronautical Engineering at Politecnico di Milano**, with a strong focus on numerical methods and computational simulation. My academic and professional interest lies in the development and optimization of high-fidelity simulation pipelines, exploring the intersection of fluid dynamics, numerical analysis, and high-performance computing.
 
