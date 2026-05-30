@@ -228,6 +228,19 @@ body {
   }
 }
 
+/* --- CORREZIONE ALLINEAMENTO LISTE E INDICE (TOC) --- */
+.page-content ol, 
+.page-content ul {
+  padding-left: 0;                  /* Mantiene la lista allineata al margine del testo */
+  margin-bottom: 1.5rem;
+  list-style-position: inside;      /* Forza i numeri ad allinearsi perfettamente a sinistra */
+}
+
+.page-content li {
+  margin-bottom: 0.6rem;
+  color: #cccccc;
+}
+
 /* --- BLOG POSTS --- */
 .post-item {
   margin-bottom: 3rem;
@@ -501,5 +514,121 @@ pre.highlight code {
   }
   pre.highlight code {
     font-size: 12px !important;
+  }
+}
+
+
+/* Quando selezioni il testo nel sito */
+::-moz-selection {
+  background: var(--link-hover-bg); /* Sfondo bianco */
+  color: var(--link-hover);         /* Testo nero */
+}
+::selection {
+  background: var(--link-hover-bg); 
+  color: var(--link-hover);         
+}
+
+/* Finezza extra: selezione personalizzata solo dentro i box di codice */
+pre.highlight ::selection {
+  background: #c084fc; /* Sfondo viola neon */
+  color: #0a0a0a;      /* Testo scuro */
+}
+
+// per mobile
+/* Rende la scrollbar del codice orizzontale molto sottile e futuristica */
+pre.highlight::-webkit-scrollbar {
+  height: 4px; /* Barra orizzontale sottilissima */
+}
+
+pre.highlight::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2); /* Grigio accennato */
+  border-radius: 2px;
+}
+
+pre.highlight::-webkit-scrollbar-thumb:hover {
+  background: #c084fc; /* Diventa viola neon quando l'utente ci passa sopra */
+}
+
+
+html {
+  scroll-behavior: smooth;
+  /* Evita il fastidioso rimbalzo bianco su iOS quando si scorre oltre la fine della pagina */
+  background-color: var(--bg-color); 
+}
+
+/*
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* Sfondo nero semi-trasparente che sfoca ciò che c'è dietro 
+  background-color: rgba(10, 10, 10, 0.75) !important;
+  backdrop-filter: blur(12px); 
+  -webkit-backdrop-filter: blur(12px);
+  
+  padding-top: 1.5rem;  /* Compatto un po' per lasciare spazio ai contenuti 
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Linea di divisione quasi invisibile 
+}
+*/
+
+
+pre.highlight {
+  /* ... mantiene tutto il codice precedente (bordo bianco, sfondo, ecc) ... */
+  transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+pre.highlight:hover {
+  border-color: rgba(192, 132, 252, 0.8) !important; /* Il bordo vira delicatamente al viola */
+  
+  /* Crea un'ombra neon soffusa (effetto luce diffusa del monitor) */
+  box-shadow: 
+    0 0 20px rgba(192, 132, 252, 0.15), 
+    0 0 40px rgba(34, 211, 238, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* --- TABLES (MINIMAL CYBER STYLE) --- */
+.page-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.page-content th, 
+.page-content td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-content th {
+  color: #ffffff;
+  font-weight: 600;
+  border-bottom: 2px solid var(--text-muted);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+/* Righe alternate soft */
+.page-content tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Effetto hover sulla riga */
+.page-content tbody tr:hover {
+  background-color: rgba(192, 132, 252, 0.05); /* Richiamo al viola neon dei blocchi codice */
+  transition: background-color 0.2s ease;
+}
+
+/* Gestione responsive per tabelle larghe su mobile */
+@media (max-width: 768px) {
+  .page-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
   }
 }
