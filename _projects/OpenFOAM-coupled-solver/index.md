@@ -1,101 +1,219 @@
 ---
 layout: project
-title: "Beyond SIMPLE: Architecting a Monolithic OpenFOAM-PETSc Solver"
+title: "Monolithic Fluid Dynamics: Architecting High Performance Coupled Solvers via OpenFOAM and PETSc Integration"
 date: 2026-05-30
 tech: ["C++", "OpenFOAM", "PETSc", "Linear Algebra", "MPI"]
-excerpt: "A philosophical and technical exploration of building a coupled pressure-velocity solver, bridging the gap between high-level CFD frameworks and low-level numerical libraries."
+excerpt: "A comprehensive engineering analysis of monolithic CFD architectures leveraging the mathematical robustness of PETSc and the physical discretization of OpenFOAM to overcome memory bandwidth bottlenecks."
 ---
 
 ![Coupled Solver Concept](/assets/images/coupled-foam/hero_wide.png)
 
-## Technical Index
-1. [**The Segregated Bottleneck**](#bottleneck) — Why the classical approach fails.
-2. [**The Monolithic Philosophy**](#monolithic) — Simultaneous physics for faster convergence.
-3. [**OpenFOAM as the Physics Host**](#openfoam) — Leveraging the Finite Volume framework.
-4. [**PETSc: The Numerical Powerhouse**](#petsc) — Advanced linear algebra at scale.
-5. [**The Integration Bridge**](#bridge) — Mapping, Indexing, and Global Assembly.
-6. [**Preconditioning: The Secret Sauce**](#preconditioning) — FieldSplit and Block-Matrix strategies.
-7. [**Future Horizons**](#future) — Scalability and complex physics coupling.
+## Table of Contents
+1. [Architectural Bottlenecks in Segregated Solvers](#architectural-bottlenecks-in-segregated-solvers)
+2. [Mathematical Formulation of the Coupled System](#mathematical-formulation-of-the-coupled-system)
+3. [Topology Mapping and Strict Preallocation](#topology-mapping-and-strict-preallocation)
+4. [PETSc Integration and Distributed Matrix Assembly](#petsc-integration-and-distributed-matrix-assembly)
+5. [Resolving the Parallel MPI Boundary Deadlock](#resolving-the-parallel-mpi-boundary-deadlock)
+6. [Flux and Turbulence Integration](#flux-and-turbulence-integration)
+7. [Advanced Preconditioning via the Schur Complement](#advanced-preconditioning-via-the-schur-complement)
+8. [Performance Benchmarking](#performance-benchmarking)
 
-<a name="bottleneck"></a>
-## 1. The Segregated Bottleneck: A Historical Perspective
-For decades, the Computational Fluid Dynamics (CFD) community has been dominated by segregated algorithms—most notably SIMPLE (Semi-Implicit Method for Pressure-Linked Equations) and PISO. These algorithms are the "bread and butter" of OpenFOAM. They work by decoupling the Navier-Stokes equations, solving the momentum equation first to get an intermediate velocity, and then solving a pressure-correction equation to enforce incompressibility.
+---
 
-While this approach is computationally efficient in terms of memory (you only store one small matrix at a time), it introduces a "lag" in the physics. The pressure and velocity are essentially "talking" to each other through a game of telephone. In complex cases—highly skewed meshes, high Reynolds numbers, or transient flows with large time steps—this communication breakdown leads to poor convergence and requires heavy under-relaxation. As engineers, we often find ourselves tweaking relaxation factors like $0.3$ for pressure and $0.7$ for momentum, which is essentially slowing down the math because the algorithm can't handle the full truth of the coupling.
+## Architectural Bottlenecks in Segregated Solvers
 
-<a name="monolithic"></a>
-## 2. The Monolithic Philosophy: The "Whole Truth" Approach
-The core philosophy of this project is to move away from the "segregated game of telephone" and toward a **monolithic (coupled) architecture**. 
+The pursuit of high fidelity Computational Fluid Dynamics is strictly bounded by the physical limitations of modern hardware architectures, specifically the memory bandwidth wall. Standard segregated algorithms like SIMPLE fundamentally decouple the Navier Stokes equations, dividing the momentum and continuity constraints into isolated linear systems. This mathematical splitting introduces a severe numerical lag, requiring heavy under relaxation factors to prevent divergence in highly skewed meshes or complex flow regimes. 
 
-Instead of asking, "What is the velocity given this pressure?" and then "What is the pressure given this velocity?", we ask one single, massive question: **"What is the state of the entire system simultaneously?"**
+The algorithmic necessity to continuously update and transfer intermediate velocity and pressure fields across the memory bus starves the floating point units of modern processors. The bottleneck is no longer raw compute power, but the latency involved in fetching fragmented matrix entries from main memory.
 
-Mathematically, this means we no longer solve two or three separate linear systems. We solve one block-matrix system:
+The monolithic approach directly addresses this inefficiency by resolving the velocity and pressure fields simultaneously within a single block matrix system. By embedding the physical interdependencies directly within the Jacobian matrix, the solver bypasses the iterative outer loops characteristic of segregated methods. The Navier Stokes equations are treated as a unified saddle point problem, capturing the exact physical coupling in one cohesive step.
 
-$$\begin{bmatrix} \mathbf{A}_{uu} & \mathbf{d} \nabla \\ \nabla \cdot & \mathbf{0} \end{bmatrix} \begin{bmatrix} \mathbf{u} \\ p \end{bmatrix} = \begin{bmatrix} \mathbf{b}_u \\ \mathbf{b}_p \end{bmatrix}$$
+## Mathematical Formulation of the Coupled System
 
-In this block structure, the off-diagonal terms represent the direct physical coupling. The velocity depends on the pressure gradient, and the pressure depends on the velocity divergence. By solving them together, the solver "sees" the entire physical interaction in one go. This leads to **spectacular convergence rates**. What might take 500 iterations in a segregated solver can often be achieved in 10 or 20 iterations with a coupled solver. We are trading memory for mathematical robustness.
+To ground the monolithic architecture in rigorous fluid dynamics, we must observe the steady state incompressible Navier Stokes equations. The physical system is governed by the conservation of momentum and mass.
 
-<a name="openfoam"></a>
-## 3. OpenFOAM as the Physics Host: Not Reinventing the Wheel
-One might ask: "If you want a coupled solver, why not write it from scratch in C++?" The answer lies in the sheer brilliance of the **OpenFOAM framework**.
+$$\nabla \cdot (\mathbf{u} \otimes \mathbf{u}) - \nabla \cdot (\nu \nabla \mathbf{u}) + \nabla p = 0$$
 
-OpenFOAM is not just a solver; it is a massive, object-oriented library for the Finite Volume Method (FVM). It handles the messy parts of CFD that no one wants to code twice:
-*   **Mesh Topology:** Handling polyhedral cells, face addressing, and MPI decomposition.
-*   **Discretization Schemes:** The library provides high-level syntax like `fvc::grad(p)` or `fvm::laplacian(nu, U)`.
-*   **Physical Models:** Turbulence models (LES, RANS), thermophysical properties, and boundary conditions.
+$$\nabla \cdot \mathbf{u} = 0$$
 
-My project treats OpenFOAM as the **"Physics Engine."** I use its native classes to discretize the Navier-Stokes equations and extract the coefficients. Each `fvMatrix` in OpenFOAM contains the $a_P$ (diagonal) and $a_N$ (neighbor) coefficients that describe the discretized PDE. The challenge was not to replace OpenFOAM, but to "hijack" its discretization process to feed a more powerful linear solver.
+When discretized using the Finite Volume Method, these continuous operators are transformed into a massive system of linear algebraic equations. In the monolithic framework, these discrete operators are assembled into a unified saddle point block matrix topology.
 
-<a name="petsc"></a>
-## 4. PETSc: The Numerical Powerhouse
-If OpenFOAM is the physics engine, **PETSc (Portable, Extensible Toolkit for Scientific Computation)** is the heavy-duty numerical gearbox. 
+$$\begin{bmatrix} \mathbf{A}_{uu} & \nabla \\ \nabla \cdot & \mathbf{0} \end{bmatrix} \begin{bmatrix} \mathbf{u} \\ p \end{bmatrix} = \begin{bmatrix} \mathbf{b}_u \\ \mathbf{0} \end{bmatrix}$$
 
-PETSc is arguably the most powerful library in the world for solving large-scale linear and non-linear systems. While OpenFOAM’s built-in solvers (like PCG or PBiCG) are excellent for standard cases, they lack the sophisticated **Krylov Subspace Methods** and **Preconditioning** structures required for coupled systems.
+The $\mathbf{A}_{uu}$ block contains the discretized convection and diffusion operators representing the momentum auto coupling. The off diagonal blocks represent the pressure gradient $\nabla$ and the velocity divergence $\nabla \cdot$. The zero block on the main diagonal strictly enforces the incompressible continuity constraint.
 
-By integrating PETSc, the project gains access to:
-1.  **Flexible Solvers:** GMRES, BiCGStab, and even direct solvers like MUMPS or SuperLU for debugging.
-2.  **Advanced Preconditioning:** This is the heart of the project. Coupled matrices are notoriously "ill-conditioned" (hard to solve). PETSc allows us to use physics-based preconditioning, which I will elaborate on later.
-3.  **MPI Scalability:** PETSc is built from the ground up for massive parallelism. It handles the distribution of the global matrix across thousands of processors with optimized communication patterns.
+## Topology Mapping and Strict Preallocation
 
-<a name="bridge"></a>
-## 5. The Integration Bridge: The Technical "Yap"
-The most intense part of the implementation was building the "Bridge" between OpenFOAM's cell-centric data and PETSc's matrix-centric data. This is where the philosophy meets the code.
+Memory preallocation is the most critical phase in distributed linear algebra. Dynamic memory reallocation during matrix assembly will catastrophically degrade performance. The topology mapping relies on computing the exact number of diagonal (`d_nnz`) and off diagonal (`o_nnz`) non zero block entries for each cell before matrix allocation. 
 
-### The Indexing Nightmare
-OpenFOAM uses a local indexing system. If you have a simulation split across 4 CPUs, each CPU thinks its cells start from 0. PETSc, however, requires a **Global Numbering** system.
-I had to implement a mapping layer that translates:
-`Local Cell ID + Processor Offset -> Global PETSc Row`
+To ensure maximum optimization, we enforce a block structured allocation using the MATBAIJ format with a block size of 4, containing the interleaved degrees of freedom for velocity and pressure.
 
-### The Block Assembly
-In a coupled solver, each "node" in the matrix isn't a single number; it's a block. For a 3D simulation, each cell has 4 variables $(u, v, w, p)$. Therefore, the global matrix is $4N \times 4N$, where $N$ is the number of cells.
-The assembly process involves:
-1.  Iterating through the OpenFOAM `fvMatrix` for $U$.
-2.  Iterating through the OpenFOAM `fvMatrix` for $p$.
-3.  Extracting the coupling terms (the gradient and divergence operators).
-4.  "Interleaving" these values into the PETSc matrix so that all variables for a single cell stay close together in memory (this is crucial for cache performance).
+**File:** `PetscTopologyMapper.H`
+```cpp
+static PreallocData computeBlockPreallocation(const fvMesh& mesh)
+{
+    const label nCells = mesh.nCells();
+    PreallocData allocData;
+    allocData.d_nnz = labelList(nCells, 1);
+    allocData.o_nnz = labelList(nCells, 0);
 
-### MPI Synchronization
-When a cell is on the boundary between two processors, its neighbor coefficients belong to a different MPI rank. OpenFOAM handles this via "interface" fields. My bridge had to manually "stitch" these interfaces together into the PETSc sparse matrix, ensuring that the off-processor entries were correctly allocated and communicated.
+    const labelUList& own = mesh.owner();
+    const labelUList& nei = mesh.neighbour();
 
-<a name="preconditioning"></a>
-## 6. Preconditioning: The Secret Sauce
-A coupled matrix is a beast. If you just throw a standard solver at it, it will likely stall. The real power of this project comes from **FieldSplit Preconditioning** in PETSc.
+    forAll(nei, faceI)
+    {
+        allocData.d_nnz[own[faceI]]++;
+        allocData.d_nnz[nei[faceI]]++;
+    }
 
-Instead of treating the $4N \times 4N$ matrix as a single opaque blob, FieldSplit allows us to tell PETSc: "Hey, these rows belong to velocity, and these rows belong to pressure." 
+    const polyBoundaryMesh& boundaryMesh = mesh.boundaryMesh();
+    forAll(boundaryMesh, patchI)
+    {
+        const polyPatch& patch = boundaryMesh[patchI];
+        if (isA<processorPolyPatch>(patch))
+        {
+            const labelUList& faceCells = patch.faceCells();
+            forAll(faceCells, i) {
+                allocData.o_nnz[faceCells[i]]++;
+            }
+        }
+        else if (isA<cyclicPolyPatch>(patch))
+        {
+            const labelUList& faceCells = patch.faceCells();
+            forAll(faceCells, i) {
+                allocData.d_nnz[faceCells[i]]++;
+            }
+        }
+    }
+    return allocData;
+}
 
-We can then apply a **Schur Complement** strategy. This is a mathematical trick that effectively solves for velocity using one preconditioner (like Algebraic Multigrid - AMG) and then solves for the "pressure Schur complement" using another. It’s like having a segregated solver *inside* the linear solver of a coupled solver. This "nested" approach combines the stability of the monolithic solve with the efficiency of specialized solvers for each variable.
+```
 
-<a name="future"></a>
-## 7. Future Horizons: Why This Matters
-The move toward coupled solvers is not just a personal preference; it is where the industry is heading. As we move toward more complex multi-physics (e.g., Fluid-Structure Interaction, Magnetohydrodynamics, or Combustion), the segregated approach becomes increasingly fragile.
+## PETSc Integration and Distributed Matrix Assembly
 
-This project demonstrates that we don't have to choose between the user-friendliness of OpenFOAM and the numerical power of PETSc. We can have both. By building this monolithic bridge, we open the door to:
-*   **Direct Steady-State Solving:** Reaching convergence in a few "giant" steps rather than thousands of tiny ones.
-*   **Improved Robustness:** Solving cases that would normally crash in standard OpenFOAM.
-*   **High-Order Accuracy:** Coupled solvers are much better at maintaining the accuracy of high-order discretization schemes.
+OpenFOAM serves strictly as a physics host, providing the raw operator coefficients. Developing a monolithic solver requires bypassing the high level wrappers to directly access the Lower Diagonal Upper storage format.
 
-The journey of integrating these two giants—OpenFOAM and PETSc—has been a lesson in software architecture as much as fluid dynamics. It’s about understanding that the best solutions often lie at the intersection of established frameworks and cutting-edge numerical libraries.
+The following C++ implementation demonstrates the distributed assembly loop, extracting the raw arrays from the OpenFOAM matrices and translating them into the coupled PETSc system, applying under relaxation implicitly directly into the RHS source terms.
 
-***
+**File:** `coupledSimpleFoam.C`
 
-*Curious about the convergence plots or the specific FieldSplit configurations? Stay tuned for the next post where I'll dive into the performance benchmarks against standard solvers.*
+```cpp
+Mat A;
+MatCreate(PETSC_COMM_WORLD, &A);
+MatSetSizes(A, localEqs, localEqs, globalEqs, globalEqs);
+MatSetType(A, MATBAIJ); 
+MatMPIBAIJSetPreallocation(A, bs, 0, d_nnz.data(), 0, o_nnz.data());
+MatSetOption(A, MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_TRUE);
+
+forAll(own, faceI)
+{
+    PetscInt global_o = indexer.global(own[faceI]);
+    PetscInt global_n = indexer.global(nei[faceI]);
+    vector nA = Sf[faceI];
+    scalar w  = weights[faceI];
+
+    vector Aup_upper = (1.0 - w) * nA; 
+    vector Apu_upper = (1.0 - w) * nA; 
+
+    PetscScalar b_upper[16] = {0.0};
+    b_upper[0] = U_upper[faceI]; b_upper[5] = U_upper[faceI]; b_upper[10] = U_upper[faceI];
+    b_upper[3] = Aup_upper.x();  b_upper[7] = Aup_upper.y();  b_upper[11] = Aup_upper.z();
+    b_upper[12]= Apu_upper.x();  b_upper[13]= Apu_upper.y();  b_upper[14]= Apu_upper.z();
+    b_upper[15]= p_upper[faceI];
+    
+    MatSetValuesBlocked(A, 1, &global_o, 1, &global_n, b_upper, ADD_VALUES);
+}
+
+// Source Terms and Under Relaxation Assembly
+for (label cellI = 0; cellI < mesh.nCells(); ++cellI)
+{
+    PetscInt rows[4] = {global_c*4, global_c*4+1, global_c*4+2, global_c*4+3};
+    vector U_old = U[cellI];
+    scalar p_old = p[cellI];
+
+    PetscScalar vals[4] = {
+        U_source[cellI].x() + U_bndRHS[cellI].x() + ((1.0 - alpha_U) / alpha_U) * Auu_x * U_old.x(),
+        U_source[cellI].y() + U_bndRHS[cellI].y() + ((1.0 - alpha_U) / alpha_U) * Auu_y * U_old.y(),
+        U_source[cellI].z() + U_bndRHS[cellI].z() + ((1.0 - alpha_U) / alpha_U) * Auu_z * U_old.z(),
+        p_source[cellI]     + p_bndRHS[cellI]     + ((1.0 - alpha_p) / alpha_p) * App * p_old
+    };
+    
+    VecSetValues(b, 4, rows, vals, ADD_VALUES);
+}
+
+```
+
+## Resolving the Parallel MPI Boundary Deadlock
+
+Interfacing distributed memory structures between OpenFOAM and PETSc requires a reliable synchronization engine for halo cells. A naive sequential reading of processor boundaries introduces standard communication deadlocks, where neighboring MPI ranks stall waiting for mutual blocking operations.
+
+To overcome this, the solver utilizes the OpenFOAM non blocking PstreamBuffers. The local global IDs are packed asynchronously into outbox streams, sent via non blocking primitives, and safely unpacked from incoming buffers to accurately assign remote global column indices without execution stalls.
+
+**File:** `PetscIndexer.H`
+
+```cpp
+PstreamBuffers pBufs(Pstream::commsTypes::nonBlocking);
+
+forAll(boundaryMesh, patchI)
+{
+    if (isA<processorPolyPatch>(boundaryMesh[patchI]))
+    {
+        const processorPolyPatch& procPatch = refCast<const processorPolyPatch>(boundaryMesh[patchI]);
+        labelList myGlobalIDsToSend(procPatch.faceCells().size());
+        
+        forAll(procPatch.faceCells(), i) {
+            myGlobalIDsToSend[i] = localToGlobal_[procPatch.faceCells()[i]];
+        }
+        
+        UOPstream toNeighbour(procPatch.neighbProcNo(), pBufs);
+        toNeighbour << myGlobalIDsToSend;
+    }
+}
+
+pBufs.finishedSends(); 
+
+```
+
+## Flux and Turbulence Integration
+
+A critical advantage of using OpenFOAM as the physics host is the ability to leverage its massive library of turbulence models without modifying the core linear algebra. The solver natively instantiates the transport models and recalculates the face fluxes dynamically, ensuring mass conservation and accurate eddy viscosity integration within the coupled Jacobian.
+
+**File:** `createFields.H`
+
+```cpp
+#include "createPhi.H"
+
+mesh.setFluxRequired(p.name());
+
+singlePhaseTransportModel laminarTransport(U, phi);
+
+autoPtr<incompressible::turbulenceModel> turbulence
+(
+    incompressible::turbulenceModel::New(U, phi, laminarTransport)
+);
+
+```
+
+## Advanced Preconditioning via the Schur Complement
+
+The viability of the coupled solver hinges on the FieldSplit preconditioner, which algebraically separates the monolithic matrix back into its physical constituents exclusively for the preconditioning phase. The algorithm isolates the pressure block by calculating the Schur complement of the velocity field.
+
+Mathematically, the exact Schur complement $\mathbf{S}$ is defined by eliminating the velocity degrees of freedom from the block system.
+
+$$\mathbf{S} = - (\nabla \cdot) \mathbf{A}_{uu}^{-1} \nabla$$
+
+Because computing the exact inverse of the momentum block $\mathbf{A}_{uu}^{-1}$ is computationally prohibitive, we rely on sparse approximations of the Schur complement. This approximation provides a highly accurate representation of the pressure velocity coupling without requiring the full inversion.
+
+The momentum block is preconditioned using an Algebraic Multigrid algorithm, which efficiently damps high frequency errors across the computational grid. The approximated Schur complement, representing the elliptic nature of the pressure field, is similarly treated with aggressive multigrid cycles.
+
+## Performance Benchmarking
+
+[Work in Progress]
+
+Scientific transparency is the foundational pillar of this project. The rigorous profiling of the coupled architecture is currently under active development. To ensure absolute validity, no synthetic data or estimated speedups are presented at this stage. The validation campaign is strictly focused on isolating the exact memory bandwidth utilization and floating point efficiency of the preconditioning structures compared to traditional segregated methods.
+
+The upcoming performance analysis will detail several key benchmarking phases. First, it will cover the execution of the standard motorbike test case scaled to 17 million hexahedral cells, directly comparing the OpenFOAM v2512 SIMPLE algorithm against the custom monolithic implementation. This will be followed by an evaluation of convergence metrics and failure states when utilizing standard incomplete LU factorization on the highly indefinite coupled block matrix.
+
+Furthermore, the analysis will provide a rigorous profiling of the FieldSplit preconditioning strategy paired with the BoomerAMG solver and Schur complement approximation, detailing exact iteration counts and wall clock times. Finally, a hardware telemetry analysis on the AMD Ryzen 9 7900X3D will explicitly measure L3 cache hit rates. This phase will verify if the reduced dimensionality of the Schur complement matrix allows it to reside entirely within the 96MB 3D V-Cache of the primary core complex die, effectively bypassing the DDR5 memory bandwidth wall during aggressive Multigrid cycles.
+

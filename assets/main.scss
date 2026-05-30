@@ -375,3 +375,73 @@ pre:hover .copy-btn {
   opacity: 0.7;
 }
 
+/* --- STILE MINIMALE PER BLOCCHI DI CODICE C++ --- */
+
+/* --- STILE MINIMALE PER BLOCCHI DI CODICE C++ --- */
+
+/* La finestra principale */
+pre.highlight {
+    background-color: #0a0a0a !important; 
+    border: 1px solid #ffffff !important; 
+    border-radius: 8px !important;        
+    padding: 1.5rem !important;           
+    margin: 2rem 0 !important;            
+    overflow-x: auto !important;          
+}
+
+/* Il font del codice base */
+pre.highlight code {
+    font-family: 'Consolas', 'Courier New', monospace !important; 
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #D4D4D4 !important; /* Grigio chiaro di base per tutto ciò che non è taggato */           
+}
+
+/* --- COLORI SINTASSI COMPLETI (Stile VS Code Dark+) --- */
+
+/* Commenti (Verde) */
+.highlight .c, .highlight .c1, .highlight .cm, .highlight .cp { 
+    color: #6A9955 !important; 
+    font-style: italic !important; 
+} 
+
+/* Parole chiave: if, for, return, namespace (Blu) */
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv { 
+    color: #569CD6 !important; 
+    font-weight: bold !important; 
+} 
+
+/* Tipi di dato e Classi: int, double, Mat, vector (Verde Acqua) */
+.highlight .kt, .highlight .nc { 
+    color: #4EC9B0 !important; 
+} 
+
+/* Funzioni e Metodi (Giallo) */
+.highlight .nf, .highlight .fm { 
+    color: #DCDCAA !important; 
+} 
+
+/* Stringhe (Arancione tenue) */
+.highlight .s, .highlight .sa, .highlight .sb, .highlight .s1, .highlight .s2, .highlight .dl { 
+    color: #CE9178 !important; 
+} 
+
+/* Numeri (Verde Menta) */
+.highlight .m, .highlight .mi, .highlight .mf, .highlight .mo, .highlight .mb, .highlight .mx { 
+    color: #B5CEA8 !important; 
+} 
+
+/* Operatori e Punteggiatura (Grigio Chiaro) */
+.highlight .o, .highlight .p { 
+    color: #D4D4D4 !important; 
+} 
+
+/* Direttive (#include, #define) e Decoratori (Viola) */
+.highlight .nd, .highlight .pi { 
+    color: #C586C0 !important; 
+}
+
+/* Variabili normali (Azzurro/Grigio) */
+.highlight .nv, .highlight .nx, .highlight .n {
+    color: #9CDCFE !important;
+}
