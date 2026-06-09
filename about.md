@@ -28,7 +28,7 @@ I am an **MSc student in Aeronautical Engineering at Politecnico di Milano**, wi
 ## Technical Stack
 
 ### **Scientific Computing & Data**
-*   **Languages:** Python (NumPy, SciPy, Pandas), Julia (basic), Matlab.
+*   **Languages:** Python (NumPy, SciPy, Pandas), C/C++, Julia (basic), Matlab.
 *   **Focus:** Numerical integration, optimization algorithms, data visualization.
 
 ### **CFD & Numerical Simulation**
@@ -43,9 +43,9 @@ I am an **MSc student in Aeronautical Engineering at Politecnico di Milano**, wi
 ---
 
 ## Education
-*   **MSc in Aeronautical Engineering** | Politecnico di Milano
+**MSc in Aeronautical Engineering** | Politecnico di Milano
     *   Focus: Computational Fluid Dynamics, Numerical Methods for PDE.
-*   **BSc in Aerospace Engineering** | Politecnico di Milano
+**BSc in Aerospace Engineering** | Politecnico di Milano
 
 ---
 
