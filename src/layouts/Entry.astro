@@ -1,0 +1,220 @@
+---
+import type { MarkdownHeading } from 'astro';
+import Base from './Base.astro';
+import { fmtDate, inlineMath, type Kind } from '../lib/entries';
+
+interface Props {
+  kind: Kind;
+  id: string;
+  title: string;
+  date: Date;
+  tags: string[];
+  excerpt: string;
+  body: string;
+  headings: MarkdownHeading[];
+}
+const { kind, id, title, date, tags, excerpt, body, headings } = Astro.props;
+const minutes = Math.max(1, Math.round(body.split(/\s+/).length / 220));
+const toc = headings.filter((h) => h.depth <= 2);
+---
+
+<Base title={title} description={excerpt}>
+  <div id="progress" aria-hidden="true"></div>
+
+  <article class="wrap entry">
+    <header class="head">
+      <a href="/#index" class="back muted">← index</a>
+      <div class="meta">
+        <span class={`kind kind-${kind}`}>{kind}</span>
+        <time datetime={date.toISOString()} class="muted">{fmtDate(date)}</time>
+        <span class="muted">· {minutes} min read</span>
+      </div>
+      <h1 transition:name={`title-${kind}-${id}`}>{title}</h1>
+      <p class="lead muted" set:html={inlineMath(excerpt)} />
+      <div class="tags">{tags.map((t) => <span class="tag">{t}</span>)}</div>
+    </header>
+
+    <div class="grid">
+      {
+        toc.length > 2 && (
+          <nav class="toc" aria-label="Contents">
+            <p class="kind muted">contents</p>
+            <ol>
+              {toc.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+</Base>
+
+<script>
+  function initEntry() {
+    const bar = document.getElementById('progress');
+    if (!bar) return;
+
+    const onScroll = () => {
+      const el = document.documentElement;
+      const p = el.scrollTop / (el.scrollHeight - el.clientHeight || 1);
+      bar.style.transform = `scaleX(${p})`;
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('astro:before-swap', () => removeEventListener('scroll', onScroll), {
+      once: true,
+    });
+    onScroll();
+
+    // copy buttons on code blocks
+    document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
+      if (pre.querySelector('.copy')) return;
+      const btn = document.createElement('button');
+      btn.className = 'copy';
+      btn.textContent = 'copy';
+      btn.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText);
+        btn.textContent = 'copied ✓';
+        setTimeout(() => (btn.textContent = 'copy'), 1600);
+      });
+      pre.appendChild(btn);
+    });
+
+    // highlight the current section in the TOC
+    const links = new Map(
+      [...document.querySelectorAll<HTMLAnchorElement>('.toc a')].map((a) => [
+        decodeURIComponent(a.hash.slice(1)),
+        a,
+      ]),
+    );
+    if (!links.size) return;
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          links.forEach((a) => a.classList.remove('current'));
+          links.get(e.target.id)?.classList.add('current');
+        }),
+      { rootMargin: '0px 0px -75% 0px' },
+    );
+    links.forEach((_, id) => {
+      const h = document.getElementById(id);
+      if (h) io.observe(h);
+    });
+    document.addEventListener('astro:before-swap', () => io.disconnect(), { once: true });
+  }
+  document.addEventListener('astro:page-load', initEntry);
+</script>
+
+<style>
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 60;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+  }
+  .head {
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .back {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .meta {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+    font-size: 0.8rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0.8rem 0 1.2rem;
+    max-width: 22em;
+    width: fit-content;
+  }
+  .lead {
+    max-width: 46rem;
+    animation: fade 0.8s 0.15s var(--ease) both;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.4rem;
+    animation: fade 0.8s 0.25s var(--ease) both;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media (min-width: 1000px) {
+    .grid:has(.toc) {
+      grid-template-columns: 220px minmax(0, 1fr);
+    }
+  }
+  .toc {
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+    font-size: 0.8rem;
+    max-height: calc(100vh - 7rem);
+    overflow: auto;
+  }
+  @media (max-width: 999px) {
+    .toc {
+      display: none;
+    }
+  }
+  .toc ol {
+    list-style: none;
+    margin-top: 0.8rem;
+    border-left: 1px solid var(--border);
+  }
+  .toc a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.9rem;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    text-decoration: none;
+    color: var(--fg-muted);
+    transition: all 0.2s;
+  }
+  .toc a:hover {
+    color: var(--fg);
+  }
+  .toc a.current {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .prose {
+    animation: fade 0.8s 0.3s var(--ease) both;
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+</style>

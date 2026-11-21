@@ -1,0 +1,41 @@
+---
+import Base from './Base.astro';
+const { frontmatter } = Astro.props;
+---
+
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <article class="wrap page">
+    <header>
+      <h1>{frontmatter.title}</h1>
+      {frontmatter.subtitle && <p class="muted">{frontmatter.subtitle}</p>}
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page header {
+    padding: 4rem 0 2.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: -0.02em;
+    animation: rise 0.9s var(--ease) both;
+  }
+  header p {
+    margin-top: 0.6rem;
+  }
+  .prose {
+    animation: rise 0.9s 0.15s var(--ease) both;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+</style>

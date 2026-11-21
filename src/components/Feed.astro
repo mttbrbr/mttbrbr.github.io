@@ -1,0 +1,305 @@
+---
+import { fmtDate, type Entry } from '../lib/entries';
+
+interface Props {
+  entries: Entry[];
+}
+const { entries } = Astro.props;
+
+// tags ordered by frequency
+const counts = new Map<string, number>();
+entries.forEach((e) => e.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+const tags = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t);
+const hasNotes = entries.some((e) => e.kind === 'note');
+---
+
+<section id="index" class="feed wrap">
+  <header class="feed-head reveal">
+    <h2>Index</h2>
+    <p class="muted">{hasNotes ? 'Projects and notes in one place, newest first.' : 'Projects, newest first.'}</p>
+  </header>
+
+  <div class="controls reveal">
+    <label class="search">
+      <span class="sigil">/</span>
+      <input
+        id="q"
+        type="search"
+        placeholder="search everything — titles, tags, full text…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <span id="count" class="muted"></span>
+    </label>
+    <div class="filters" role="group" aria-label="Filter">
+      {
+        hasNotes && (
+          <>
+            <button class="chip on" data-kind="all">all</button>
+            <button class="chip" data-kind="project">projects</button>
+            <button class="chip" data-kind="note">notes</button>
+            <span class="sep" />
+          </>
+        )
+      }
+      {tags.map((t) => <button class="chip tagchip" data-tag={t}>{t}</button>)}
+    </div>
+  </div>
+
+  <ol class="list">
+    {
+      entries.map((e, i) => (
+        <li
+          class="item reveal"
+          data-kind={e.kind}
+          data-tags={e.tags.join('|')}
+          data-text={e.searchText}
+          style={`transition-delay:${Math.min(i, 6) * 50}ms`}
+        >
+          <a href={e.url}>
+            <div class="meta">
+              <span class={`kind kind-${e.kind}`}>{e.kind}</span>
+              <time datetime={e.date.toISOString()} class="muted">
+                {fmtDate(e.date)}
+              </time>
+              <span class="muted">· {e.minutes} min</span>
+            </div>
+            <h3 transition:name={`title-${e.kind}-${e.id}`}>{e.title}</h3>
+            <p class="excerpt muted" set:html={e.excerptHtml} />
+            <div class="tags">
+              {e.tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+            <span class="arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+  <p id="empty" class="muted" hidden>Nothing matches. Try another term.</p>
+</section>
+
+<script>
+  function initFeed() {
+    const q = document.getElementById('q') as HTMLInputElement | null;
+    if (!q) return;
+    const items = [...document.querySelectorAll<HTMLElement>('.item')];
+    const count = document.getElementById('count')!;
+    const empty = document.getElementById('empty')!;
+    const kindBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-kind]')].filter(
+      (b) => b.tagName === 'BUTTON',
+    );
+    const tagBtns = [...document.querySelectorAll<HTMLButtonElement>('.tagchip')];
+
+    let kind = 'all';
+    const active = new Set<string>();
+
+    function apply() {
+      const terms = q!.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const el of items) {
+        const okKind = kind === 'all' || el.dataset.kind === kind;
+        const tags = (el.dataset.tags ?? '').split('|');
+        const okTags = [...active].every((t) => tags.includes(t));
+        const text = el.dataset.text ?? '';
+        const okText = terms.every((t) => text.includes(t));
+        const ok = okKind && okTags && okText;
+        el.hidden = !ok;
+        if (ok) {
+          shown++;
+          el.classList.add('in');
+        }
+      }
+      count.textContent = terms.length || active.size || kind !== 'all' ? `${shown}/${items.length}` : '';
+      empty.hidden = shown > 0;
+    }
+
+    q.addEventListener('input', apply);
+    kindBtns.forEach((b) =>
+      b.addEventListener('click', () => {
+        kind = b.dataset.kind!;
+        kindBtns.forEach((x) => x.classList.toggle('on', x === b));
+        apply();
+      }),
+    );
+    tagBtns.forEach((b) =>
+      b.addEventListener('click', () => {
+        const t = b.dataset.tag!;
+        active.has(t) ? active.delete(t) : active.add(t);
+        b.classList.toggle('on', active.has(t));
+        apply();
+      }),
+    );
+
+    // "/" focuses the search box, Esc clears it
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement !== q) {
+        e.preventDefault();
+        q.focus();
+        q.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      } else if (e.key === 'Escape' && document.activeElement === q) {
+        q.value = '';
+        apply();
+        q.blur();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('astro:before-swap', () => document.removeEventListener('keydown', onKey), {
+      once: true,
+    });
+  }
+  document.addEventListener('astro:page-load', initFeed);
+</script>
+
+<style>
+  .feed {
+    padding-top: 6rem;
+    scroll-margin-top: 2rem;
+  }
+  .feed-head h2 {
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+  }
+  .controls {
+    margin: 2rem 0 1.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: 1px solid var(--border);
+    background: var(--bg-2);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    transition: border-color 0.2s;
+  }
+  .search:focus-within {
+    border-color: var(--accent);
+  }
+  .sigil {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .search input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--fg);
+    font: inherit;
+  }
+  #count {
+    font-size: 0.8rem;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+  }
+  .sep {
+    width: 1px;
+    height: 1.2rem;
+    background: var(--border);
+    margin: 0 0.3rem;
+  }
+  .chip {
+    font: inherit;
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover {
+    color: var(--fg);
+    border-color: var(--fg-muted);
+  }
+  .chip.on {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .list {
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+  .item {
+    border-bottom: 1px solid var(--border);
+  }
+  .item a {
+    position: relative;
+    display: block;
+    padding: 1.6rem 3rem 1.6rem 0;
+    text-decoration: none;
+    transition:
+      padding 0.35s var(--ease),
+      background 0.35s;
+  }
+  .item a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.35s var(--ease);
+  }
+  .item[data-kind='note'] a::before {
+    background: var(--accent-2);
+  }
+  .item a:hover {
+    padding-left: 1.2rem;
+    background: linear-gradient(90deg, var(--bg-2), transparent 70%);
+  }
+  .item a:hover::before {
+    transform: scaleY(1);
+  }
+  .meta {
+    display: flex;
+    gap: 0.8rem;
+    align-items: baseline;
+    font-size: 0.75rem;
+  }
+  h3 {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    line-height: 1.3;
+    margin: 0.4rem 0 0.5rem;
+    width: fit-content;
+  }
+  .excerpt {
+    font-size: 0.88rem;
+    max-width: 52rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.8rem;
+  }
+  .arrow {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 1.4rem;
+    color: var(--fg-muted);
+    transition:
+      transform 0.35s var(--ease),
+      color 0.35s;
+  }
+  .item a:hover .arrow {
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+</style>

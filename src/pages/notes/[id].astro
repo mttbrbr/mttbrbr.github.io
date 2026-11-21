@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from 'astro:content';
+import Entry from '../../layouts/Entry.astro';
+import { SHOW_NOTES } from '../../lib/entries';
+
+export async function getStaticPaths() {
+  if (!SHOW_NOTES) return [];
+  const notes = await getCollection('notes', (n) => n.data.published);
+  return notes.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+
+<Entry
+  kind="note"
+  id={entry.id}
+  title={entry.data.title}
+  date={entry.data.date}
+  tags={entry.data.categories ? [entry.data.categories] : []}
+  excerpt={entry.data.excerpt}
+  body={entry.body ?? ''}
+  headings={headings}
+>
+  <Content />
+</Entry>

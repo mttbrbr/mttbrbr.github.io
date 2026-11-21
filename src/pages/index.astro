@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import FlowHero from '../components/FlowHero.astro';
+import Feed from '../components/Feed.astro';
+import { getAllEntries } from '../lib/entries';
+
+const entries = await getAllEntries();
+---
+
+<Base>
+  <FlowHero />
+  <Feed entries={entries} />
+</Base>

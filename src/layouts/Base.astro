@@ -1,0 +1,147 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import 'katex/dist/katex.min.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const site = 'Matteo Barbieri';
+const {
+  title,
+  description = 'MSc student in Aeronautical Engineering @ Politecnico di Milano. CFD, numerical methods, HPC.',
+} = Astro.props;
+const fullTitle = title ? `${title} | ${site}` : site;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/#index', label: 'Work' },
+  { href: '/about/', label: 'About' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <ClientRouter />
+  </head>
+  <body>
+    <header class="site-header" transition:persist>
+      <nav class="wrap">
+        <a href="/" class="brand"><span class="prompt">~/</span>mttbrbr</a>
+        <div class="links">
+          {
+            nav.map((n) => (
+              <a href={n.href} class:list={{ active: path.startsWith(n.href) && n.href !== '/#index' }}>
+                {n.label}
+              </a>
+            ))
+          }
+          <a href="/CV.pdf" class="cv">CV ↓</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© {new Date().getFullYear()} Matteo Barbieri</span>
+        <span class="links">
+          <a href="https://github.com/mttbrbr">GitHub</a>
+          <a href="https://linkedin.com/in/matteo-barbieri">LinkedIn</a>
+          <a href="/privacy/">Privacy</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      // Scroll-reveal, re-armed after every client-side navigation
+      function initReveal() {
+        const els = document.querySelectorAll<HTMLElement>('.reveal:not(.in)');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('in'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }),
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+      document.addEventListener('astro:page-load', initReveal);
+    </script>
+
+    <style>
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: color-mix(in srgb, var(--bg) 70%, transparent);
+        border-bottom: 1px solid var(--border);
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 3.5rem;
+      }
+      .brand {
+        text-decoration: none;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+      .prompt {
+        color: var(--accent);
+      }
+      .links {
+        display: flex;
+        gap: 1.4rem;
+      }
+      .links a {
+        text-decoration: none;
+        color: var(--fg-muted);
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+      .links a:hover,
+      .links a.active {
+        color: var(--fg);
+      }
+      .cv {
+        color: var(--accent) !important;
+      }
+      .site-footer {
+        border-top: 1px solid var(--border);
+        margin-top: 6rem;
+        padding: 2rem 0;
+        font-size: 0.8rem;
+        color: var(--fg-muted);
+      }
+      .site-footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    </style>
+  </body>
+</html>

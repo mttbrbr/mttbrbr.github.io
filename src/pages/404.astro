@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found">
+  <section class="wrap nf">
+    <p class="code">404</p>
+    <h1>Flow separated.</h1>
+    <p class="muted">This page doesn't exist — or it diverged after 3 iterations.</p>
+    <a href="/">← back to a converged solution</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .code {
+    font-size: clamp(5rem, 18vw, 12rem);
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+  }
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>
