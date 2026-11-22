@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="380" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">leastSquares with and without cellLimited 1</text>
+<line x1="70.0" x2="780.0" y1="291.2" y2="291.2" stroke="#23272b"/>
+<text x="62.0" y="295.2" fill="#8a8f94" text-anchor="end">0.01%</text>
+<line x1="70.0" x2="780.0" y1="228.4" y2="228.4" stroke="#23272b"/>
+<text x="62.0" y="232.4" fill="#8a8f94" text-anchor="end">0.1%</text>
+<line x1="70.0" x2="780.0" y1="165.7" y2="165.7" stroke="#23272b"/>
+<text x="62.0" y="169.7" fill="#8a8f94" text-anchor="end">1%</text>
+<line x1="70.0" x2="780.0" y1="102.9" y2="102.9" stroke="#23272b"/>
+<text x="62.0" y="106.9" fill="#8a8f94" text-anchor="end">10%</text>
+<text x="131.6" y="342" fill="#8a8f94" text-anchor="middle">16</text>
+<text x="280.1" y="342" fill="#8a8f94" text-anchor="middle">32</text>
+<text x="428.6" y="342" fill="#8a8f94" text-anchor="middle">64</text>
+<text x="577.1" y="342" fill="#8a8f94" text-anchor="middle">128</text>
+<text x="725.6" y="342" fill="#8a8f94" text-anchor="middle">256</text>
+<text x="16" y="204" fill="#8a8f94" transform="rotate(-90 16 204)" text-anchor="middle">relative error (log)</text>
+<text x="425" y="368" fill="#8a8f94" text-anchor="middle">cells per side (log)</text>
+<polyline points="131.6,140.1 280.1,177.8 428.6,215.5 577.1,253.3 725.6,291.1" fill="none" stroke="#3987e5" stroke-width="1.6" stroke-linejoin="round"/>
+<circle cx="131.6" cy="140.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="280.1" cy="177.8" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="428.6" cy="215.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="577.1" cy="253.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="725.6" cy="291.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="131.6,103.2 280.1,140.4 428.6,178.1 577.1,215.9 725.6,253.6" fill="none" stroke="#3987e5" stroke-width="1.6" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="131.6" cy="103.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="280.1" cy="140.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="428.6" cy="178.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="577.1" cy="215.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="725.6" cy="253.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="131.6,125.2 280.1,149.2 428.6,169.7 577.1,189.3 725.6,207.8" fill="none" stroke="#199e70" stroke-width="1.6" stroke-linejoin="round"/>
+<circle cx="131.6" cy="125.2" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="280.1" cy="149.2" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="428.6" cy="169.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="577.1" cy="189.3" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="725.6" cy="207.8" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<polyline points="131.6,105.8 280.1,138.4 428.6,165.7 577.1,188.1 725.6,207.4" fill="none" stroke="#199e70" stroke-width="1.6" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="131.6" cy="105.8" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="280.1" cy="138.4" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="428.6" cy="165.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="577.1" cy="188.1" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="725.6" cy="207.4" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<rect x="70.0" y="45.0" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="85.0" y="54.0" fill="#e6e6e6">uniform</text>
+<rect x="180.0" y="45.0" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="195.0" y="54.0" fill="#e6e6e6">random</text>
+<text x="290.0" y="54" fill="#8a8f94">solid: no limiter · dashed: cellLimited 1</text>
+</svg>
