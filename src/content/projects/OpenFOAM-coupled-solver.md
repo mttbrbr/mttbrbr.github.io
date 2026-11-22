@@ -1,404 +1,207 @@
 ---
-title: "Monolithic Fluid Dynamics: Architecting High-Performance Coupled Solvers via OpenFOAM and PETSc Integration"
-date: 2026-05-30
-tech: ["C++", "OpenFOAM", "PETSc", "Linear Algebra", "MPI", "HPC"]
-excerpt: "An advanced software-engineering analysis of monolithic CFD architectures. This project bridges the face-based geometric discretization of OpenFOAM with the algebraic distributed robustness of PETSc to bypass the memory bandwidth wall."
+title: "Segregated vs Coupled: Solving Pressure and Velocity Together"
+date: 2026-11-22
+tech: ["C", "CFD", "Numerical Methods", "Linear Algebra"]
+excerpt: "SIMPLE solves velocity and pressure one after the other; a coupled solver solves them at once. Same equations, same mesh, same answer: measured on a lid-driven cavity, the difference is 12 outer iterations against thousands, paid with memory and a harder linear system."
 ---
 
+## Technical Index
+1. [**The pressure–velocity problem**](#problem) — Why incompressible flow has no equation for pressure
+2. [**Two strategies**](#strategies) — Segregated (SIMPLE) and coupled
+3. [**The experiment**](#experiment) — A lid-driven cavity, solved both ways
+4. [**Outer iterations**](#iterations) — 12 against thousands
+5. [**Under-relaxation**](#relaxation) — The knobs SIMPLE needs and coupled does not
+6. [**Cost with a direct solver**](#direct) — A first, misleading answer
+7. [**Cost with iterative solvers**](#iterative) — The real trade-off
+8. [**What this means in practice**](#practice) — When coupling pays off
 
-## Table of Contents
-1. [Architectural Bottlenecks and the Memory Bandwidth Wall](#architectural-bottlenecks-and-the-memory-bandwidth-wall)
-2. [Mathematical Formulation and Collocated Grid Discretization](#mathematical-formulation-and-collocated-grid-discretization)
-3. [The Architectural Dilemma of Matrix-Free Shells and Explicit Blocks](#the-architectural-dilemma-of-matrix-free-shells-and-explicit-blocks)
-4. [The Face-to-Cell Scattering Penalty and Cache Line Invalidation](#the-face-to-cell-scattering-penalty-and-cache-line-invalidation)
-5. [Topology Mapping and Strict Non-Zero Preallocation](#topology-mapping-and-strict-non-zero-preallocation)
-6. [Distributed Jacobian Assembly and Implicit Under-Relaxation Mechanics](#distributed-jacobian-assembly-and-implicit-under-relaxation-mechanics)
-7. [Asynchronous Parallel Synchronicity and MPI Deadlock Elimination](#asynchronous-parallel-synchronicity-and-mpi-deadlock-elimination)
-8. [Flux Reconstruction and Segregated Turbulence Closures](#flux-reconstruction-and-segregated-turbulence-closures)
-9. [Advanced Block Preconditioning and Schur Complement Approximations](#advanced-block-preconditioning-and-schur-complement-approximations)
-10. [Theoretical Hardware Profiling Strategy and L3 V-Cache Mapping](#theoretical-hardware-profiling-strategy-and-l3-v-cache-mapping)
+Every pressure-based CFD code has to answer the same question: how do you solve for velocity and pressure when the two are tied together but only one of them has its own equation? Most codes answer with a **segregated** algorithm (SIMPLE, PISO, PIMPLE): solve one, then the other, and iterate. Some answer with a **coupled** solver: put everything in one linear system and solve it at once. Fluent and STAR-CCM+ offer both; OpenFOAM's standard solvers are segregated.
 
----
+In this article I compare the two on the same problem, with the same discretization, and measure what each one really costs.
 
-## Architectural Bottlenecks and the Memory Bandwidth Wall
+<a name="problem"></a>
+## 1. The pressure–velocity problem
 
-In high-performance Computational Fluid Dynamics, performance scalability is strictly governed by the Roofline model boundary, where execution speed is limited by memory bandwidth rather than raw floating-point computing capacity. Standard segregated algorithms, such as the widely implemented SIMPLE or PISO loops, resolve the incompressible Navier-Stokes equations by completely decoupling the momentum equations from the continuity constraint. This mathematical splitting treats pressure and velocity as isolated linear systems solved in a sequential, staggered fashion. 
+The steady incompressible Navier–Stokes equations are
 
-The primary consequence of this decoupling is a severe numerical lag in the kinematic coupling. Because the velocity field is updated using an outdated pressure field from the previous iteration, engineers must apply aggressive empirical under-relaxation factors to prevent catastrophic numerical divergence, especially when dealing with non-orthogonal or highly skewed meshes. 
+$$
+\nabla\cdot(\mathbf{u}\otimes\mathbf{u}) - \nabla\cdot(\nu\nabla\mathbf{u}) + \nabla p = 0, \qquad \nabla\cdot\mathbf{u} = 0
+$$
 
-From an architectural standpoint, these nested loops exhibit a very low arithmetic intensity, which represents the ratio of floating-point operations to data bytes transferred. The CPU core complexes waste billions of clock cycles waiting for fragmented matrix arrays, velocity vectors, and pressure fields to stream across the memory bus, which starves the floating-point units. 
+The momentum equation gives the velocity, if you know the pressure. But there is no equation that gives the pressure: continuity does not contain $p$ at all. It is a *constraint* on the velocity, and the pressure is whatever it must be for the velocity to satisfy it (as discussed in the [article on low-Mach flows](/projects/pressure-vs-density-based/), in the incompressible limit pressure is a Lagrange multiplier).
 
-The monolithic approach natively addresses this hardware inefficiency. By assembling velocity and pressure fields simultaneously inside a single, unified global algebraic system, the exact physical coupling is embedded directly within the global Jacobian matrix. This eliminates the staggered outer iterations and decreases the non-linear iterations required to reach strict convergence, shifting the computation toward higher arithmetic intensity.
+After discretization, with velocity unknowns $\mathbf{u}$ and pressure unknowns $\mathbf{p}$, the linearized system has the block structure
 
-## Mathematical Formulation and Collocated Grid Discretization
+$$
+\begin{bmatrix} \mathbf{A} & \mathbf{G} \\ \mathbf{D} & \mathbf{0} \end{bmatrix}
+\begin{bmatrix} \mathbf{u} \\ \mathbf{p} \end{bmatrix} =
+\begin{bmatrix} \mathbf{b} \\ \mathbf{0} \end{bmatrix}
+$$
 
-The continuous incompressible Navier-Stokes equations for a Newtonian fluid govern the conservation of momentum and mass through a system of partial differential equations:
+where $\mathbf{A}$ is the momentum (convection–diffusion) matrix, $\mathbf{G}$ the discrete pressure gradient and $\mathbf{D}$ the discrete divergence. The zero block on the diagonal is the mathematical form of "continuity has no pressure in it". A matrix like this is called a **saddle-point** system: it is indefinite, and the standard iterative solvers and preconditioners used for momentum or pressure alone do not work on it directly.
 
-$$\nabla \cdot (\mathbf{u} \otimes \mathbf{u}) - \nabla \cdot (\nu \nabla \mathbf{u}) + \nabla p = 0$$
+There is one more difficulty: the momentum equation is non-linear, because $\mathbf{A}$ depends on $\mathbf{u}$ through the convective fluxes. Every method therefore needs an **outer iteration**, where the matrix is rebuilt from the latest velocity and a linear problem is solved.
 
-$$\nabla \cdot \mathbf{u} = 0$$
+<a name="strategies"></a>
+## 2. Two strategies
 
-When discretized via the Finite Volume Method on a collocated grid layout where both velocity and pressure are stored at the cell centers, assembling a naive saddle-point system yields a mathematically unstable linear system. The presence of an exact zero block on the main diagonal creates a highly indefinite matrix and triggers spurious spatial oscillations known as the checkerboard effect. This happens because the central-differencing scheme decouples the pressure values at alternate cells, leading to a singular or poorly bounded system.
+### Segregated: SIMPLE
+SIMPLE (Patankar and Spalding, 1972) never forms the block system. At every outer iteration it:
 
-To resolve this issue within our monolithic infrastructure, we leverage OpenFOAM's spatial discretization modules to extract stabilized operators. Instead of assembling the matrix from scratch, our application constructs underlying segregated matrix equations. This allows us to pull coefficients from the pressure equation, which incorporates the Laplacian operator and explicitly injects Rhie-Chow stabilization directly into the main diagonal block of the monolithic system. 
+1. solves the momentum equations with the pressure of the previous iteration, obtaining a velocity $\mathbf{u}^*$ that does not satisfy continuity;
+2. builds a **pressure-correction** equation by approximating $\mathbf{A}$ with its diagonal: a velocity change responds to a pressure change as $\mathbf{u}' \approx -\text{diag}(\mathbf{A})^{-1}\mathbf{G}\,\mathbf{p}'$, and imposing continuity on $\mathbf{u}^* + \mathbf{u}'$ gives a Poisson-like equation for $\mathbf{p}'$;
+3. corrects velocity and pressure.
 
-```cpp
-fvVectorMatrix UEqn = fvm::div(phi, U) + turbulence->divDevReff(U);
-volScalarField rAU = 1.0 / UEqn.A();
-surfaceScalarField rAUf = fvc::interpolate(rAU);
-fvScalarMatrix pEqn = fvm::laplacian(rAUf, p);
+Each step is cheap, because it only involves scalar systems the size of one field. But the diagonal approximation neglects the influence of neighbouring cells, so the correction overshoots. SIMPLE only converges with **under-relaxation**: momentum is relaxed with a factor $\alpha_u$, the pressure correction with $\alpha_p$, both below 1. And since velocity is always computed with an out-of-date pressure, information about the coupling crawls across the domain one outer iteration at a time.
 
+### Coupled
+A coupled solver assembles the full block system above at every outer iteration and solves it for $\mathbf{u}$ and $\mathbf{p}$ together. The pressure–velocity coupling is exact within each linear solve, so nothing lags and no pressure relaxation is needed. The price is the linear system: it contains all the unknowns at once and it is a saddle-point matrix.
+
+The standard way to solve it iteratively is a Krylov method (GMRES) with a **block preconditioner** that splits velocity and pressure. Eliminating the velocity from the block system gives the pressure **Schur complement**
+
+$$
+\mathbf{S} = -\mathbf{D}\,\mathbf{A}^{-1}\mathbf{G} \;\approx\; -\mathbf{D}\,\text{diag}(\mathbf{A})^{-1}\mathbf{G}
+$$
+
+The exact $\mathbf{A}^{-1}$ is a dense matrix and cannot be formed, so it is approximated with the inverse of the diagonal: exactly the same approximation that SIMPLE uses to build its pressure-correction equation (in PETSc this is the field-split preconditioner with the `selfp` Schur option). This is the key point of the whole comparison: **SIMPLE and the coupled solver use the same approximation**. SIMPLE applies it as an outer iteration, accepting the error and fixing it with many more iterations; the coupled solver applies it inside a Krylov method, which corrects the error at every linear solve.
+
+<a name="experiment"></a>
+## 3. The experiment
+
+[cavity.c](/assets/projects/OpenFOAM-coupled-solver/cavity.c) solves the classic **lid-driven cavity**: a square box of fluid, closed on all sides, with the top wall sliding at constant speed. The whole program is about 600 lines of C.
+
+- **Discretization:** finite volumes on a staggered (MAC) grid, with velocity on the faces and pressure at the cell centres, so no Rhie–Chow interpolation is needed. First-order upwind convection, central diffusion. Identical for both methods.
+- **Non-linearity:** treated the same way in both, with Picard iteration (convective fluxes from the previous outer iteration).
+- **Convergence:** both methods stop when the **same** full non-linear residual (momentum plus continuity) has dropped by a factor $10^8$.
+- **Grids:** 16², 32², 64² and 128² cells; Reynolds numbers 100, 400 and 1000.
+
+The two methods converge to the same discrete solution. The minimum horizontal velocity on the vertical centreline agrees to five digits in every case:
+
+| Cells | $u_{min}$, SIMPLE | $u_{min}$, coupled |
+|---|---|---|
+| 32² | −0.18867 | −0.18867 |
+| 64² | −0.20047 | −0.20047 |
+| 128² | −0.20686 | −0.20686 |
+
+*Re = 100. Reference value (Ghia et al., 1982, 128² cells, higher-order scheme): −0.2109.*
+
+The gap from the reference shrinks as the grid is refined and comes from the numerical diffusion of first-order upwind (see the [article on numerical diffusion](/projects/numerical-diffusion/)), not from the solvers. Every difference below is about *how* the coupling is solved, not *what* is solved.
+
+<a name="iterations"></a>
+## 4. Outer iterations
+
+The first, cleanest comparison is the number of outer (non-linear) iterations.
+
+![Outer iterations vs grid size for SIMPLE and the coupled solver](/assets/projects/OpenFOAM-coupled-solver/outer_iterations.svg)
+
+| Cells | SIMPLE 0.7 / 0.3 | SIMPLE 0.9 / 0.2 | Coupled |
+|---|---|---|---|
+| 32² | 557 | 156 | 11 |
+| 64² | 2 000 | 530 | 11 |
+| 128² | 7 279 | 1 907 | 12 |
+
+*Outer iterations to reduce the residual by $10^8$, Re = 100. SIMPLE 0.7 / 0.3: common default under-relaxation ($\alpha_u$ / $\alpha_p$). 0.9 / 0.2: the fastest combination found on 32² cells.*
+
+- The coupled solver needs **11–12 outer iterations on every grid**. Its convergence is limited only by the non-linearity, which does not depend on the mesh.
+- SIMPLE needs hundreds to thousands, and about **3.5 times more each time the grid is refined**. A finer grid means more cells for the pressure information to cross, and SIMPLE moves it one lagged iteration at a time. Even with the best under-relaxation, at 128² it is still 160 times more outer iterations.
+
+The convergence histories show the two behaviours: the coupled residual falls steeply from the start, while SIMPLE first crawls for hundreds of iterations.
+
+![Convergence history on 64 x 64 cells](/assets/projects/OpenFOAM-coupled-solver/history.svg)
+
+<a name="relaxation"></a>
+## 5. Under-relaxation
+
+SIMPLE has two tuning parameters, and they matter a lot. I ran it on the 32² grid with every combination of $\alpha_u$ and $\alpha_p$ in a small table:
+
+![SIMPLE outer iterations as a function of the under-relaxation factors](/assets/projects/OpenFOAM-coupled-solver/relaxation_map.svg)
+
+- The number of iterations ranges from **142 to 1 178**, a factor of 8, just by changing two numbers.
+- About half of the combinations **diverge**.
+- The fastest settings sit right next to the divergence boundary, along the classic rule of thumb $\alpha_p \approx 1 - \alpha_u$. Finding them means trial and error, and the best values change with the mesh and the flow.
+
+The coupled solver has no such parameter. It converged without any under-relaxation at all three Reynolds numbers tested:
+
+| Re | SIMPLE 0.7 / 0.3 | Coupled |
+|---|---|---|
+| 100 | 511 | 11 |
+| 400 | 467 | 18 |
+| 1000 | 423 | 22 |
+
+*Outer iterations on 32² cells, direct linear solvers.*
+
+The coupled iterations grow with the Reynolds number because convection becomes stronger and the Picard linearization (fluxes from the previous iteration) becomes a worse approximation: that is a non-linearity effect, not a pressure–velocity coupling effect. A Newton linearization would reduce it further.
+
+<a name="direct"></a>
+## 6. Cost with a direct solver
+
+Fewer iterations do not automatically mean less time: each coupled iteration solves a much larger and harder system. The first version of the program solved every linear system exactly, with a banded LU factorization (LAPACK), for both methods:
+
+| Cells | Method | Outer iterations | Time (s) | Memory (MB) |
+|---|---|---|---|---|
+| 16² | SIMPLE 0.7 / 0.3 | 151 | 0.05 | 0.1 |
+| 16² | Coupled | 12 | 0.01 | 0.8 |
+| 32² | SIMPLE 0.7 / 0.3 | 511 | 1.03 | 0.8 |
+| 32² | Coupled | 11 | 0.41 | 6.9 |
+| 64² | SIMPLE 0.7 / 0.3 | 1 829 | 67.3 | 6.3 |
+| 64² | Coupled | 11 | 5.96 | 55.8 |
+
+*Re = 100, one core (i7-1165G7). Memory: storage of the LU factors of the largest system, in MB.*
+
+The coupled solver looks 11 times faster, but this comparison is unfair to SIMPLE. Its strength is that each iteration can be *cheap and approximate*: real codes never solve its momentum and pressure equations exactly at every outer iteration, because the next iteration changes everything anyway. With an exact direct solve, SIMPLE pays the full price thousands of times. The memory column, on the other hand, is already telling: the coupled LU takes **9 times more memory**, and it grows much faster with the grid, because the bandwidth of the coupled matrix is three times larger.
+
+<a name="iterative"></a>
+## 7. Cost with iterative solvers
+
+So I wrote the version that matches what production codes do:
+
+- **SIMPLE:** momentum solved with Gauss–Seidel until its residual drops by 10× (relative tolerance 0.1); pressure correction with Jacobi-preconditioned conjugate gradient to a relative tolerance of 0.05. These are typical values in an OpenFOAM `fvSolution`.
+- **Coupled:** the full system solved with flexible GMRES to a relative tolerance of $10^{-2}$, with the block preconditioner of section 2: two Gauss–Seidel sweeps for the velocity, the Schur complement approximated with $\text{diag}(\mathbf{A})^{-1}$ and solved with conjugate gradient. Inexact linear solves, the same outer iteration.
+
+![Wall time and memory vs grid size](/assets/projects/OpenFOAM-coupled-solver/time_memory.svg)
+
+| Cells | Method | Outer iterations | Time (s) | Memory (MB) |
+|---|---|---|---|---|
+| 32² | SIMPLE 0.7 / 0.3 | 557 | 0.53 | 0.2 |
+| 32² | SIMPLE 0.9 / 0.2 | 156 | **0.14** | 0.2 |
+| 32² | Coupled | 11 | 0.16 | 1.7 |
+| 64² | SIMPLE 0.7 / 0.3 | 2 000 | 14.2 | 0.9 |
+| 64² | SIMPLE 0.9 / 0.2 | 530 | 4.0 | 0.9 |
+| 64² | Coupled | 11 | **2.4** | 6.8 |
+| 128² | SIMPLE 0.7 / 0.3 | 7 279 | 410 | 3.4 |
+| 128² | SIMPLE 0.9 / 0.2 | 1 907 | 106 | 3.4 |
+| 128² | Coupled | 12 | **37.5** | 26.9 |
+
+*Re = 100, one core. Memory: storage of the linear solvers (matrix coefficients, work vectors and, for the coupled solver, the Krylov basis), in MB.*
+
+Now the picture is a real trade-off:
+
+- **On a small grid a well-tuned SIMPLE is as fast or faster**: 0.14 s against 0.16 s on 32². Each of its iterations costs almost nothing.
+- **As the grid grows, the coupled solver wins**: 1.7 times faster than the best SIMPLE on 64², **2.8 times faster** on 128², and 11 times faster than SIMPLE with default under-relaxation. The break-even point moves in favour of coupling as the mesh grows, because SIMPLE's iteration count grows with the mesh and the coupled one does not.
+- **The memory stays about 8 times larger** for the coupled solver, now mostly because FGMRES keeps its Krylov basis: up to 60 vectors, each as long as all the unknowns together.
+
+Where does the time go? Almost entirely into the pressure. On 128² cells, SIMPLE with default factors performed **1.94 million** conjugate-gradient iterations on the pressure correction in total, the coupled solver **164 000** on its Schur complement. The coupled solver solves the pressure a few times, approximately, inside a method that corrects the approximation; SIMPLE solves it thousands of times and corrects the approximation with more outer iterations.
+
+Two caveats. The pressure solves here use a simple Jacobi-preconditioned conjugate gradient. With algebraic multigrid (GAMG in OpenFOAM, BoomerAMG or GAMG in PETSc), both methods would become much faster and the ratio between them could change. And this is a 2D laminar problem: in 3D, with turbulence and distorted meshes, the coupled system is larger and harder to precondition, while turbulence equations are usually still solved separately in both approaches.
+
+<a name="practice"></a>
+## 8. What this means in practice
+
+- **Coupled solvers converge in far fewer outer iterations, and their count barely depends on the mesh.** This is the reason commercial codes offer them for steady problems: Fluent's coupled pressure-based scheme and STAR-CCM+'s coupled flow solver typically allow much larger pseudo-time steps (Courant numbers) than their segregated counterparts. In the OpenFOAM world, block-coupled solvers exist in foam-extend (`pUCoupledFoam`) and in several research codes built on PETSc.
+- **They pay with memory.** A factor of 8–9 in this test. On a large 3D mesh, memory per node can be what decides between the two.
+- **They remove the under-relaxation guesswork.** SIMPLE's speed depended on two factors by a factor of 8, and half of the combinations diverged. Variants like SIMPLEC (available in OpenFOAM with `consistent yes`) relax this by improving the same diagonal approximation, allowing larger factors.
+- **Segregated is often the better choice for transients.** In a time-accurate simulation with a small time step (PISO, PIMPLE), each time step starts from a solution that is already close, and a few segregated corrections are enough. The advantage of coupling is largest when many outer iterations are needed: steady problems, large meshes, strongly coupled physics.
+- **Small problems do not need it.** On the smallest grid a well-tuned SIMPLE was just as fast.
+- **The two are less different than they look.** Both rely on the same approximation of the pressure Schur complement. The difference is whether that approximation is used as the algorithm (SIMPLE) or as a preconditioner inside a Krylov method (coupled).
+
+The general lesson is the same as in the previous articles: the equations do not change, the result does not change, and the cost can change by an order of magnitude depending on how the solution is organized. Counting iterations is not enough; time, memory and robustness have to be measured together.
+
+### Reproduce it
+All the files are available: [cavity.c](/assets/projects/OpenFOAM-coupled-solver/cavity.c) (needs LAPACK), [plot_sc.py](/assets/projects/OpenFOAM-coupled-solver/plot_sc.py) and the data: [iterative.csv](/assets/projects/OpenFOAM-coupled-solver/iterative.csv), [sweep.csv](/assets/projects/OpenFOAM-coupled-solver/sweep.csv) (direct solvers), [relaxation.csv](/assets/projects/OpenFOAM-coupled-solver/relaxation.csv), [history_iter.csv](/assets/projects/OpenFOAM-coupled-solver/history_iter.csv).
+
+```bash
+gcc -O3 -march=native cavity.c -o cavity -llapack -lm
+mkdir -p out && ./cavity out        # everything, ~12 min (most of it: SIMPLE on 128 x 128)
+./cavity out iter                   # only the iterative-solver comparison, ~10 min
+mkdir -p figures && python3 plot_sc.py out figures
 ```
-
-This mathematical transformation changes the continuity equation into a well-posed elliptic formulation:
-
-$$\begin{bmatrix} \mathbf{A}_{uu} & \mathbf{A}_{up} \\ \mathbf{A}_{pu} & \mathbf{A}_{pp} \end{bmatrix} \begin{bmatrix} \mathbf{u} \\ p \end{bmatrix} = \begin{bmatrix} \mathbf{b}_u \\ \mathbf{b}_p \end{bmatrix}$$
-
-In this block framework, $$\mathbf{A}_{uu}$$ represents the unrolled diagonal and off-diagonal coefficients of the velocity transport matrix, while $$\mathbf{A}_{pp}$$ represents the stabilized pressure Laplacian coefficients. The off-diagonal blocks $$\mathbf{A}_{up}$$ and $$\mathbf{A}_{pu}$$ represent the explicit geometric face-interpolated cross-couplings derived from the surface normal vectors.
-
-## The Architectural Dilemma of Matrix-Free Shells and Explicit Blocks
-
-Interfacing OpenFOAM with PETSc forces a critical software engineering trade off between memory footprint and preconditioning capability. For standard Krylov subspace accelerators like GMRES, PETSc does not strictly require explicit knowledge of matrix elements; it only requires the evaluation of the matrix-vector product action. By wrapping OpenFOAM's native Lower-Diagonal-Upper storage inside PETSc's matrix-shell type and remapping the operational callback, we can redirect PETSc's vector pointers directly to OpenFOAM's optimized internal matrix multiplication routine.
-
-This matrix-free path offers the advantage of zero memory duplication since OpenFOAM retains exclusive ownership of its native data layout without any translation overhead. However, this path completely breaks down when applying advanced preconditioning. Modern, scalable Algebraic Multigrid methods and physics-based block field splits are inherently algebraic. They must explicitly inspect the matrix coefficients to construct strength-of-connection graphs, aggregate coarse nodes, and compute coarse-grid triple products. Passing a matrix shell to these systems causes an immediate runtime crash because the preconditioner cannot access the underlying topology.
-
-To unlock multi-level algebraic preconditioners, we must accept the explicit duplication of the matrix coefficients via the explicit block path. The decoupled, face-based Lower-Diagonal-Upper matrix arrays must be completely unrolled and re-mapped into an interleaved cell-based Block Compressed Sparse Row format managed by PETSc. This layout uses a fixed block size of four to contain the interleaved degrees of freedom for the three velocity components and pressure.
-
-This choice introduces a memory duplication overhead of approximately two times the total matrix storage. Rewriting OpenFOAM’s core to natively utilize block storage would require refactoring the entire discretization pipeline, dynamic mesh handling, and boundary conditions, which is an impractical task. Therefore, the monolithic architecture intentionally trades memory capacity for convergence speed.
-
-## The Face-to-Cell Scattering Penalty and Cache Line Invalidation
-
-Choosing the explicit block route introduces a significant operational bottleneck known as the Face-to-Cell Scattering Penalty. OpenFOAM's discretization loops are fundamentally face-oriented, meaning the framework iterates over the mesh faces, computes the flux and transport coefficients once per face, and streams these values directly into sequential array blocks.
-
-Conversely, PETSc's algebraic structures are cell-oriented and row-oriented. Transforming OpenFOAM's coefficients into block entries requires an intense indexing permutation. For every internal face, the solver must look up the owner and neighbour cell IDs, calculate their global interprocess offsets, map the velocity components and pressure component into a contiguous sixteen-element scalar sub-matrix, and invoke the blocked value insertion routine.
-
-This scattering operation introduces non-contiguous memory writes and pointer-chasing across the heap. When coefficients are written to scattered memory locations corresponding to distant cell IDs, it triggers frequent cache line invalidations and Translation Lookaside Buffer misses. To minimize this penalty and make the monolithic solver viable, this conversion overhead must be highly optimized using strict memory preallocation and vectorized block memory transfers during the assembly loop.
-
-## Topology Mapping and Strict Non-Zero Preallocation
-
-Dynamic memory allocation during distributed matrix assembly severely degrades performance. If PETSc is forced to dynamically allocate memory for unexpected non-zero entries during assembly, it triggers heap fragmentation, expensive internal array copies, and implicit synchronization stalls across MPI ranks.
-
-Our implementation addresses this via a dedicated topology mapper class. This utility scans the mesh connectivity, accounting for internal faces, processor-to-processor halo boundaries, and cyclic patches to compute the exact number of diagonal and off-diagonal non-zero blocks for every single cell before any matrix values are inserted.
-
-**File:** `PetscTopologyMapper.H`
-
-```cpp
-#ifndef PetscTopologyMapper_H
-#define PetscTopologyMapper_H
-
-#include "fvMesh.H"
-#include "processorPolyPatch.H"
-#include "cyclicPolyPatch.H"
-#include "labelList.H"
-
-namespace Foam
-{
-struct PreallocData
-{
-    labelList d_nnz; 
-    labelList o_nnz; 
-};
-
-class PetscTopologyMapper
-{
-public:
-    static PreallocData computeBlockPreallocation(const fvMesh& mesh)
-    {
-        const label nCells = mesh.nCells();
-        PreallocData allocData;
-        allocData.d_nnz.setSize(nCells, 1); 
-        allocData.o_nnz.setSize(nCells, 0);
-
-        const labelUList& own = mesh.owner();
-        const labelUList& nei = mesh.neighbour();
-
-        forAll(nei, faceI)
-        {
-            allocData.d_nnz[own[faceI]]++;
-            allocData.d_nnz[nei[faceI]]++;
-        }
-
-        const polyBoundaryMesh& boundaryMesh = mesh.boundaryMesh();
-        forAll(boundaryMesh, patchI)
-        {
-            const polyPatch& patch = boundaryMesh[patchI];
-            
-            if (isA<processorPolyPatch>(patch))
-            {
-                const labelUList& faceCells = patch.faceCells();
-                forAll(faceCells, i) 
-                {
-                    allocData.o_nnz[faceCells[i]]++; 
-                }
-            }
-            else if (isA<cyclicPolyPatch>(patch))
-            {
-                const labelUList& faceCells = patch.faceCells();
-                forAll(faceCells, i) 
-                {
-                    allocData.d_nnz[faceCells[i]]++; 
-                }
-            }
-        }
-        return allocData;
-    }
-};
-}
-#endif
-
-```
-
-## Distributed Jacobian Assembly and Implicit Under-Relaxation Mechanics
-
-The assembly loop unrolls OpenFOAM's geometric fields and maps them into PETSc's linear structures. To maintain stability, under-relaxation must be handled implicitly within the monolithic matrix itself rather than as a post-processing step. For a cell with a diagonal momentum coefficient $\mathcal{A}_{uu}$ and source term $\mathbf{b}_u$, implicit under-relaxation alters the matrix diagonal by dividing it by the relaxation factor $\alpha_U$, while the right-hand side vector incorporates historical time-step values scaled by the remaining fraction.
-
-The main solver file loops over internal faces, applies interprocess boundary values, and embeds relaxation directly onto the cell diagonals.
-
-**File:** `coupledSimpleFoam.C`
-
-```cpp
-// ... Initialization and Setup inside main() ...
-const PetscInt bs = 4; 
-PetscInt localEqs = mesh.nCells() * bs;
-PetscInt globalEqs = indexer.totalCells() * bs;
-
-Mat A;
-MatCreate(PETSC_COMM_WORLD, &A);
-MatSetSizes(A, localEqs, localEqs, globalEqs, globalEqs);
-MatSetType(A, MATBAIJ); 
-// ... Preallocation calls using d_nnz and o_nnz arrays ...
-MatSetOption(A, MAT_NEW_NONZERO_ALLOCATION_ERR, PETSC_TRUE);
-
-forAll(own, faceI)
-{
-    PetscInt global_o = indexer.global(own[faceI]);
-    PetscInt global_n = indexer.global(nei[faceI]);
-    vector nA = Sf[faceI];
-    scalar w  = weights[faceI];
-
-    vector Aup_upper = (1.0 - w) * nA; vector Apu_upper = (1.0 - w) * nA; 
-    vector Aup_lower = -w * nA;        vector Apu_lower = -w * nA;
-
-    Aup_diag[own[faceI]] += w * nA; Aup_diag[nei[faceI]] -= (1.0 - w) * nA;
-    Apu_diag[own[faceI]] += w * nA; Apu_diag[nei[faceI]] -= (1.0 - w) * nA;
-
-    PetscScalar b_upper[16] = {0.0};
-    b_upper[0] = U_upper[faceI]; b_upper[5] = U_upper[faceI]; b_upper[10] = U_upper[faceI]; 
-    b_upper[3] = Aup_upper.x();  b_upper[7] = Aup_upper.y();  b_upper[11] = Aup_upper.z(); 
-    b_upper[12]= Apu_upper.x();  b_upper[13]= Apu_upper.y();  b_upper[14]= Apu_upper.z(); 
-    b_upper[15]= p_upper[faceI];                                                           
-    MatSetValuesBlocked(A, 1, &global_o, 1, &global_n, b_upper, ADD_VALUES);
-
-    PetscScalar b_lower[16] = {0.0};
-    b_lower[0] = U_lower[faceI]; b_lower[5] = U_lower[faceI]; b_lower[10] = U_lower[faceI];
-    b_lower[3] = Aup_lower.x();  b_lower[7] = Aup_lower.y();  b_lower[11] = Aup_lower.z(); 
-    b_lower[12]= Apu_lower.x();  b_lower[13]= Apu_lower.y();  b_lower[14]= Apu_lower.z();  
-    b_lower[15]= p_lower[faceI];
-    MatSetValuesBlocked(A, 1, &global_n, 1, &global_o, b_lower, ADD_VALUES);
-}
-
-forAll(boundaryMesh, patchI)
-{
-    const polyPatch& patch = boundaryMesh[patchI];
-    if (isA<processorPolyPatch>(patch))
-    {
-        const processorPolyPatch& procPatch = refCast<const processorPolyPatch>(patch);
-        label bndFaceOffset = procPatch.start() - mesh.nInternalFaces();
-
-        const vectorField& U_patchCoeffs = UEqn.internalCoeffs()[patchI];
-        const scalarField& p_patchCoeffs = pEqn.internalCoeffs()[patchI];
-        const vectorField& patchSf = mesh.Sf().boundaryField()[patchI];
-
-        forAll(procPatch.faceCells(), i)
-        {
-            label localCell = procPatch.faceCells()[i];
-            PetscInt global_o = indexer.global(localCell);
-            PetscInt global_rem = indexer.remoteGlobal(bndFaceOffset + i);
-            vector nA = patchSf[i];
-            
-            PetscScalar b_mpi[16] = {0.0};
-            b_mpi[0] = U_patchCoeffs[i].x(); b_mpi[5] = U_patchCoeffs[i].y(); b_mpi[10]= U_patchCoeffs[i].z();
-            b_mpi[3] = nA.x(); b_mpi[7] = nA.y(); b_mpi[11]= nA.z();
-            b_mpi[12]= nA.x(); b_mpi[13]= nA.y(); b_mpi[14]= nA.z();
-            b_mpi[15]= p_patchCoeffs[i];
-            
-            MatSetValuesBlocked(A, 1, &global_o, 1, &global_rem, b_mpi, ADD_VALUES);
-        }
-    }
-    else 
-    {
-        const labelUList& faceCells = patch.faceCells();
-        const vectorField& Up_int = UEqn.internalCoeffs()[patchI];
-        const vectorField& Up_bnd = UEqn.boundaryCoeffs()[patchI];
-        const scalarField& pp_int = pEqn.internalCoeffs()[patchI];
-        const scalarField& pp_bnd = pEqn.boundaryCoeffs()[patchI];
-
-        forAll(faceCells, i)
-        {
-            label cellI = faceCells[i];
-            U_bndDiag[cellI] += Up_int[i]; U_bndRHS[cellI]  += Up_bnd[i];
-            p_bndDiag[cellI] += pp_int[i]; p_bndRHS[cellI]  += pp_bnd[i];
-        }
-    }
-}
-
-for (label cellI = 0; cellI < mesh.nCells(); ++cellI)
-{
-    PetscInt global_c = indexer.global(cellI);
-    PetscScalar b_diag[16] = {0.0};
-    
-    scalar Auu_x = U_diag[cellI] + U_bndDiag[cellI].x();
-    scalar Auu_y = U_diag[cellI] + U_bndDiag[cellI].y();
-    scalar Auu_z = U_diag[cellI] + U_bndDiag[cellI].z();
-    scalar App   = p_diag[cellI] + p_bndDiag[cellI];
-
-    b_diag[0]  = Auu_x / alpha_U; b_diag[5]  = Auu_y / alpha_U; b_diag[10] = Auu_z / alpha_U;
-    b_diag[3]  = Aup_diag[cellI].x(); b_diag[7]  = Aup_diag[cellI].y(); b_diag[11] = Aup_diag[cellI].z();
-    b_diag[12] = Apu_diag[cellI].x(); b_diag[13] = Apu_diag[cellI].y(); b_diag[14] = Apu_diag[cellI].z();
-    b_diag[15] = App / alpha_p;
-
-    MatSetValuesBlocked(A, 1, &global_c, 1, &global_c, b_diag, ADD_VALUES);
-
-    PetscInt rows[4] = {global_c*4, global_c*4+1, global_c*4+2, global_c*4+3};
-    vector U_old = U[cellI]; scalar p_old = p[cellI];
-
-    PetscScalar vals[4] = {
-        U_source[cellI].x() + U_bndRHS[cellI].x() + ((1.0 - alpha_U) / alpha_U) * Auu_x * U_old.x(),
-        U_source[cellI].y() + U_bndRHS[cellI].y() + ((1.0 - alpha_U) / alpha_U) * Auu_y * U_old.y(),
-        U_source[cellI].z() + U_bndRHS[cellI].z() + ((1.0 - alpha_U) / alpha_U) * Auu_z * U_old.z(),
-        p_source[cellI]     + p_bndRHS[cellI]     + ((1.0 - alpha_p) / alpha_p) * App * p_old
-    };
-    VecSetValues(b, 4, rows, vals, ADD_VALUES);
-}
-// ... Assembly termination and solver execution paths ...
-
-```
-
-## Asynchronous Parallel Synchronicity and MPI Deadlock Elimination
-
-When running large-scale cases across thousands of MPI ranks, exchanging global cell indices across processor boundaries is highly prone to communication deadlocks. A standard blocking approach where a rank waits for a neighbor to receive data while that neighbor is simultaneously blocked trying to send to a third rank will freeze execution.
-
-To guarantee parallel scalability, our integration relies on OpenFOAM's asynchronous non-blocking streaming buffers. This framework separates data serialization from physical transmission by aggregating the global indexing data into contiguous memory buffers and scheduling asynchronous, non-blocking point-to-point exchanges underneath the hood.
-
-**File:** `PetscIndexer.H`
-
-```cpp
-#ifndef PetscIndexer_H
-#define PetscIndexer_H
-
-#include "fvMesh.H"
-#include "globalIndex.H"
-#include "processorPolyPatch.H"
-#include "PstreamBuffers.H"
-
-namespace Foam
-{
-class PetscIndexer
-{
-    globalIndex globalCells_;
-    labelList localToGlobal_;
-    labelList bndFaceToRemoteGlobal_;
-
-public:
-    PetscIndexer(const fvMesh& mesh)
-    :
-        globalCells_(mesh.nCells()),
-        localToGlobal_(mesh.nCells()),
-        bndFaceToRemoteGlobal_(mesh.nBoundaryFaces(), -1)
-    {
-        forAll(localToGlobal_, cellI)
-        {
-            localToGlobal_[cellI] = globalCells_.toGlobal(cellI);
-        }
-
-        if (Pstream::parRun())
-        {
-            const polyBoundaryMesh& boundaryMesh = mesh.boundaryMesh();
-            PstreamBuffers pBufs(Pstream::commsTypes::nonBlocking);
-
-            forAll(boundaryMesh, patchI)
-            {
-                if (isA<processorPolyPatch>(boundaryMesh[patchI]))
-                {
-                    const processorPolyPatch& procPatch = 
-                        refCast<const processorPolyPatch>(boundaryMesh[patchI]);
-                    const labelUList& faceCells = procPatch.faceCells();
-                    
-                    labelList myGlobalIDsToSend(faceCells.size());
-                    forAll(faceCells, i)
-                    {
-                        myGlobalIDsToSend[i] = localToGlobal_[faceCells[i]];
-                    }
-                    UOPstream toNeighbour(procPatch.neighbProcNo(), pBufs);
-                    toNeighbour << myGlobalIDsToSend;
-                }
-            }
-
-            pBufs.finishedSends();
-
-            forAll(boundaryMesh, patchI)
-            {
-                if (isA<processorPolyPatch>(boundaryMesh[patchI]))
-                {
-                    const processorPolyPatch& procPatch = 
-                        refCast<const processorPolyPatch>(boundaryMesh[patchI]);
-
-                    UIPstream fromNeighbour(procPatch.neighbProcNo(), pBufs);
-                    labelList remoteGlobalIDsReceived;
-                    fromNeighbour >> remoteGlobalIDsReceived;
-
-                    label startBndFace = procPatch.start() - mesh.nInternalFaces();
-                    forAll(remoteGlobalIDsReceived, i)
-                    {
-                        bndFaceToRemoteGlobal_[startBndFace + i] = remoteGlobalIDsReceived[i];
-                    }
-                }
-            }
-        }
-    }
-
-    inline label global(const label localCellI) const { return localToGlobal_[localCellI]; }
-    inline label remoteGlobal(const label bndFaceI) const { return bndFaceToRemoteGlobal_[bndFaceI]; }
-    inline label totalCells() const { return globalCells_.totalSize(); }
-};
-}
-#endif
-
-```
-
-## Flux Reconstruction and Segregated Turbulence Closures
-
-A key advantage of using OpenFOAM as the physics engine is leveraging its library of advanced RANS and LES turbulence closures without modifying the underlying linear algebra infrastructure. During the initial setup phase inside the fields initialization header, the solver registers the fields and instantiates the chosen transport and turbulence closures.
-
-Within the main execution loop, our architecture applies a physics co-design strategy that balances monolithic execution with segregated property updates through three distinct phases.
-
-During the initial execution phase, the monolithic core tackles velocity and pressure coupling. The effective viscosity field, which combines laminar and turbulent eddy viscosity, is updated by the turbulence closure and fed into the effective stress tensor divergence. The spatial discretization derivatives are computed and passed to PETSc, which updates velocity and pressure simultaneously.
-
-Following the resolution of the coupled system, the solver initiates a flux reconstruction phase. After unpacking the coupled solution vector, the face flux field must be explicitly reconstructed to enforce strict mass conservation across cell faces. This is achieved by applying a localized Rhie-Chow correction back onto the geometric field using the updated pressure gradient terms.
-
-Finally, the framework handles the segregated turbulence equations. High-fidelity turbulence model transport equations, such as those for turbulent kinetic energy or specific dissipation rates, are highly non-linear but weakly coupled to the instantaneous kinematic fields. Solving them inside the monolithic block matrix would increase the system block size to six, exponentially increasing memory utilization and preconditioning costs. Therefore, the turbulence model equations are resolved in a segregated fashion via the turbulence correct method after the kinematic system has converged.
-
-## Advanced Block Preconditioning and Schur Complement Approximations
-
-Because the stabilized coupled matrix is highly indefinite, treating it with a standard monolithic Krylov solver leads to stagnation or divergence. We resolve this by applying a physics-based FieldSplit preconditioner. This operator algebraically splits the monolithic matrix into velocity and pressure spaces exclusively during the preconditioning phase.
-
-The global system is transformed into an upper triangular block form by isolating the pressure space via the exact Schur complement matrix:
-
-$$\mathbf{S} = \mathbf{A}_{pp} - \mathbf{A}_{pu} \mathbf{A}_{uu}^{-1} \mathbf{A}_{up}$$
-
-Evaluating the exact inverse of the momentum block is computationally prohibitive due to its cubic complexity. Instead, we rely on sparse physical scaling operators, approximating the inverse using the inverse of the matrix diagonal block. This yields the scalable Least-Squares Commutator approximation of the Schur complement:
-
-$$\hat{\mathbf{S}} \approx \mathbf{A}_{pp} - \mathbf{A}_{pu} \left[ \text{diag}(\mathbf{A}_{uu}) \right]^{-1} \mathbf{A}_{up}$$
-
-Within this splitting framework, the velocity sub-block is isolated and accelerated via a flexible GMRES loop preconditioned with a single, aggressive V-cycle of Algebraic Multigrid to rapidly smooth high-frequency velocity errors. Conversely, the pressure sub-block operates under a Conjugate Gradient loop preconditioned via a dedicated multigrid cycle, resolving the elliptic pressure equation across distributed processors.
-
-## Theoretical Hardware Profiling Strategy and L3 V-Cache Mapping
-
-The ultimate theoretical optimization metric for this architecture involves its performance on modern split-cache processors that feature a stacked vertical cache layer. These platforms utilize a heterogeneous multi-die architecture where a massive static random-access memory block is stacked directly on top of a single core complex die, providing an expanded L3 cache pool accessible by a local group of high-performance cores.
-
-Standard segregated solvers continuously cycle through entire cell data spaces, dropping the L3 cache hit rate below optimal levels and bottlenecking on the main memory channels due to continuous data streaming.
-
-Our monolithic implementation counters this behavior through a strict alignment with the hardware cache layout. By utilizing the field splitting architecture, the dimensionality of the approximated Schur complement operator is limited exclusively to the pressure degree of freedom, reducing data requirements to one degree of freedom per cell instead of four.
-
-For a targeted mesh partition size optimized for the cache limits, the structural footprint of this pressure sub-matrix remains small enough to reside entirely within the ultra-low-latency stacked L3 cache lines. This approach shifts the most demanding phase of the CFD calculation from a memory-bound streaming pattern into a compute-bound cache loop, effectively bypassing the memory bandwidth wall during multigrid cycles.
-

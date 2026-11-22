@@ -1,0 +1,271 @@
+kind,precision,flags,n,cells,MB,ns_per_cell_iter,checksum,procs
+time,DP,"gcc -O0",24,13824,1.30,46.7028,2.7433163612e+04,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",24,13824,1.30,13.9490,2.7433163612e+04,1
+time,DP,"gcc -O3",24,13824,1.30,14.0127,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native",24,13824,1.30,13.1063,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",24,13824,1.30,13.3879,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -ffast-math",24,13824,1.30,9.4431,2.7433163612e+04,1
+time,DP,"clang -O3",24,13824,1.30,14.1240,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native",24,13824,1.30,13.6351,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native -ffast-math",24,13824,1.30,9.7963,2.7433163612e+04,1
+time,DP,"gcc -O0",96,884736,84.49,47.9699,1.5503360126e+06,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",96,884736,84.49,18.0779,1.5503360126e+06,1
+time,DP,"gcc -O3",96,884736,84.49,18.0299,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native",96,884736,84.49,18.3745,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",96,884736,84.49,18.7684,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -ffast-math",96,884736,84.49,16.5967,1.5503360126e+06,1
+time,DP,"clang -O3",96,884736,84.49,18.1427,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native",96,884736,84.49,18.8078,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native -ffast-math",96,884736,84.49,17.1232,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.38,14.9932,8.7525733473e+03,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.68,13.6033,4.1159347118e+03,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.24,12.4730,8.7525867116e+03,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.39,12.2540,4.1159150233e+03,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.32,12.4035,8.7525733651e+03,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.39,9.7045,4.1159150233e+03,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,1.30,12.7563,2.7433163612e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,2.35,12.7544,1.3823999996e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,0.81,10.5574,2.7432931920e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,1.33,10.8357,1.3824278067e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.09,13.2777,2.7433163596e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.33,10.7922,1.3824278067e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,3.10,14.3802,6.7307187031e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,5.62,13.2757,3.2772177890e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,1.93,11.1827,6.7307620350e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,3.19,11.3847,3.2772217822e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,2.58,14.6457,6.7307186988e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,3.19,11.1055,3.2772217822e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,10.51,14.4392,1.7163518695e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,19.13,14.9933,1.1059202753e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,6.55,10.7348,1.7163432706e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,10.87,10.7978,1.1059100386e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,8.76,14.4066,1.7163518683e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,10.87,10.8099,1.1059100386e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,24.97,15.9466,4.6459189717e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,45.55,16.9772,2.6215177792e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,15.58,11.8975,4.6459663578e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,25.87,12.4579,2.6215039010e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,20.82,16.2748,4.6459189745e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,25.87,12.4674,2.6215039010e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,18.2492,1.5503360126e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,17.9068,8.8473792012e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,12.7994,1.5502245441e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,12.9556,8.8473766454e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,17.9590,1.5503360127e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,13.5061,8.8473766454e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,200.54,31.8128,4.0641812917e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,366.74,18.1559,2.0971638567e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,125.24,15.5778,4.0634957472e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,208.34,13.6728,2.0971639824e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,167.18,29.2236,4.0641812934e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,208.34,13.4067,2.0971639824e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,391.99,18.7809,3.0384034022e+07,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,717.21,18.4665,4.0960000404e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,244.84,13.8334,3.0506505932e+07,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,407.45,13.3849,4.0960000369e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,326.76,18.5088,3.0384034057e+07,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,407.45,13.7929,4.0960000369e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,36.1320,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,36.3684,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,36.7410,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,36.7752,1.5503360126e+06,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,51.1473,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,51.1427,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,51.9480,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,51.9052,8.8473792012e+05,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,19.8741,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,19.9253,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,19.9001,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,19.7626,1.5502245441e+06,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,27.7892,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,28.4094,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,28.4334,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,28.5751,8.8473766454e+05,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,37.2891,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,37.6809,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,37.8123,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,37.8354,1.5503360127e+06,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,34.7700,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,34.5032,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,35.1611,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,35.5507,8.8473766454e+05,4
+time,DP,"gcc -O0",24,13824,1.30,47.2885,2.7433163612e+04,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",24,13824,1.30,13.9514,2.7433163612e+04,1
+time,DP,"gcc -O3",24,13824,1.30,13.4053,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native",24,13824,1.30,13.7869,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",24,13824,1.30,13.2503,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -ffast-math",24,13824,1.30,9.6347,2.7433163612e+04,1
+time,DP,"clang -O3",24,13824,1.30,14.5029,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native",24,13824,1.30,13.2336,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native -ffast-math",24,13824,1.30,9.7693,2.7433163612e+04,1
+time,DP,"gcc -O0",96,884736,84.49,49.9643,1.5503360126e+06,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",96,884736,84.49,19.9721,1.5503360126e+06,1
+time,DP,"gcc -O3",96,884736,84.49,18.9503,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native",96,884736,84.49,19.1751,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",96,884736,84.49,20.4024,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -ffast-math",96,884736,84.49,18.6834,1.5503360126e+06,1
+time,DP,"clang -O3",96,884736,84.49,19.4546,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native",96,884736,84.49,20.5946,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native -ffast-math",96,884736,84.49,18.8421,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.38,12.5803,8.7525733473e+03,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.68,13.3601,4.1159347118e+03,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.24,9.8521,8.7525867116e+03,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.39,11.8363,4.1159150233e+03,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.32,14.5434,8.7525733651e+03,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.39,12.0128,4.1159150233e+03,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,1.30,13.6511,2.7433163612e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,2.35,12.9302,1.3823999996e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,0.81,9.9541,2.7432931920e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,1.33,11.1767,1.3824278067e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.09,13.0650,2.7433163596e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.33,11.0295,1.3824278067e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,3.10,14.6432,6.7307187031e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,5.62,13.7897,3.2772177890e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,1.93,11.1794,6.7307620350e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,3.19,11.6578,3.2772217822e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,2.58,15.2829,6.7307186988e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,3.19,11.5858,3.2772217822e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,10.51,15.0211,1.7163518695e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,19.13,16.2673,1.1059202753e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,6.55,11.4927,1.7163432706e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,10.87,12.2054,1.1059100386e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,8.76,15.3241,1.7163518683e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,10.87,11.7064,1.1059100386e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,24.97,17.3735,4.6459189717e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,45.55,18.4094,2.6215177792e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,15.58,12.4975,4.6459663578e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,25.87,13.2887,2.6215039010e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,20.82,25.1375,4.6459189745e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,25.87,13.1920,2.6215039010e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,19.3474,1.5503360126e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,18.9997,8.8473792012e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,13.6434,1.5502245441e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,13.6555,8.8473766454e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,18.9469,1.5503360127e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,13.7392,8.8473766454e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,200.54,33.6297,4.0641812917e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,366.74,19.3070,2.0971638567e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,125.24,15.9829,4.0634957472e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,208.34,14.6095,2.0971639824e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,167.18,29.4441,4.0641812934e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,208.34,14.0096,2.0971639824e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,391.99,19.6293,3.0384034022e+07,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,717.21,19.9234,4.0960000404e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,244.84,14.5156,3.0506505932e+07,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,407.45,14.7780,4.0960000369e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,326.76,19.7537,3.0384034057e+07,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,407.45,14.2820,4.0960000369e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,43.0147,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,43.4718,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,43.5271,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,43.6030,1.5503360126e+06,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,57.7786,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,58.3235,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,58.5979,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,58.7284,8.8473792012e+05,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.2126,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.5479,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.7293,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.7622,1.5502245441e+06,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,31.8940,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,32.5114,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,32.5036,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,32.5863,8.8473766454e+05,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,40.7350,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,41.1220,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,41.3987,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,41.4469,1.5503360127e+06,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,31.6552,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,32.2174,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,32.4171,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,32.4372,8.8473766454e+05,4
+time,DP,"gcc -O0",24,13824,1.30,46.9956,2.7433163612e+04,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",24,13824,1.30,14.1606,2.7433163612e+04,1
+time,DP,"gcc -O3",24,13824,1.30,14.2368,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native",24,13824,1.30,12.9798,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",24,13824,1.30,12.7158,2.7433163612e+04,1
+time,DP,"gcc -O3 -march=native -ffast-math",24,13824,1.30,9.3670,2.7433163612e+04,1
+time,DP,"clang -O3",24,13824,1.30,15.2142,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native",24,13824,1.30,13.6688,2.7433163612e+04,1
+time,DP,"clang -O3 -march=native -ffast-math",24,13824,1.30,9.1380,2.7433163612e+04,1
+time,DP,"gcc -O0",96,884736,84.49,48.5372,1.5503360126e+06,1
+time,DP,"gcc -O2 -march=x86-64 -mtune=generic",96,884736,84.49,19.0946,1.5503360126e+06,1
+time,DP,"gcc -O3",96,884736,84.49,18.9184,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native",96,884736,84.49,18.8352,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -mprefer-vector-width=512",96,884736,84.49,19.6718,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -ffast-math",96,884736,84.49,17.9684,1.5503360126e+06,1
+time,DP,"clang -O3",96,884736,84.49,18.8807,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native",96,884736,84.49,19.8103,1.5503360126e+06,1
+time,DP,"clang -O3 -march=native -ffast-math",96,884736,84.49,18.6086,1.5503360126e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.38,14.3327,8.7525733473e+03,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",16,4096,0.68,13.8124,4.1159347118e+03,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.24,12.0505,8.7525867116e+03,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",16,4096,0.39,9.8642,4.1159150233e+03,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.32,14.5060,8.7525733651e+03,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",16,4096,0.39,10.0764,4.1159150233e+03,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,1.30,12.8504,2.7433163612e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",24,13824,2.35,12.7867,1.3823999996e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,0.81,10.4231,2.7432931920e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",24,13824,1.33,10.4216,1.3824278067e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.09,12.8288,2.7433163596e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",24,13824,1.33,10.9454,1.3824278067e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,3.10,14.7156,6.7307187031e+04,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",32,32768,5.62,13.9172,3.2772177890e+04,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,1.93,10.9077,6.7307620350e+04,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",32,32768,3.19,11.6122,3.2772217822e+04,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,2.58,14.7366,6.7307186988e+04,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",32,32768,3.19,11.6517,3.2772217822e+04,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,10.51,15.0154,1.7163518695e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",48,110592,19.13,16.2934,1.1059202753e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,6.55,11.1096,1.7163432706e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",48,110592,10.87,11.7181,1.1059100386e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,8.76,15.0442,1.7163518683e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",48,110592,10.87,11.7483,1.1059100386e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,24.97,17.4599,4.6459189717e+05,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",64,262144,45.55,18.3397,2.6215177792e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,15.58,12.5081,4.6459663578e+05,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",64,262144,25.87,13.3925,2.6215039010e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,20.82,17.5450,4.6459189745e+05,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",64,262144,25.87,13.7025,2.6215039010e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,19.1320,1.5503360126e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,19.5579,8.8473792012e+05,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,13.6142,1.5502245441e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,13.9482,8.8473766454e+05,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,18.8699,1.5503360127e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,14.0334,8.8473766454e+05,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,200.54,31.9378,4.0641812917e+06,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",128,2097152,366.74,19.6710,2.0971638567e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,125.24,15.9444,4.0634957472e+06,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",128,2097152,208.34,14.1754,2.0971639824e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,167.18,30.5835,4.0641812934e+06,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",128,2097152,208.34,14.6157,2.0971639824e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,391.99,20.2516,3.0384034022e+07,1
+fields,DP,"gcc -O3 -march=native -DPREC_DP",160,4096000,717.21,20.2137,4.0960000404e+06,1
+time,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,244.84,14.6597,3.0506505932e+07,1
+fields,SP,"gcc -O3 -march=native -DPREC_SP",160,4096000,407.45,14.2799,4.0960000369e+06,1
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,326.76,20.6465,3.0384034057e+07,1
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",160,4096000,407.45,14.4218,4.0960000369e+06,1
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,41.6072,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,41.7251,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,41.9323,1.5503360126e+06,4
+time,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,84.49,42.2600,1.5503360126e+06,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,55.2223,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,55.4564,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,55.6398,8.8473792012e+05,4
+fields,DP,"gcc -O3 -march=native -DPREC_DP",96,884736,154.39,55.9481,8.8473792012e+05,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.1208,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.1978,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,23.6234,1.5502245441e+06,4
+time,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,52.75,24.0601,1.5502245441e+06,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,34.6179,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,35.0468,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,35.6929,8.8473766454e+05,4
+fields,SP,"gcc -O3 -march=native -DPREC_SP",96,884736,87.70,35.3328,8.8473766454e+05,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,42.0427,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,42.4112,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,42.5265,1.5503360127e+06,4
+time,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,70.45,43.7833,1.5503360127e+06,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,34.5935,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,34.8187,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,35.1638,8.8473766454e+05,4
+fields,SPDP,"gcc -O3 -march=native -DPREC_SPDP",96,884736,87.70,35.6578,8.8473766454e+05,4

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 412" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="412" fill="#08090a"/>
+<text x="20" y="24" fill="#e6e6e6" font-size="14">Solver kernel (PCG, LDU matrix): time per cell per iteration, double precision</text>
+<text x="250" y="62" fill="#e6e6e6">24³ cells: fits in cache</text>
+<line x1="250.0" x2="250.0" y1="78" y2="362" stroke="#23272b"/>
+<text x="250.0" y="378" fill="#8a8f94" text-anchor="middle">0</text>
+<line x1="292.7" x2="292.7" y1="78" y2="362" stroke="#23272b"/>
+<text x="292.7" y="378" fill="#8a8f94" text-anchor="middle">10</text>
+<line x1="335.5" x2="335.5" y1="78" y2="362" stroke="#23272b"/>
+<text x="335.5" y="378" fill="#8a8f94" text-anchor="middle">20</text>
+<line x1="378.2" x2="378.2" y1="78" y2="362" stroke="#23272b"/>
+<text x="378.2" y="378" fill="#8a8f94" text-anchor="middle">30</text>
+<line x1="420.9" x2="420.9" y1="78" y2="362" stroke="#23272b"/>
+<text x="420.9" y="378" fill="#8a8f94" text-anchor="middle">40</text>
+<line x1="463.6" x2="463.6" y1="78" y2="362" stroke="#23272b"/>
+<text x="463.6" y="378" fill="#8a8f94" text-anchor="middle">50</text>
+<text x="238" y="110" fill="#e6e6e6" text-anchor="end">gcc -O0</text>
+<rect x="250" y="97" width="200.8" height="18" rx="2" fill="#3987e5"/>
+<text x="456.8" y="110" fill="#e6e6e6">47.0</text>
+<text x="238" y="140" fill="#e6e6e6" text-anchor="end">gcc -O2, generic x86-64</text>
+<rect x="250" y="127" width="59.6" height="18" rx="2" fill="#3987e5"/>
+<text x="315.6" y="140" fill="#e6e6e6">14.0</text>
+<text x="238" y="170" fill="#e6e6e6" text-anchor="end">gcc -O3</text>
+<rect x="250" y="157" width="59.9" height="18" rx="2" fill="#3987e5"/>
+<text x="315.9" y="170" fill="#e6e6e6">14.0</text>
+<text x="238" y="200" fill="#e6e6e6" text-anchor="end">gcc -O3 -march=native</text>
+<rect x="250" y="187" width="56.0" height="18" rx="2" fill="#3987e5"/>
+<text x="312.0" y="200" fill="#e6e6e6">13.1</text>
+<text x="238" y="230" fill="#e6e6e6" text-anchor="end">  + 512-bit vectors</text>
+<rect x="250" y="217" width="56.6" height="18" rx="2" fill="#3987e5"/>
+<text x="312.6" y="230" fill="#e6e6e6">13.3</text>
+<text x="238" y="260" fill="#e6e6e6" text-anchor="end">  + -ffast-math</text>
+<rect x="250" y="247" width="40.3" height="18" rx="2" fill="#3987e5"/>
+<text x="296.3" y="260" fill="#e6e6e6">9.4</text>
+<text x="238" y="290" fill="#e6e6e6" text-anchor="end">clang -O3</text>
+<rect x="250" y="277" width="62.0" height="18" rx="2" fill="#3987e5"/>
+<text x="318.0" y="290" fill="#e6e6e6">14.5</text>
+<text x="238" y="320" fill="#e6e6e6" text-anchor="end">clang -O3 -march=native</text>
+<rect x="250" y="307" width="58.3" height="18" rx="2" fill="#3987e5"/>
+<text x="314.3" y="320" fill="#e6e6e6">13.6</text>
+<text x="238" y="350" fill="#e6e6e6" text-anchor="end">  + -ffast-math</text>
+<rect x="250" y="337" width="41.7" height="18" rx="2" fill="#3987e5"/>
+<text x="297.7" y="350" fill="#e6e6e6">9.8</text>
+<text x="510" y="62" fill="#e6e6e6">96³ cells: in RAM</text>
+<line x1="510.0" x2="510.0" y1="78" y2="362" stroke="#23272b"/>
+<text x="510.0" y="378" fill="#8a8f94" text-anchor="middle">0</text>
+<line x1="552.7" x2="552.7" y1="78" y2="362" stroke="#23272b"/>
+<text x="552.7" y="378" fill="#8a8f94" text-anchor="middle">10</text>
+<line x1="595.5" x2="595.5" y1="78" y2="362" stroke="#23272b"/>
+<text x="595.5" y="378" fill="#8a8f94" text-anchor="middle">20</text>
+<line x1="638.2" x2="638.2" y1="78" y2="362" stroke="#23272b"/>
+<text x="638.2" y="378" fill="#8a8f94" text-anchor="middle">30</text>
+<line x1="680.9" x2="680.9" y1="78" y2="362" stroke="#23272b"/>
+<text x="680.9" y="378" fill="#8a8f94" text-anchor="middle">40</text>
+<line x1="723.6" x2="723.6" y1="78" y2="362" stroke="#23272b"/>
+<text x="723.6" y="378" fill="#8a8f94" text-anchor="middle">50</text>
+<rect x="510" y="97" width="207.4" height="18" rx="2" fill="#3987e5"/>
+<text x="723.4" y="110" fill="#e6e6e6">48.5</text>
+<rect x="510" y="127" width="81.6" height="18" rx="2" fill="#3987e5"/>
+<text x="597.6" y="140" fill="#e6e6e6">19.1</text>
+<rect x="510" y="157" width="80.8" height="18" rx="2" fill="#3987e5"/>
+<text x="596.8" y="170" fill="#e6e6e6">18.9</text>
+<rect x="510" y="187" width="80.5" height="18" rx="2" fill="#3987e5"/>
+<text x="596.5" y="200" fill="#e6e6e6">18.8</text>
+<rect x="510" y="217" width="84.1" height="18" rx="2" fill="#3987e5"/>
+<text x="600.1" y="230" fill="#e6e6e6">19.7</text>
+<rect x="510" y="247" width="76.8" height="18" rx="2" fill="#3987e5"/>
+<text x="592.8" y="260" fill="#e6e6e6">18.0</text>
+<rect x="510" y="277" width="80.7" height="18" rx="2" fill="#3987e5"/>
+<text x="596.7" y="290" fill="#e6e6e6">18.9</text>
+<rect x="510" y="307" width="84.6" height="18" rx="2" fill="#3987e5"/>
+<text x="600.6" y="320" fill="#e6e6e6">19.8</text>
+<rect x="510" y="337" width="79.5" height="18" rx="2" fill="#3987e5"/>
+<text x="595.5" y="350" fill="#e6e6e6">18.6</text>
+<text x="497" y="402" fill="#8a8f94" text-anchor="middle">ns per cell per iteration (lower is better)</text>
+</svg>

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="360" fill="#08090a"/>
+<text x="120" y="24" fill="#e6e6e6" font-size="14">SIMPLE: outer iterations vs under-relaxation (32 x 32, Re = 100)</text>
+<text x="120" y="46" fill="#8a8f94">darker = more iterations · empty = diverged · the coupled solver has no such parameter</text>
+<text x="108" y="98" fill="#8a8f94" text-anchor="end">α_u = 0.5</text>
+<rect x="121" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="175" y="98" fill="#e6e6e6" text-anchor="middle">1178</text>
+<rect x="231" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="285" y="98" fill="#e6e6e6" text-anchor="middle">1177</text>
+<rect x="341" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="395" y="98" fill="#e6e6e6" text-anchor="middle">1176</text>
+<rect x="451" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="505" y="98" fill="#e6e6e6" text-anchor="middle">1176</text>
+<rect x="561" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="615" y="98" fill="#e6e6e6" text-anchor="middle">1176</text>
+<rect x="671" y="71" width="108" height="46" rx="3" fill="#184f95"/>
+<text x="725" y="98" fill="#e6e6e6" text-anchor="middle">1176</text>
+<text x="108" y="146" fill="#8a8f94" text-anchor="end">α_u = 0.7</text>
+<rect x="121" y="119" width="108" height="46" rx="3" fill="#3987e5"/>
+<text x="175" y="146" fill="#e6e6e6" text-anchor="middle">513</text>
+<rect x="231" y="119" width="108" height="46" rx="3" fill="#3987e5"/>
+<text x="285" y="146" fill="#e6e6e6" text-anchor="middle">511</text>
+<rect x="341" y="119" width="108" height="46" rx="3" fill="#3987e5"/>
+<text x="395" y="146" fill="#e6e6e6" text-anchor="middle">511</text>
+<rect x="451" y="119" width="108" height="46" rx="3" fill="#3987e5"/>
+<text x="505" y="146" fill="#e6e6e6" text-anchor="middle">510</text>
+<rect x="561" y="119" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="615" y="146" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="671" y="119" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="725" y="146" fill="#8a8f94" text-anchor="middle">diverged</text>
+<text x="108" y="194" fill="#8a8f94" text-anchor="end">α_u = 0.8</text>
+<rect x="121" y="167" width="108" height="46" rx="3" fill="#6da7ec"/>
+<text x="175" y="194" fill="#08090a" text-anchor="middle">306</text>
+<rect x="231" y="167" width="108" height="46" rx="3" fill="#6da7ec"/>
+<text x="285" y="194" fill="#08090a" text-anchor="middle">303</text>
+<rect x="341" y="167" width="108" height="46" rx="3" fill="#6da7ec"/>
+<text x="395" y="194" fill="#08090a" text-anchor="middle">303</text>
+<rect x="451" y="167" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="505" y="194" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="561" y="167" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="615" y="194" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="671" y="167" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="725" y="194" fill="#8a8f94" text-anchor="middle">diverged</text>
+<text x="108" y="242" fill="#8a8f94" text-anchor="end">α_u = 0.9</text>
+<rect x="121" y="215" width="108" height="46" rx="3" fill="#9ec5f4"/>
+<text x="175" y="242" fill="#08090a" text-anchor="middle">230</text>
+<rect x="231" y="215" width="108" height="46" rx="3" fill="#cde2fb"/>
+<text x="285" y="242" fill="#08090a" text-anchor="middle">142</text>
+<rect x="341" y="215" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="395" y="242" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="451" y="215" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="505" y="242" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="561" y="215" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="615" y="242" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="671" y="215" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="725" y="242" fill="#8a8f94" text-anchor="middle">diverged</text>
+<text x="108" y="290" fill="#8a8f94" text-anchor="end">α_u = 0.95</text>
+<rect x="121" y="263" width="108" height="46" rx="3" fill="#9ec5f4"/>
+<text x="175" y="290" fill="#08090a" text-anchor="middle">236</text>
+<rect x="231" y="263" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="285" y="290" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="341" y="263" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="395" y="290" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="451" y="263" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="505" y="290" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="561" y="263" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="615" y="290" fill="#8a8f94" text-anchor="middle">diverged</text>
+<rect x="671" y="263" width="108" height="46" rx="3" fill="none" stroke="#23272b"/>
+<text x="725" y="290" fill="#8a8f94" text-anchor="middle">diverged</text>
+<text x="175" y="330" fill="#8a8f94" text-anchor="middle">α_p = 0.1</text>
+<text x="285" y="330" fill="#8a8f94" text-anchor="middle">α_p = 0.2</text>
+<text x="395" y="330" fill="#8a8f94" text-anchor="middle">α_p = 0.3</text>
+<text x="505" y="330" fill="#8a8f94" text-anchor="middle">α_p = 0.5</text>
+<text x="615" y="330" fill="#8a8f94" text-anchor="middle">α_p = 0.8</text>
+<text x="725" y="330" fill="#8a8f94" text-anchor="middle">α_p = 1</text>
+</svg>

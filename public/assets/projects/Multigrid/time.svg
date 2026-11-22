@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="420" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Time to solve, one core</text>
+<line x1="70.0" x2="650.0" y1="364.0" y2="364.0" stroke="#23272b"/>
+<text x="62.0" y="368.0" fill="#8a8f94" text-anchor="end">1e-4</text>
+<line x1="70.0" x2="650.0" y1="311.3" y2="311.3" stroke="#23272b"/>
+<text x="62.0" y="315.3" fill="#8a8f94" text-anchor="end">0.001</text>
+<line x1="70.0" x2="650.0" y1="258.7" y2="258.7" stroke="#23272b"/>
+<text x="62.0" y="262.7" fill="#8a8f94" text-anchor="end">0.01</text>
+<line x1="70.0" x2="650.0" y1="206.0" y2="206.0" stroke="#23272b"/>
+<text x="62.0" y="210.0" fill="#8a8f94" text-anchor="end">0.1</text>
+<line x1="70.0" x2="650.0" y1="153.3" y2="153.3" stroke="#23272b"/>
+<text x="62.0" y="157.3" fill="#8a8f94" text-anchor="end">1</text>
+<line x1="70.0" x2="650.0" y1="100.7" y2="100.7" stroke="#23272b"/>
+<text x="62.0" y="104.7" fill="#8a8f94" text-anchor="end">10</text>
+<line x1="70.0" x2="650.0" y1="48.0" y2="48.0" stroke="#23272b"/>
+<text x="62.0" y="52.0" fill="#8a8f94" text-anchor="end">100</text>
+<text x="95.4" y="382" fill="#8a8f94" text-anchor="middle">225</text>
+<text x="274.8" y="382" fill="#8a8f94" text-anchor="middle">4k</text>
+<text x="449.7" y="382" fill="#8a8f94" text-anchor="middle">65k</text>
+<text x="623.5" y="382" fill="#8a8f94" text-anchor="middle">1M</text>
+<text x="16" y="206" fill="#8a8f94" transform="rotate(-90 16 206)" text-anchor="middle">seconds (log)</text>
+<text x="360" y="408" fill="#8a8f94" text-anchor="middle">unknowns (log)</text>
+<polyline points="95.4,319.5 186.1,253.4 274.8,192.4 362.5,126.2 449.7,61.1" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="95.4" cy="319.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="186.1" cy="253.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="274.8" cy="192.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="362.5" cy="126.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="449.7" cy="61.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="95.4,364.0 186.1,321.5 274.8,280.3 362.5,231.6 449.7,181.0 536.6,127.8 623.5,74.5" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="95.4" cy="364.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="186.1" cy="321.5" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="274.8" cy="280.3" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="362.5" cy="231.6" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="449.7" cy="181.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="536.6" cy="127.8" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="623.5" cy="74.5" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<polyline points="95.4,364.0 186.1,339.6 274.8,310.2 362.5,274.5 449.7,237.9 536.6,204.7 623.5,173.9" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="95.4" cy="364.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="186.1" cy="339.6" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="274.8" cy="310.2" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="362.5" cy="274.5" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="449.7" cy="237.9" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="536.6" cy="204.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="623.5" cy="173.9" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<polyline points="95.4,364.0 186.1,343.0 274.8,316.2 362.5,279.3 449.7,243.5 536.6,210.4 623.5,177.9" fill="none" stroke="#c98500" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="95.4" cy="364.0" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="186.1" cy="343.0" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="274.8" cy="316.2" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="362.5" cy="279.3" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="449.7" cy="243.5" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="536.6" cy="210.4" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="623.5" cy="177.9" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<rect x="660.0" y="56.1" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="675.0" y="65.1" fill="#e6e6e6">Gauss-Seidel</text>
+<rect x="660.0" y="72.1" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="675.0" y="81.1" fill="#e6e6e6">PCG (Jacobi)</text>
+<rect x="660.0" y="168.9" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="675.0" y="177.9" fill="#e6e6e6">multigrid</text>
+<rect x="660.0" y="184.9" width="10" height="10" rx="2" fill="#c98500"/>
+<text x="675.0" y="193.9" fill="#e6e6e6">PCG + multigrid</text>
+</svg>

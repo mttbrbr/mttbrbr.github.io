@@ -42,5 +42,5 @@ I am an **MSc student in Aeronautical Engineering at Politecnico di Milano**, wi
 I'm always interested in discussing numerical methods, CFD optimization, or high-performance computing.
 
 - [GitHub — @mttbrbr](https://github.com/mttbrbr)
-- [LinkedIn — Matteo Barbieri](https://linkedin.com/in/matteo-barbieri)
+- [LinkedIn — Matteo Barbieri](https://www.linkedin.com/in/matteo-barbieri-aeronautical/)
 - [Email — privacy.mttbrbr@gmail.com](mailto:privacy.mttbrbr@gmail.com)

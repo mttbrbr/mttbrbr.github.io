@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="420" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Error vs mesh size</text>
+<line x1="70.0" x2="610.0" y1="332.4" y2="332.4" stroke="#23272b"/>
+<text x="62.0" y="336.4" fill="#8a8f94" text-anchor="end">0.01%</text>
+<line x1="70.0" x2="610.0" y1="271.8" y2="271.8" stroke="#23272b"/>
+<text x="62.0" y="275.8" fill="#8a8f94" text-anchor="end">0.1%</text>
+<line x1="70.0" x2="610.0" y1="211.3" y2="211.3" stroke="#23272b"/>
+<text x="62.0" y="215.3" fill="#8a8f94" text-anchor="end">1%</text>
+<line x1="70.0" x2="610.0" y1="150.8" y2="150.8" stroke="#23272b"/>
+<text x="62.0" y="154.8" fill="#8a8f94" text-anchor="end">10%</text>
+<line x1="70.0" x2="610.0" y1="90.3" y2="90.3" stroke="#23272b"/>
+<text x="62.0" y="94.3" fill="#8a8f94" text-anchor="end">100%</text>
+<text x="116.9" y="382" fill="#8a8f94" text-anchor="middle">16</text>
+<text x="229.8" y="382" fill="#8a8f94" text-anchor="middle">32</text>
+<text x="342.8" y="382" fill="#8a8f94" text-anchor="middle">64</text>
+<text x="455.7" y="382" fill="#8a8f94" text-anchor="middle">128</text>
+<text x="568.6" y="382" fill="#8a8f94" text-anchor="middle">256</text>
+<text x="16" y="206" fill="#8a8f94" transform="rotate(-90 16 206)" text-anchor="middle">relative L2 error (log)</text>
+<text x="340" y="408" fill="#8a8f94" text-anchor="middle">cells per side (log)</text>
+<polyline points="116.9,99.6 229.8,99.9 342.8,99.9 455.7,99.9 568.6,99.9" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="116.9" cy="99.6" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="229.8" cy="99.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="342.8" cy="99.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="455.7" cy="99.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="568.6" cy="99.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<polyline points="116.9,108.4 229.8,108.7 342.8,108.8 455.7,108.8 568.6,108.8" fill="none" stroke="#c98500" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="116.9" cy="108.4" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="229.8" cy="108.7" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="342.8" cy="108.8" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="455.7" cy="108.8" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="568.6" cy="108.8" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<polyline points="116.9,168.2 229.8,203.0 342.8,239.0 455.7,275.3 568.6,311.7" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="116.9" cy="168.2" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="229.8" cy="203.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="342.8" cy="239.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="455.7" cy="275.3" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="568.6" cy="311.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<polyline points="116.9,204.5 229.8,241.1 342.8,277.6 455.7,314.0 568.6,350.5" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="116.9" cy="204.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="229.8" cy="241.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="342.8" cy="277.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="455.7" cy="314.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="568.6" cy="350.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<rect x="620.0" y="94.9" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="635.0" y="103.9" fill="#e6e6e6">60°, uncorrected</text>
+<rect x="620.0" y="110.9" width="10" height="10" rx="2" fill="#c98500"/>
+<text x="635.0" y="119.9" fill="#e6e6e6">30°, uncorrected</text>
+<rect x="620.0" y="306.7" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="635.0" y="315.7" fill="#e6e6e6">60°, corrected</text>
+<rect x="620.0" y="345.5" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="635.0" y="354.5" fill="#e6e6e6">0° (orthogonal mesh)</text>
+</svg>

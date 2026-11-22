@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="420" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">u at the centre of the cavity vs cell size, Re = 100</text>
+<line x1="70.0" x2="780.0" y1="343.3" y2="343.3" stroke="#23272b"/>
+<text x="62.0" y="347.3" fill="#8a8f94" text-anchor="end">-0.21</text>
+<line x1="70.0" x2="780.0" y1="291.4" y2="291.4" stroke="#23272b"/>
+<text x="62.0" y="295.4" fill="#8a8f94" text-anchor="end">-0.2</text>
+<line x1="70.0" x2="780.0" y1="239.6" y2="239.6" stroke="#23272b"/>
+<text x="62.0" y="243.6" fill="#8a8f94" text-anchor="end">-0.19</text>
+<line x1="70.0" x2="780.0" y1="187.7" y2="187.7" stroke="#23272b"/>
+<text x="62.0" y="191.7" fill="#8a8f94" text-anchor="end">-0.18</text>
+<line x1="70.0" x2="780.0" y1="135.9" y2="135.9" stroke="#23272b"/>
+<text x="62.0" y="139.9" fill="#8a8f94" text-anchor="end">-0.17</text>
+<line x1="70.0" x2="780.0" y1="84.0" y2="84.0" stroke="#23272b"/>
+<text x="62.0" y="88.0" fill="#8a8f94" text-anchor="end">-0.16</text>
+<text x="70.0" y="382" fill="#8a8f94" text-anchor="middle">0</text>
+<text x="233.1" y="382" fill="#8a8f94" text-anchor="middle">1/64</text>
+<text x="396.3" y="382" fill="#8a8f94" text-anchor="middle">1/32</text>
+<text x="722.6" y="382" fill="#8a8f94" text-anchor="middle">1/16</text>
+<text x="16" y="224" fill="#8a8f94" transform="rotate(-90 16 224)" text-anchor="middle">u(0.5, 0.5)</text>
+<text x="425" y="408" fill="#8a8f94" text-anchor="middle">cell size h</text>
+<polyline points="70.0,339.9 77.1,336.5 84.2,333.4 91.3,330.4 98.4,327.5 105.5,324.7 112.6,321.9 119.7,319.1 126.8,316.4 133.9,313.6 141.0,311.0 148.1,308.3 155.2,305.6 162.3,303.0 169.4,300.3 176.5,297.7 183.6,295.1 190.7,292.5 197.8,289.9 204.9,287.4 212.0,284.8 219.1,282.2 226.2,279.7 233.3,277.2 240.4,274.6 247.5,272.1 254.6,269.6 261.7,267.1 268.8,264.6 275.9,262.1 283.0,259.6 290.1,257.1 297.2,254.6 304.3,252.2 311.4,249.7 318.5,247.2 325.6,244.8 332.7,242.3 339.8,239.9 346.9,237.4 354.0,235.0 361.1,232.6 368.2,230.1 375.3,227.7 382.4,225.3 389.5,222.9 396.6,220.5 403.7,218.0 410.8,215.6 417.9,213.2 425.0,210.8 432.1,208.4 439.2,206.1 446.3,203.7 453.4,201.3 460.5,198.9 467.6,196.5 474.7,194.1 481.8,191.8 488.9,189.4 496.0,187.0 503.1,184.7 510.2,182.3 517.3,179.9 524.4,177.6 531.5,175.2 538.6,172.9 545.7,170.5 552.8,168.2 559.9,165.8 567.0,163.5 574.1,161.1 581.2,158.8 588.3,156.5 595.4,154.1 602.5,151.8 609.6,149.5 616.7,147.1 623.8,144.8 630.9,142.5 638.0,140.2 645.1,137.9 652.2,135.5 659.3,133.2 666.4,130.9 673.5,128.6 680.6,126.3 687.7,124.0 694.8,121.7 701.9,119.4 709.0,117.1 716.1,114.8 723.2,112.5 730.3,110.2 737.4,107.9 744.5,105.6 751.6,103.3 758.7,101.0 765.8,98.7 772.9,96.5 780.0,94.2" fill="none" stroke="#8a8f94" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<circle cx="722.6" cy="119.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="396.3" cy="221.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="233.1" cy="277.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="151.6" cy="307.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="110.8" cy="322.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="722.6,119.5 396.3,221.7 233.1,277.2 151.6,307.0 110.8,322.6" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="70.0" cy="339.9" r="6" fill="none" stroke="#199e70" stroke-width="2"/>
+<rect x="65.0" y="316.5" width="10" height="10" fill="#d95926"/>
+<rect x="70.0" y="45.0" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="85.0" y="54.0" fill="#e6e6e6">computed (first-order upwind)</text>
+<rect x="340.0" y="45.0" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="355.0" y="54.0" fill="#e6e6e6">Richardson extrapolation (p = 0.93)</text>
+<rect x="340.0" y="65.0" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="355.0" y="74.0" fill="#e6e6e6">Ghia et al. 1982</text>
+<line x1="70.0" x2="88.0" y1="70" y2="70" stroke="#8a8f94" stroke-dasharray="5 4"/><text x="94.0" y="74" fill="#e6e6e6">fit f = f_ext + C h^p</text>
+</svg>
