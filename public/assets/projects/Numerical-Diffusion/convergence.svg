@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="380" fill="#08090a"/>
+<text x="64" y="24" fill="#e6e6e6" font-size="14">Smooth profile (gaussian)</text>
+<line x1="64.0" x2="390.0" y1="324.0" y2="324.0" stroke="#23272b"/>
+<text x="56.0" y="328.0" fill="#8a8f94" text-anchor="end">1e-5</text>
+<line x1="64.0" x2="390.0" y1="262.4" y2="262.4" stroke="#23272b"/>
+<text x="56.0" y="266.4" fill="#8a8f94" text-anchor="end">1e-4</text>
+<line x1="64.0" x2="390.0" y1="200.7" y2="200.7" stroke="#23272b"/>
+<text x="56.0" y="204.7" fill="#8a8f94" text-anchor="end">1e-3</text>
+<line x1="64.0" x2="390.0" y1="139.1" y2="139.1" stroke="#23272b"/>
+<text x="56.0" y="143.1" fill="#8a8f94" text-anchor="end">1e-2</text>
+<line x1="64.0" x2="390.0" y1="77.4" y2="77.4" stroke="#23272b"/>
+<text x="56.0" y="81.4" fill="#8a8f94" text-anchor="end">1e-1</text>
+<text x="82.6" y="342" fill="#8a8f94" text-anchor="middle">50</text>
+<text x="140.4" y="342" fill="#8a8f94" text-anchor="middle">100</text>
+<text x="198.1" y="342" fill="#8a8f94" text-anchor="middle">200</text>
+<text x="255.9" y="342" fill="#8a8f94" text-anchor="middle">400</text>
+<text x="313.6" y="342" fill="#8a8f94" text-anchor="middle">800</text>
+<text x="371.4" y="342" fill="#8a8f94" text-anchor="middle">1600</text>
+<text x="16" y="186" fill="#8a8f94" transform="rotate(-90 16 186)" text-anchor="middle">L1 error (log)</text>
+<text x="227" y="368" fill="#8a8f94" text-anchor="middle">cells N (log)</text>
+<polyline points="82.6,81.0 140.4,88.7 198.1,98.9 255.9,111.7 313.6,126.5 371.4,142.9" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="82.6" cy="81.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="140.4" cy="88.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="198.1" cy="98.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="255.9" cy="111.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="313.6" cy="126.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="371.4" cy="142.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="82.6,86.9 140.4,113.0 198.1,147.7 255.9,184.3 313.6,221.4 371.4,258.5" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="82.6" cy="86.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="140.4" cy="113.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="198.1" cy="147.7" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="255.9" cy="184.3" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="313.6" cy="221.4" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="371.4" cy="258.5" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<polyline points="82.6,109.8 140.4,140.4 198.1,177.6 255.9,216.1 313.6,256.1 371.4,296.7" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="82.6" cy="109.8" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="140.4" cy="140.4" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="198.1" cy="177.6" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="255.9" cy="216.1" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="313.6" cy="256.1" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="371.4" cy="296.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+
+<rect x="74.0" y="39.0" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="89.0" y="48.0" fill="#e6e6e6">upwind (1st order)</text>
+
+<rect x="237.2" y="39.0" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="252.2" y="48.0" fill="#e6e6e6">Lax-Wendroff (2nd order)</text>
+
+<rect x="444.8" y="39.0" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="459.8" y="48.0" fill="#e6e6e6">van Leer (TVD)</text>
+<text x="474" y="24" fill="#e6e6e6" font-size="14">Discontinuity (square wave)</text>
+<line x1="474.0" x2="800.0" y1="324.0" y2="324.0" stroke="#23272b"/>
+<text x="466.0" y="328.0" fill="#8a8f94" text-anchor="end">1e-5</text>
+<line x1="474.0" x2="800.0" y1="262.4" y2="262.4" stroke="#23272b"/>
+<text x="466.0" y="266.4" fill="#8a8f94" text-anchor="end">1e-4</text>
+<line x1="474.0" x2="800.0" y1="200.7" y2="200.7" stroke="#23272b"/>
+<text x="466.0" y="204.7" fill="#8a8f94" text-anchor="end">1e-3</text>
+<line x1="474.0" x2="800.0" y1="139.1" y2="139.1" stroke="#23272b"/>
+<text x="466.0" y="143.1" fill="#8a8f94" text-anchor="end">1e-2</text>
+<line x1="474.0" x2="800.0" y1="77.4" y2="77.4" stroke="#23272b"/>
+<text x="466.0" y="81.4" fill="#8a8f94" text-anchor="end">1e-1</text>
+<text x="492.6" y="342" fill="#8a8f94" text-anchor="middle">50</text>
+<text x="550.4" y="342" fill="#8a8f94" text-anchor="middle">100</text>
+<text x="608.1" y="342" fill="#8a8f94" text-anchor="middle">200</text>
+<text x="665.9" y="342" fill="#8a8f94" text-anchor="middle">400</text>
+<text x="723.6" y="342" fill="#8a8f94" text-anchor="middle">800</text>
+<text x="781.4" y="342" fill="#8a8f94" text-anchor="middle">1600</text>
+<text x="426" y="186" fill="#8a8f94" transform="rotate(-90 426 186)" text-anchor="middle">L1 error (log)</text>
+<text x="637" y="368" fill="#8a8f94" text-anchor="middle">cells N (log)</text>
+<polyline points="492.6,65.5 550.4,74.3 608.1,83.5 665.9,92.7 723.6,102.0 781.4,111.3" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="492.6" cy="65.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="550.4" cy="74.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="608.1" cy="83.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="665.9" cy="92.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="723.6" cy="102.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="781.4" cy="111.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="492.6,77.8 550.4,85.5 608.1,95.1 665.9,105.9 723.6,117.0 781.4,128.1" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="492.6" cy="77.8" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="550.4" cy="85.5" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="608.1" cy="95.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="665.9" cy="105.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="723.6" cy="117.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="781.4" cy="128.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<polyline points="492.6,92.8 550.4,106.4 608.1,120.0 665.9,133.7 723.6,147.5 781.4,161.3" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="492.6" cy="92.8" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="550.4" cy="106.4" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="608.1" cy="120.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="665.9" cy="133.7" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="723.6" cy="147.5" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="781.4" cy="161.3" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+</svg>

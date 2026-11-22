@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="400" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Time steps to carry the flow once across the domain</text>
+<line x1="70.0" x2="650.0" y1="344.0" y2="344.0" stroke="#23272b"/>
+<text x="62.0" y="348.0" fill="#8a8f94" text-anchor="end">100</text>
+<line x1="70.0" x2="650.0" y1="270.0" y2="270.0" stroke="#23272b"/>
+<text x="62.0" y="274.0" fill="#8a8f94" text-anchor="end">1000</text>
+<line x1="70.0" x2="650.0" y1="196.0" y2="196.0" stroke="#23272b"/>
+<text x="62.0" y="200.0" fill="#8a8f94" text-anchor="end">1e4</text>
+<line x1="70.0" x2="650.0" y1="122.0" y2="122.0" stroke="#23272b"/>
+<text x="62.0" y="126.0" fill="#8a8f94" text-anchor="end">1e5</text>
+<line x1="70.0" x2="650.0" y1="48.0" y2="48.0" stroke="#23272b"/>
+<text x="62.0" y="52.0" fill="#8a8f94" text-anchor="end">1e6</text>
+<text x="89.6" y="362" fill="#8a8f94" text-anchor="middle">0.001</text>
+<text x="291.3" y="362" fill="#8a8f94" text-anchor="middle">0.01</text>
+<text x="493.0" y="362" fill="#8a8f94" text-anchor="middle">0.1</text>
+<text x="634.0" y="362" fill="#8a8f94" text-anchor="middle">0.5</text>
+<text x="16" y="196" fill="#8a8f94" transform="rotate(-90 16 196)" text-anchor="middle">time steps (log)</text>
+<text x="360" y="388" fill="#8a8f94" text-anchor="middle">Mach number (log)</text>
+<polyline points="634.0,283.0 553.7,260.7 493.0,241.3 432.3,220.6 352.0,192.1 291.3,170.2 230.6,148.1 150.3,118.7 89.6,96.5" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="634.0" cy="283.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="553.7" cy="260.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="493.0" cy="241.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="432.3" cy="220.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="352.0" cy="192.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="291.3" cy="170.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="230.6" cy="148.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="150.3" cy="118.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="89.6" cy="96.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="634.0,318.2 553.7,318.2 493.0,318.2 432.3,318.2 352.0,318.2 291.3,318.2 230.6,318.2 150.3,318.2 89.6,318.2" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="634.0" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="553.7" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="493.0" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="432.3" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="352.0" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="291.3" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="230.6" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="150.3" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="89.6" cy="318.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<rect x="660.0" y="91.5" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="675.0" y="100.5" fill="#e6e6e6">density-based</text>
+<rect x="660.0" y="313.2" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="675.0" y="322.2" fill="#e6e6e6">incompressible</text>
+</svg>

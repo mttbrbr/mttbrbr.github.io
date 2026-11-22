@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 304" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="304" fill="#08090a"/>
+<text x="90" y="24" fill="#e6e6e6" font-size="14">4 cores, 931k cells: limited by shared memory bandwidth</text>
+<rect x="90" y="38" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="105" y="47" fill="#e6e6e6">compute</text>
+<rect x="176" y="38" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="191" y="47" fill="#e6e6e6">halo exchange</text>
+<rect x="310" y="38" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="325" y="47" fill="#e6e6e6">sync / waiting</text>
+<line x1="90.0" x2="90.0" y1="64" y2="260" stroke="#23272b"/>
+<text x="90.0" y="276" fill="#8a8f94" text-anchor="middle">0</text>
+<line x1="226.3" x2="226.3" y1="64" y2="260" stroke="#23272b"/>
+<text x="226.3" y="276" fill="#8a8f94" text-anchor="middle">2</text>
+<line x1="362.6" x2="362.6" y1="64" y2="260" stroke="#23272b"/>
+<text x="362.6" y="276" fill="#8a8f94" text-anchor="middle">4</text>
+<line x1="498.9" x2="498.9" y1="64" y2="260" stroke="#23272b"/>
+<text x="498.9" y="276" fill="#8a8f94" text-anchor="middle">6</text>
+<line x1="635.2" x2="635.2" y1="64" y2="260" stroke="#23272b"/>
+<text x="635.2" y="276" fill="#8a8f94" text-anchor="middle">8</text>
+<line x1="771.6" x2="771.6" y1="64" y2="260" stroke="#23272b"/>
+<text x="771.6" y="276" fill="#8a8f94" text-anchor="middle">10</text>
+<text x="435" y="296" fill="#8a8f94" text-anchor="middle">ms per iteration (slowest rank), lower is better</text>
+<text x="80" y="91" fill="#e6e6e6" text-anchor="end">random</text>
+<rect x="90.0" y="76" width="192.0" height="22" rx="2" fill="#3987e5"/>
+<rect x="284.0" y="76" width="405.5" height="22" rx="2" fill="#d95926"/>
+<rect x="691.5" y="76" width="38.8" height="22" rx="2" fill="#199e70"/>
+<text x="738.3" y="91" fill="#e6e6e6">0.36×</text>
+<text x="80" y="137" fill="#e6e6e6" text-anchor="end">simple</text>
+<rect x="90.0" y="122" width="104.1" height="22" rx="2" fill="#3987e5"/>
+<rect x="196.1" y="122" width="0.5" height="22" rx="2" fill="#d95926"/>
+<rect x="198.6" y="122" width="37.3" height="22" rx="2" fill="#199e70"/>
+<text x="243.9" y="137" fill="#e6e6e6">1.90×</text>
+<text x="80" y="183" fill="#e6e6e6" text-anchor="end">scotch*</text>
+<rect x="90.0" y="168" width="110.5" height="22" rx="2" fill="#3987e5"/>
+<rect x="202.5" y="168" width="0.5" height="22" rx="2" fill="#d95926"/>
+<rect x="205.0" y="168" width="14.5" height="22" rx="2" fill="#199e70"/>
+<text x="227.5" y="183" fill="#e6e6e6">1.96×</text>
+<text x="80" y="229" fill="#e6e6e6" text-anchor="end">metis*</text>
+<rect x="90.0" y="214" width="102.7" height="22" rx="2" fill="#3987e5"/>
+<rect x="194.7" y="214" width="0.5" height="22" rx="2" fill="#d95926"/>
+<rect x="197.2" y="214" width="12.8" height="22" rx="2" fill="#199e70"/>
+<text x="218.0" y="229" fill="#e6e6e6">2.01×</text>
+<line x1="315.2" x2="315.2" y1="64" y2="260" stroke="#e6e6e6" stroke-dasharray="5 4"/>
+<text x="321.2" y="60" fill="#e6e6e6">1 core: 3.30 ms</text>
+</svg>

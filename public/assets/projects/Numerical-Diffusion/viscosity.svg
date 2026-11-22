@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="400" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Upwind: viscosity measured from the spreading of a gaussian</text>
+<line x1="70.0" x2="700.0" y1="344.0" y2="344.0" stroke="#23272b"/>
+<text x="62.0" y="348.0" fill="#8a8f94" text-anchor="end">0</text>
+<line x1="70.0" x2="700.0" y1="284.8" y2="284.8" stroke="#23272b"/>
+<text x="62.0" y="288.8" fill="#8a8f94" text-anchor="end">1e-3</text>
+<line x1="70.0" x2="700.0" y1="225.6" y2="225.6" stroke="#23272b"/>
+<text x="62.0" y="229.6" fill="#8a8f94" text-anchor="end">2e-3</text>
+<line x1="70.0" x2="700.0" y1="166.4" y2="166.4" stroke="#23272b"/>
+<text x="62.0" y="170.4" fill="#8a8f94" text-anchor="end">3e-3</text>
+<line x1="70.0" x2="700.0" y1="107.2" y2="107.2" stroke="#23272b"/>
+<text x="62.0" y="111.2" fill="#8a8f94" text-anchor="end">4e-3</text>
+<line x1="70.0" x2="700.0" y1="48.0" y2="48.0" stroke="#23272b"/>
+<text x="62.0" y="52.0" fill="#8a8f94" text-anchor="end">5e-3</text>
+<text x="70.0" y="362" fill="#8a8f94" text-anchor="middle">0</text>
+<text x="190.0" y="362" fill="#8a8f94" text-anchor="middle">0.2</text>
+<text x="310.0" y="362" fill="#8a8f94" text-anchor="middle">0.4</text>
+<text x="430.0" y="362" fill="#8a8f94" text-anchor="middle">0.6</text>
+<text x="550.0" y="362" fill="#8a8f94" text-anchor="middle">0.8</text>
+<text x="670.0" y="362" fill="#8a8f94" text-anchor="middle">1</text>
+<text x="16" y="196" fill="#8a8f94" transform="rotate(-90 16 196)" text-anchor="middle">numerical viscosity ν (a = 1, L = 1)</text>
+<text x="385" y="388" fill="#8a8f94" text-anchor="middle">CFL number C = a dt / dx</text>
+<polyline points="70.0,48.0 670.0,344.0" fill="none" stroke="#3987e5" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="130.0" cy="74.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="370.0" cy="195.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="610.0" cy="314.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="670.0" cy="344.0" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="70.0,196.0 670.0,344.0" fill="none" stroke="#d95926" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="130.0" cy="210.8" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="370.0" cy="270.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="610.0" cy="329.2" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="670.0" cy="344.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<polyline points="70.0,270.0 670.0,344.0" fill="none" stroke="#199e70" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="130.0" cy="277.4" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="370.0" cy="307.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="610.0" cy="336.6" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<circle cx="670.0" cy="344.0" r="4" fill="#199e70" stroke="#08090a" stroke-width="2"/>
+<polyline points="70.0,307.0 670.0,344.0" fill="none" stroke="#c98500" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="130.0" cy="310.7" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="370.0" cy="325.5" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="610.0" cy="340.3" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<circle cx="670.0" cy="344.0" r="4" fill="#c98500" stroke="#08090a" stroke-width="2"/>
+<rect x="78.0" y="31.0" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="93.0" y="40.0" fill="#e6e6e6">N = 100</text>
+<rect x="78.0" y="179.0" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="93.0" y="188.0" fill="#e6e6e6">N = 200</text>
+<rect x="78.0" y="253.0" width="10" height="10" rx="2" fill="#199e70"/>
+<text x="93.0" y="262.0" fill="#e6e6e6">N = 400</text>
+<rect x="78.0" y="290.0" width="10" height="10" rx="2" fill="#c98500"/>
+<text x="93.0" y="299.0" fill="#e6e6e6">N = 800</text>
+<text x="400.0" y="83.5" fill="#8a8f94">lines: theory dx (1 − C) / 2 · dots: measured</text>
+</svg>

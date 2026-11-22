@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 380" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="380" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Fastest / slowest wave speed (stiffness)</text>
+<line x1="70.0" x2="650.0" y1="324.0" y2="324.0" stroke="#23272b"/>
+<text x="62.0" y="328.0" fill="#8a8f94" text-anchor="end">1</text>
+<line x1="70.0" x2="650.0" y1="240.4" y2="240.4" stroke="#23272b"/>
+<text x="62.0" y="244.4" fill="#8a8f94" text-anchor="end">10</text>
+<line x1="70.0" x2="650.0" y1="156.8" y2="156.8" stroke="#23272b"/>
+<text x="62.0" y="160.8" fill="#8a8f94" text-anchor="end">100</text>
+<line x1="70.0" x2="650.0" y1="73.2" y2="73.2" stroke="#23272b"/>
+<text x="62.0" y="77.2" fill="#8a8f94" text-anchor="end">1000</text>
+<text x="89.6" y="342" fill="#8a8f94" text-anchor="middle">0.001</text>
+<text x="291.3" y="342" fill="#8a8f94" text-anchor="middle">0.01</text>
+<text x="493.0" y="342" fill="#8a8f94" text-anchor="middle">0.1</text>
+<text x="634.0" y="342" fill="#8a8f94" text-anchor="middle">0.5</text>
+<text x="16" y="186" fill="#8a8f94" transform="rotate(-90 16 186)" text-anchor="middle">ratio (log)</text>
+<text x="360" y="368" fill="#8a8f94" text-anchor="middle">Mach number (log)</text>
+<polyline points="634.0,284.1 553.7,258.9 493.0,236.9 432.3,213.4 352.0,181.2 291.3,156.4 230.6,131.4 150.3,98.3 89.6,73.1" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="634.0" cy="284.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="553.7" cy="258.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="493.0" cy="236.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="432.3" cy="213.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="352.0" cy="181.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="291.3" cy="156.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="230.6" cy="131.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="150.3" cy="98.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="89.6" cy="73.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<polyline points="634.0,275.3 553.7,287.1 493.0,288.6 432.3,288.9 352.0,289.0 291.3,289.0 230.6,289.1 150.3,289.1 89.6,289.1" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="634.0" cy="275.3" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="553.7" cy="287.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="493.0" cy="288.6" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="432.3" cy="288.9" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="352.0" cy="289.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="291.3" cy="289.0" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="230.6" cy="289.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="150.3" cy="289.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<circle cx="89.6" cy="289.1" r="4" fill="#d95926" stroke="#08090a" stroke-width="2"/>
+<rect x="660.0" y="270.3" width="10" height="10" rx="2" fill="#d95926"/>
+<text x="675.0" y="279.3" fill="#e6e6e6">preconditioned</text>
+<rect x="660.0" y="286.3" width="10" height="10" rx="2" fill="#3987e5"/>
+<text x="675.0" y="295.3" fill="#e6e6e6">no preconditioning</text>
+</svg>

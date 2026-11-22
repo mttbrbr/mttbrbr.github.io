@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12">
+<rect width="820" height="400" fill="#08090a"/>
+<text x="70" y="24" fill="#e6e6e6" font-size="14">Bandwidth between two cores vs message size</text>
+<line x1="70" x2="790" y1="344.0" y2="344.0" stroke="#23272b"/>
+<text x="62" y="348.0" fill="#8a8f94" text-anchor="end">0</text>
+<line x1="70" x2="790" y1="270.0" y2="270.0" stroke="#23272b"/>
+<text x="62" y="274.0" fill="#8a8f94" text-anchor="end">5</text>
+<line x1="70" x2="790" y1="196.0" y2="196.0" stroke="#23272b"/>
+<text x="62" y="200.0" fill="#8a8f94" text-anchor="end">10</text>
+<line x1="70" x2="790" y1="122.0" y2="122.0" stroke="#23272b"/>
+<text x="62" y="126.0" fill="#8a8f94" text-anchor="end">15</text>
+<line x1="70" x2="790" y1="48.0" y2="48.0" stroke="#23272b"/>
+<text x="62" y="52.0" fill="#8a8f94" text-anchor="end">20</text>
+<text x="18" y="196" fill="#8a8f94" transform="rotate(-90 18 196)" text-anchor="middle">bandwidth (GB/s)</text>
+<text x="85.0" y="362" fill="#8a8f94" text-anchor="middle">8 B</text>
+<text x="175.0" y="362" fill="#8a8f94" text-anchor="middle">64 B</text>
+<text x="265.0" y="362" fill="#8a8f94" text-anchor="middle">512 B</text>
+<text x="355.0" y="362" fill="#8a8f94" text-anchor="middle">4 KB</text>
+<text x="445.0" y="362" fill="#8a8f94" text-anchor="middle">32 KB</text>
+<text x="535.0" y="362" fill="#8a8f94" text-anchor="middle">256 KB</text>
+<text x="625.0" y="362" fill="#8a8f94" text-anchor="middle">2 MB</text>
+<text x="715.0" y="362" fill="#8a8f94" text-anchor="middle">16 MB</text>
+<text x="430" y="388" fill="#8a8f94" text-anchor="middle">message size (log scale)</text>
+<line x1="355.0" x2="355.0" y1="48" y2="344" stroke="#8a8f94" stroke-dasharray="4 4"/>
+<text x="361.0" y="60" fill="#8a8f94">protocol switch 4 KB</text>
+<line x1="702.5" x2="702.5" y1="48" y2="344" stroke="#8a8f94" stroke-dasharray="4 4"/>
+<text x="708.5" y="60" fill="#8a8f94">L3 12 MB</text>
+<polyline points="85.0,343.6 115.0,343.2 145.0,342.3 175.0,340.6 205.0,338.5 235.0,334.3 265.0,329.9 295.0,320.6 325.0,305.4 355.0,314.3 385.0,299.2 415.0,282.4 445.0,254.8 475.0,225.1 505.0,198.6 535.0,182.3 565.0,171.6 595.0,157.1 625.0,128.4 655.0,104.4 685.0,198.7 715.0,217.2 745.0,221.4 775.0,221.7" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="85.0" cy="343.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="115.0" cy="343.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="145.0" cy="342.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="175.0" cy="340.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="205.0" cy="338.5" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="235.0" cy="334.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="265.0" cy="329.9" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="295.0" cy="320.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="325.0" cy="305.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="355.0" cy="314.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="385.0" cy="299.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="415.0" cy="282.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="445.0" cy="254.8" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="475.0" cy="225.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="505.0" cy="198.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="535.0" cy="182.3" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="565.0" cy="171.6" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="595.0" cy="157.1" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="625.0" cy="128.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="655.0" cy="104.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="685.0" cy="198.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="715.0" cy="217.2" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="745.0" cy="221.4" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+<circle cx="775.0" cy="221.7" r="4" fill="#3987e5" stroke="#08090a" stroke-width="2"/>
+</svg>
