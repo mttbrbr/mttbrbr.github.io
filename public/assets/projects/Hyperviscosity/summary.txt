@@ -1,0 +1,5 @@
+N =  64 p = 1 nu_p = 8.000e-03 | <E> = 0.5283 <eps> = 0.0981 (injected 0.100) | u_rms 0.593 Re_lambda 47 (with nu_eff = 8.43e-03) k_max eta_eff = 1.06 | 2037 steps, 336 s
+N =  64 p = 4 nu_p = 8.487e-11 | <E> = 0.6094 <eps> = 0.1005 (injected 0.100) | u_rms 0.637 Re_lambda 110 (with nu_eff = 2.02e-03) k_max eta_eff = 0.36 | 2037 steps, 448 s
+N =  64 p = 2 nu_p = 1.758e-05 | <E> = 0.5913 <eps> = 0.1023 (injected 0.100) | u_rms 0.628 Re_lambda 89 (with nu_eff = 2.88e-03) k_max eta_eff = 0.47 | 2037 steps, 405 s
+N =  64 p = 8 nu_p = 1.978e-21 | <E> = 0.6233 <eps> = 0.1046 (injected 0.100) | u_rms 0.645 Re_lambda 123 (with nu_eff = 1.65e-03) k_max eta_eff = 0.31 | 2037 steps, 395 s
+N =  96 p = 1 nu_p = 4.600e-03 | <E> = 0.5128 <eps> = 0.0997 (injected 0.100) | u_rms 0.585 Re_lambda 61 (with nu_eff = 4.76e-03) k_max eta_eff = 1.03 | 3056 steps, 1530 s
