@@ -58,6 +58,18 @@ const toc = headings.filter((h) => h.depth <= 2);
 
 <script>
   function initEntry() {
+    /* every figure opens full size in a new tab (pinch-zoom on phones) */
+    document.querySelectorAll('.prose img').forEach((img) => {
+      if (img.closest('a')) return;
+      const a = document.createElement('a');
+      a.href = img.currentSrc || img.src;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.className = 'figure-link';
+      img.replaceWith(a);
+      a.appendChild(img);
+    });
+
     const bar = document.getElementById('progress');
     if (!bar) return;
 
@@ -166,7 +178,8 @@ const toc = headings.filter((h) => h.depth <= 2);
   }
   .grid {
     display: grid;
-    grid-template-columns: 1fr;
+    /* minmax(0, ...) lets the column shrink below its widest child (code, tables) on phones */
+    grid-template-columns: minmax(0, 1fr);
     gap: 3rem;
   }
   @media (min-width: 1000px) {
@@ -209,6 +222,7 @@ const toc = headings.filter((h) => h.depth <= 2);
     border-left-color: var(--accent);
   }
   .prose {
+    min-width: 0;
     animation: fade 0.8s 0.3s var(--ease) both;
   }
   @keyframes fade {

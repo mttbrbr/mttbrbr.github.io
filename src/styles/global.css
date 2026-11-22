@@ -112,6 +112,7 @@ a {
 /* ---------- Long-form content ---------- */
 .prose {
   max-width: 46rem;
+  overflow-wrap: break-word;
   font-family: var(--sans);
   font-size: 1.04rem;
   line-height: 1.75;
@@ -184,6 +185,21 @@ a {
   height: auto;
   border-radius: 8px;
   border: 1px solid var(--border);
+}
+.prose .figure-link {
+  display: block;
+  text-decoration: none;
+  border: none;
+}
+/* Phones: charts keep a readable width and scroll sideways, like tables */
+@media (max-width: 700px) {
+  .prose p:has(img[src$=".svg"]) {
+    overflow-x: auto;
+  }
+  .prose img[src$=".svg"] {
+    max-width: none;
+    width: 640px;
+  }
 }
 .prose code {
   font-family: var(--mono);
