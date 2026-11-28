@@ -9,8 +9,9 @@ excerpt: "Same equations, same compiler, same machine, up to 20× difference in 
 1. [**The problem**](#problem) — Why FLOPs are not the bottleneck
 2. [**The test case**](#testcase) — A tiny lid-driven cavity solver in C
 3. [**Results**](#results) — Layout, loop order and grid size
-4. [**The power-of-two trap**](#pow2) — When the grid size itself hurts you
-5. [**What this means for real CFD**](#realcfd) — From a toy solver to OpenFOAM
+4. [**Reading the assembly**](#asm) — What the compiler does with SoA and with AoS
+5. [**The power-of-two trap**](#pow2) — When the grid size itself hurts you
+6. [**What this means for real CFD**](#realcfd) — From a toy solver to OpenFOAM
 
 <a name="problem"></a>
 ## 1. The problem
@@ -107,6 +108,34 @@ FOR_INTERIOR {
 
 At the end of every run the solver prints a checksum of $|u|$ and $|p|$: it is **bit-for-bit identical** across all variants for every grid size, so the differences below are purely about memory.
 
+### How the program is organised
+`locality.c` is a single file of about 130 lines, and the whole experiment lives in three layers.
+
+**1. Compile-time switches.** `-DLAYOUT_AOS`, `-DORDER_JI` and `-DPAD` choose the variant. The kernels never name an array directly: they use the macros `U(k)`, `V(k)`, `US(k)`, `VS(k)`, `P(k)`, `PN(k)` for field access and `FOR_INTERIOR` for the double loop. The preprocessor expands them differently per variant:
+
+```c
+/* SoA */  #define P(k)  p_[k]          /* p_ is its own array of doubles   */
+/* AoS */  #define P(k)  C[k].p        /* p sits at byte offset 32 of a 48 B struct */
+
+/* contiguous */ #define FOR_INTERIOR for (i = 1; i < N-1; ++i) for (j = 1; j < N-1; ++j)
+/* strided    */ #define FOR_INTERIOR for (j = 1; j < N-1; ++j) for (i = 1; i < N-1; ++i)
+```
+
+So there is exactly one copy of the numerical code, and the four binaries cannot differ in anything except memory. This is also why the checksums match bit for bit.
+
+**2. Setup.** The grid size `N` comes from the command line. The number of time steps is computed as $6\cdot10^8 / (42 \cdot N^2)$ so that every run does the same total work, and `dt` scales with the grid so the scheme stays stable. Arrays are allocated with `posix_memalign` on 64-byte boundaries, that is on a cache-line boundary, and then written once with zeros so that the pages really exist in RAM before the clock starts.
+
+**3. The time loop.** Each step runs four stages, and only the clock around this loop is measured:
+
+| Stage | Reads | Writes | Sweeps per step |
+|---|---|---|---|
+| Boundary conditions | none | edges of `u`, `v` | 1 (edges only) |
+| Predictor | `u`, `v` | `us`, `vs` | 1 |
+| Jacobi, pressure | `p` or `pn`, `us`, `vs` | `pn` or `p` | 40 |
+| Projection | `us`, `vs`, `p` | `u`, `v` | 1 |
+
+Two details matter for what follows. First, Jacobi is 40 of the 42 sweeps, so it is the kernel that decides the result and the one I disassemble below. Second, **no kernel touches all six fields**: the Jacobi sweep uses four of them and the predictor four, so in the AoS layout at least a third of every 48-byte struct is carried along for nothing. The Jacobi sweeps ping-pong between `p` and `pn`: an even number of iterations leaves the final pressure in `p`, and each half-sweep first copies the ghost values of its source array, then runs the stencil. At the end the program sums $|u|$ and $|p|$ over the grid (the checksum) and prints one CSV line with the layout, the loop order, the working set and the time per cell update.
+
 ### Test configuration
 - CPU: Intel Core i7-1165G7 (4 cores, L1d 48 KB/core, L2 1.25 MB/core, L3 12 MB shared), single thread
 - RAM: 16 GB
@@ -163,8 +192,109 @@ This also explains a detail of the chart: at small sizes the *strided* AoS varia
 ### The cache cliff
 Look at the SoA strided curve: 3 ns at 0.2 MB, 5.4 ns at 0.8 MB, 12.5 ns at 3 MB, 17.7 ns at 12 MB. Every time the working set crosses a cache level, the cost per update jumps. The physics did not change, the algorithm did not change, only the size of the problem did. A code profiled on a small test case and then run on the production mesh can behave completely differently.
 
+<a name="asm"></a>
+## 4. Reading the assembly
+
+The timings say that AoS is slower, and the `-fopt-info-vec` report says GCC vectorizes it differently. To see what that means I isolated the Jacobi stencil in a small function ([jacobi_kernel.c](/assets/projects/Data-Locality-CFD/jacobi_kernel.c)), one row of the grid, written once for SoA and once for AoS, and compiled both with the same flags as the benchmark (`-O3 -march=native`, GCC 16.2). `make asm` regenerates [jacobi_soa.s](/assets/projects/Data-Locality-CFD/jacobi_soa.s) and [jacobi_aos.s](/assets/projects/Data-Locality-CFD/jacobi_aos.s). The listings below are the inner loops, copied from the compiler output; the comments are mine. Register choices depend on the compiler and the CPU, the structure does not.
+
+The stencil in C, for reference:
+
+```c
+div   = (US(up) - US(dn)) * inv2dx + (VS(rt) - VS(lt)) * inv2dy;
+PN(c) = ((P(up) + P(dn)) * idx2 + (P(rt) + P(lt)) * idy2 - rho_dt * div) / denom;
+```
+
+It needs 8 loads, 13 floating-point operations (including one division) and 1 store per cell.
+
+### SoA: one load per vector of useful numbers
+GCC vectorizes the loop with 256-bit `ymm` registers, 4 doubles each, so one iteration updates **4 cells in 21 instructions**:
+
+```asm
+.L4:
+    vmovupd  (%rdx,%rax), %ymm20        # us[up .. up+3]   4 consecutive doubles
+    vmovupd  (%rcx,%rax), %ymm23        # vs[rt .. rt+3]
+    vmovupd  0(%r13,%rax), %ymm0        # p[rt .. rt+3]
+    vmovupd  (%r15,%rax), %ymm19        # p[up .. up+3]
+    vsubpd   (%rsi,%rax), %ymm20, %ymm21   # us[up] - us[dn]   (load folded into the subtraction)
+    vsubpd   (%rbx,%rax), %ymm23, %ymm24   # vs[rt] - vs[lt]
+    vaddpd   (%r12,%rax), %ymm0,  %ymm0    # p[rt] + p[lt]
+    vaddpd   (%r14,%rax), %ymm19, %ymm19   # p[up] + p[dn]
+    vmulpd   %ymm11, %ymm21, %ymm22     # * inv2dx
+    vmulpd   %ymm10, %ymm24, %ymm25     # * inv2dy
+    vmulpd   %ymm12, %ymm0,  %ymm0      # * idy2
+    vmulpd   %ymm17, %ymm19, %ymm19     # * idx2
+    vaddpd   %ymm25, %ymm22, %ymm26     # div
+    vaddpd   %ymm19, %ymm0,  %ymm0      # sum of the two p terms
+    vmulpd   %ymm9,  %ymm26, %ymm27     # rho_dt * div
+    vsubpd   %ymm27, %ymm0,  %ymm0
+    vdivpd   %ymm8,  %ymm0,  %ymm0      # / denom
+    vmovupd  %ymm0, (%r11,%rax)         # pn[c .. c+3]: one 32-byte store
+    addq     $32, %rax                  # next 4 cells = next 32 bytes
+    cmpq     %r10, %rax
+    jne      .L4
+```
+
+Read it from the top: four `vmovupd` loads, four arithmetic instructions that read the other four operands straight from memory, then the arithmetic, then one store. Every one of the 8 memory accesses is 32 contiguous bytes, **all useful**, and the pointer advances by 32 bytes per iteration. Nothing else is needed, because the four neighbouring cells of `p` are already adjacent in memory.
+
+### AoS: the same arithmetic, buried under data movement
+For AoS, GCC still vectorizes, but only with 128-bit `xmm` registers (2 doubles), and each iteration advances by 96 bytes, that is 2 structs of 48 bytes. One iteration updates **2 cells in 34 instructions**:
+
+```asm
+.L4:
+    vmovupd  16(%rdx,%rax), %xmm7       # 16 bytes load ...
+    vmovupd  (%rdi,%rax),   %xmm15
+    vmovhpd  64(%rdx,%rax), %xmm7, %xmm0   # ... high half replaced by the value 48 bytes further
+    vmovupd  16(%rcx,%rax), %xmm7
+    vmovhpd  48(%rdi,%rax), %xmm15, %xmm8
+    vmovhpd  64(%rcx,%rax), %xmm7, %xmm6
+    vmovupd  48(%r8,%rax),  %xmm7
+    vaddpd   %xmm6, %xmm0, %xmm0
+    vmovlpd  8(%r8,%rax),   %xmm7, %xmm6   # low half replaced, again with a value from another struct
+    vmovupd  48(%rdi,%rax), %xmm7
+    vmulpd   %xmm14, %xmm0, %xmm0
+    vmovlpd  8(%rdi,%rax),  %xmm7, %xmm7
+    vaddpd   %xmm7, %xmm6, %xmm6
+    vmovupd  (%rcx,%rax),   %xmm7
+    vmulpd   %xmm13, %xmm6, %xmm6
+    vaddpd   %xmm6, %xmm0, %xmm0
+    vmovhpd  48(%rcx,%rax), %xmm7, %xmm6
+    vmovupd  (%rdx,%rax),   %xmm7
+    vmovhpd  48(%rdx,%rax), %xmm7, %xmm7
+    vsubpd   %xmm7, %xmm6, %xmm6
+    vmovupd  (%r8,%rax),    %xmm7
+    vmovhpd  48(%r8,%rax),  %xmm7, %xmm7
+    vsubpd   %xmm8, %xmm7, %xmm7
+    vmulpd   %xmm12, %xmm6, %xmm6
+    vmulpd   %xmm11, %xmm7, %xmm7
+    vaddpd   %xmm7, %xmm6, %xmm6
+    vmulpd   %xmm10, %xmm6, %xmm6
+    vsubpd   %xmm6, %xmm0, %xmm0
+    vdivpd   %xmm9,  %xmm0, %xmm0
+    vmovlpd  %xmm0, (%rsi,%rax)         # store cell 1 ...
+    vmovhpd  %xmm0, 48(%rsi,%rax)       # ... and cell 2, 48 bytes later: two 8-byte stores
+    addq     $96, %rax                  # 2 structs = 96 bytes
+    cmpq     %r9, %rax
+    jne      .L4
+```
+
+The pattern is `vmovupd` followed by `vmovhpd` or `vmovlpd`. The two values the vector needs belong to two different structs, so they are 48 bytes apart and cannot be loaded with one instruction. The compiler loads 16 bytes (of which 8 are thrown away) and overwrites one half of the register with the value from the neighbouring struct. The result is stored back the same way, as two separate 8-byte writes.
+
+### Counting
+| | SoA (`ymm`) | AoS (`xmm`) |
+|---|---|---|
+| Cells per iteration | 4 | 2 |
+| Instructions per iteration | 21 | 34 |
+| **Instructions per cell** | **5.3** | **17** |
+| Arithmetic instructions | 13 | 13 |
+| Loads (vector) | 4 + 4 folded into arithmetic | 8, each followed by a half-register merge |
+| Stores | 1 of 32 bytes | 2 of 8 bytes |
+
+The arithmetic is exactly the same, 13 instructions per vector. What changes is the width of the vector (4 lanes against 2) and the 18 data-movement instructions, which in SoA are 5. Per cell, AoS executes **3.2 times more instructions** for the same result, and every cache line it loads carries `u` and `v`, which the stencil never reads. This is the same 3× instruction count I saw with `perf` on the strided variant: the cause is different (there the compiler gives up on vectorizing, here it vectorizes badly), but the lesson is the same. The layout in memory decides which instructions the compiler is allowed to write.
+
+Two last remarks. The `vdivpd` is still there: without `-ffast-math` the compiler is not allowed to replace `/ denom` with a multiplication by a precomputed reciprocal, because the result would differ in the last bit. And if you want AoS to be vectorized well, the way out is not a better compiler flag but a better layout: AoSoA, i.e. small structs of 4 or 8 values of the same field (`struct { double p[8]; }`), which keeps the fields of a block close together and still lets each load be a full vector.
+
 <a name="pow2"></a>
-## 4. The power-of-two trap
+## 5. The power-of-two trap
 
 Two things in the chart are not explained by the cache sizes alone.
 
@@ -190,7 +320,7 @@ u = pool; v = pool + stride; us = pool + 2 * stride; /* ... */
 A **2.6–2.8× speedup by adding 320 bytes** to each array, with identical results. This is why, for example, many structured-grid codes pad their leading dimension, and why "nice" grid sizes like 1024 or 2048 are often the worst possible choice.
 
 <a name="realcfd"></a>
-## 5. What this means for real CFD
+## 6. What this means for real CFD
 
 A toy cavity solver is far from an industrial code, but the mechanisms are exactly the same, and in real solvers they are usually worse:
 

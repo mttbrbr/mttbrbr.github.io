@@ -16,5 +16,10 @@ bench: all
 	@echo "layout,order,N,working_set_MB,steps,seconds,ns_per_cell_update,checksum_u,checksum_p"
 	@for n in $(SIZES); do for b in bin_soa_ij bin_aos_ij bin_soa_ji bin_aos_ji bin_soa_ij_pad; do ./$$b $$n; done; done
 
+# Compiler output of the isolated Jacobi kernel, SoA vs AoS
+asm: jacobi_kernel.c
+	$(CC) $(CFLAGS) -S $< -o jacobi_soa.s
+	$(CC) $(CFLAGS) -DAOS -S $< -o jacobi_aos.s
+
 clean: ; rm -f bin_*
-.PHONY: all bench clean
+.PHONY: all bench asm clean
